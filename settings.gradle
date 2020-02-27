@@ -1,0 +1,3 @@
+rootProject.name = 'foody'
+
+include 'foody-api'
