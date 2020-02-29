@@ -1,5 +1,8 @@
 package kr.co.loosie.foody.interfaces;
 
+import kr.co.loosie.foody.application.RestaurantService;
+import kr.co.loosie.foody.domain.MenuItemRepository;
+import kr.co.loosie.foody.domain.MenuItemRepositoryImpl;
 import kr.co.loosie.foody.domain.RestaurantRepository;
 import kr.co.loosie.foody.domain.RestaurantRepositoryImpl;
 import org.junit.jupiter.api.Test;
@@ -23,11 +26,17 @@ public class RestaurantControllerTest {
     @Autowired
     private MockMvc mvc;
 
-//  controller가 repository에 직접적으로 의존하고 있었는데
+    //  controller가 repository에 직접적으로 의존하고 있었는데
 //  이렇게 Impl과 inteface로 나누어 의존성을 분리를 통해 의존성주입의 장점을 살림
 //    (RestaurantRepositoryImpl.class) 우리가 사용하는 객체를 다양하게 변경가능
     @SpyBean(RestaurantRepositoryImpl.class)
     private RestaurantRepository restaurantRepository;
+
+    @SpyBean(MenuItemRepositoryImpl.class)
+    private MenuItemRepository menuItemRepository;
+
+    @SpyBean(RestaurantService.class)
+    private RestaurantService restaurantService;
 
     @Test
     public void list() throws Exception {
@@ -49,6 +58,9 @@ public class RestaurantControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Bob zip\"")
+                ))
+                .andExpect(content().string(
+                        containsString("Kimchi")
                 ));
 
         mvc.perform(get("/restaurants/2020"))
