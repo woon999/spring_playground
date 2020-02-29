@@ -1,7 +1,8 @@
 package kr.co.loosie.foody.interfaces;
 
 import kr.co.loosie.foody.domain.Restaurant;
-import kr.co.loosie.foody.domain.RestaurantRepository;
+import kr.co.loosie.foody.domain.RestaurantRepositoryImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -11,7 +12,8 @@ import java.util.List;
 @RestController
 public class RestaurantController {
 
-    private RestaurantRepository repository = new RestaurantRepository();
+    @Autowired
+    private RestaurantRepositoryImpl repository;
 
     @GetMapping("/restaurants")
     public List<Restaurant> list(){
