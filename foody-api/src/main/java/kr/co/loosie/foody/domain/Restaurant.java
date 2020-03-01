@@ -1,8 +1,45 @@
 package kr.co.loosie.foody.domain;
 
 public class Restaurant {
+
+    private String name;
+    private String address;
+    private Long id;
+    private List<MenuItem> menuItems = new ArrayList<MenuItem>();
+
+    public Restaurant() {
+    }
+
+    public Restaurant(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
+
+    public Restaurant(Long id, String name, String address) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+    }
+
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
     public String getName() {
-        return"";
+        return name;
+    }
+
+    public String getInfo() {
+        return name + " in " + address;
+    }
+
+    public String getAddress() {
+        return address;
     }
 
     public List<MenuItem> getMenuItems() {
@@ -15,7 +52,7 @@ public class Restaurant {
     }
 
     public void setMenuItem(List<MenuItem> menuItems) {
-        for(MenuItem menuItem : menuItems){
+        for (MenuItem menuItem : menuItems) {
             addMenuItem(menuItem);
         }
     }
