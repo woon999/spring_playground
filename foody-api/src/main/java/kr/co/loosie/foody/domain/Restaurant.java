@@ -2,9 +2,13 @@ package kr.co.loosie.foody.domain;
 
 public class Restaurant {
 
+    @Id
+    @GeneratedValue
+    private Long id;
     private String name;
     private String address;
-    private Long id;
+
+    @Transient
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
     public Restaurant() {
