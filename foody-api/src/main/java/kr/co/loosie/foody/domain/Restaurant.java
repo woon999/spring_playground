@@ -1,5 +1,20 @@
 package kr.co.loosie.foody.domain;
 
+import lombok.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Transient;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Restaurant {
 
     @Id
@@ -9,60 +24,30 @@ public class Restaurant {
     private String address;
 
     @Transient
-    private List<MenuItem> menuItems = new ArrayList<MenuItem>();
+    private List<MenuItem> menuItems;
 
-    public Restaurant() {
-    }
-
-    public Restaurant(String name, String address) {
-        this.name = name;
-        this.address = address;
-    }
-
-    public Restaurant(Long id, String name, String address) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-    }
-
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
 
     public String getInfo() {
         return name + " in " + address;
     }
 
-    public String getAddress() {
-        return address;
-    }
-
-    public List<MenuItem> getMenuItems() {
-        return menuItems;
-    }
-
-
-    public void addMenuItem(MenuItem menuItem) {
-        menuItems.add(menuItem);
-    }
 
     public void setMenuItem(List<MenuItem> menuItems) {
-        for (MenuItem menuItem : menuItems) {
-            addMenuItem(menuItem);
-        }
+        this.menuItems = new ArrayList<>(menuItems);
+//        for (MenuItem menuItem : menuItems) {
+//            addMenuItem(menuItem);
+//        }
     }
 
     public void updateInformation(String name, String address) {
-        this.name =name;
-        this.address =address;
+        this.name = name;
+        this.address = address;
     }
+
+    //    setMenuItems에 직접 arraylist를 불러와 넣어주므로
+//    addMenuItem메서드는 불필요
+//    public void addMenuItem(MenuItem menuItem) {
+//
+//        menuItems.add(menuItem);
+//    }
 }
