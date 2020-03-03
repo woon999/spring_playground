@@ -1,9 +1,7 @@
 package kr.co.loosie.foody.application;
 
-import kr.co.loosie.foody.domain.MenuItem;
-import kr.co.loosie.foody.domain.MenuItemRepository;
-import kr.co.loosie.foody.domain.Restaurant;
-import kr.co.loosie.foody.domain.RestaurantRepository;
+import kr.co.loosie.foody.domain.*;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,6 +12,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
@@ -65,7 +65,6 @@ class RestaurantServiceTest {
     public void getRestaurants() {
         List<Restaurant> restaurants = restaurantService.getRestaurants();
 
-
         Restaurant restaurant = restaurants.get(0);
         assertThat(restaurant.getId(), is(1004L));
 
@@ -73,15 +72,22 @@ class RestaurantServiceTest {
     }
 
     @Test
-    public void getRestaurant() {
+    public void getRestaurantWithExisted() {
         Restaurant restaurant = restaurantService.getRestaurant(1004L);
         assertThat(restaurant.getId(), is(1004L));
 
         MenuItem menuItem = restaurant.getMenuItems().get(0);
 
         assertThat(menuItem.getName(), is("Kimchi"));
-
     }
+
+//    Junit5 expected exception annotation
+//    @Test(expected = RestaurantNotFoundException.class)
+//    public void getRestaurantWithNotExisted() {
+//       restaurantService.getRestaurant(404L);
+//    }
+
+
 
     @Test
     public void addRestaurant() {

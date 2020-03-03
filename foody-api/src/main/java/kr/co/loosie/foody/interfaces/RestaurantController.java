@@ -31,9 +31,10 @@ public class RestaurantController {
 
     @GetMapping("/restaurants/{id}")
     public Restaurant detail(@PathVariable("id") Long id){
-        Restaurant restaurant = restaurantService.getRestaurant(id);
+
+           Restaurant restaurant = restaurantService.getRestaurant(id);
 //      기본 메뉴 + 메뉴 정보
-        return restaurant;
+         return restaurant;
     }
 
     @PostMapping("/restaurants")
