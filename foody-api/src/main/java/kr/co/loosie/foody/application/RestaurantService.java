@@ -45,7 +45,6 @@ public class RestaurantService {
 
     @Transactional
     public Restaurant updateRestaurant(long id, String name, String address) {
-        //TODO : update Restaurants
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
 
         restaurant.updateInformation(name,address);
