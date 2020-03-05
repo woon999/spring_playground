@@ -33,10 +33,20 @@ public class Restaurant {
     private List<MenuItem> menuItems;
 
 
+    @Transient
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<Review> reviews;
+
+
     public String getInfo() {
         return name + " in " + address;
     }
 
+
+    public void updateInformation(String name, String address) {
+        this.name = name;
+        this.address = address;
+    }
 
     public void setMenuItem(List<MenuItem> menuItems) {
         this.menuItems = new ArrayList<>(menuItems);
@@ -45,9 +55,8 @@ public class Restaurant {
 //        }
     }
 
-    public void updateInformation(String name, String address) {
-        this.name = name;
-        this.address = address;
+    public void setReviews(List<Review> reviews) {
+        this.reviews = new ArrayList<>(reviews);
     }
 
     //    setMenuItems에 직접 arraylist를 불러와 넣어주므로

@@ -4,6 +4,7 @@ import kr.co.loosie.foody.application.RestaurantService;
 import kr.co.loosie.foody.domain.MenuItem;
 import kr.co.loosie.foody.domain.Restaurant;
 import kr.co.loosie.foody.domain.RestaurantNotFoundException;
+import kr.co.loosie.foody.domain.Review;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,22 +68,25 @@ public class RestaurantControllerTest {
 
     @Test
     public void detailWithExisted() throws Exception {
-        Restaurant restaurant1 = Restaurant.builder()
+        Restaurant restaurant = Restaurant.builder()
                 .id(1004L)
                 .name("Joker House")
                 .address("Seoul")
                 .build();
-        Restaurant restaurant2 = Restaurant.builder()
-                .id(2020L)
-                .name("Cyber Food")
-                .address("Seoul")
-                .build();
+
         MenuItem menuItem = MenuItem.builder()
                 .name("Kimchi")
                 .build();
-        restaurant1.setMenuItem(Arrays.asList(menuItem));
-        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant1);
-        given(restaurantService.getRestaurant(2020L)).willReturn(restaurant2);
+        restaurant.setMenuItem(Arrays.asList(menuItem));
+        Review review = Review.builder()
+                .name("JOKER")
+                .score(5)
+                .description("good")
+                .build();
+
+        restaurant.setReviews(Arrays.asList(review));
+
+        given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
         mvc.perform(get("/restaurants/1004"))
                 .andExpect(status().isOk())
@@ -94,16 +98,11 @@ public class RestaurantControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("Kimchi")
-                ));
-
-        mvc.perform(get("/restaurants/2020"))
-                .andExpect(status().isOk())
-                .andExpect(content().string(
-                        containsString("\"id\":2020")
                 ))
                 .andExpect(content().string(
-                        containsString("\"name\":\"Cyber Food\"")
+                        containsString("good")
                 ));
+
     }
 
     @Test

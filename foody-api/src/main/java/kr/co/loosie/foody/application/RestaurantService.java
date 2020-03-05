@@ -10,16 +10,17 @@ import java.util.List;
 @Service
 public class RestaurantService {
 
-    @Autowired
-    RestaurantRepository restaurantRepository;
+    private RestaurantRepository restaurantRepository;
+    private MenuItemRepository menuItemRepository;
+    private ReviewRepository reviewRepository;
 
     @Autowired
-    MenuItemRepository menuItemRepository;
-
     public RestaurantService(RestaurantRepository restaurantRepository,
-                             MenuItemRepository menuItemRepository) {
+                             MenuItemRepository menuItemRepository,
+                             ReviewRepository reviewRepository) {
         this.restaurantRepository = restaurantRepository;
         this.menuItemRepository = menuItemRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<Restaurant> getRestaurants() {
@@ -27,12 +28,16 @@ public class RestaurantService {
         return restaurants;
     }
 
-    public Restaurant getRestaurant(Long id){
+    public Restaurant getRestaurant(Long id) {
         Restaurant restaurant = restaurantRepository.findById(id)
-                .orElseThrow(()->new RestaurantNotFoundException(id));
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
 
-           List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
-           restaurant.setMenuItem(menuItems);
+        List<MenuItem> menuItems = menuItemRepository.findAllByRestaurantId(id);
+        restaurant.setMenuItem(menuItems);
+
+        List<Review> reviews = reviewRepository.findAllByRestaurantId(id);
+        restaurant.setReviews(reviews);
+
         return restaurant;
     }
 
@@ -47,7 +52,7 @@ public class RestaurantService {
     public Restaurant updateRestaurant(long id, String name, String address) {
         Restaurant restaurant = restaurantRepository.findById(id).orElse(null);
 
-        restaurant.updateInformation(name,address);
+        restaurant.updateInformation(name, address);
 
 
         return restaurant;
