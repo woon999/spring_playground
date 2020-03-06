@@ -1,10 +1,8 @@
 package kr.co.loosie.foody.interfaces;
 
 import kr.co.loosie.foody.application.RestaurantService;
-import kr.co.loosie.foody.domain.MenuItem;
 import kr.co.loosie.foody.domain.Restaurant;
 import kr.co.loosie.foody.domain.RestaurantNotFoundException;
-import kr.co.loosie.foody.domain.Review;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +13,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.core.StringContains.containsString;
@@ -74,17 +71,6 @@ public class RestaurantControllerTest {
                 .address("Seoul")
                 .build();
 
-        MenuItem menuItem = MenuItem.builder()
-                .name("Kimchi")
-                .build();
-        restaurant.setMenuItem(Arrays.asList(menuItem));
-        Review review = Review.builder()
-                .name("JOKER")
-                .score(5)
-                .description("good")
-                .build();
-
-        restaurant.setReviews(Arrays.asList(review));
 
         given(restaurantService.getRestaurant(1004L)).willReturn(restaurant);
 
@@ -95,13 +81,8 @@ public class RestaurantControllerTest {
                 ))
                 .andExpect(content().string(
                         containsString("\"name\":\"Joker House\"")
-                ))
-                .andExpect(content().string(
-                        containsString("Kimchi")
-                ))
-                .andExpect(content().string(
-                        containsString("good")
                 ));
+
 
     }
 

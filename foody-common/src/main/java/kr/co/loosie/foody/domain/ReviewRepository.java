@@ -8,6 +8,8 @@ public interface ReviewRepository extends CrudRepository<Review,Long> {
 
     List<Review> findAllByRestaurantId(Long restaurantId);
 
+    List<Review> findAll();
+
     Review save(Review review);
 
 }
