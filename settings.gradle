@@ -3,5 +3,5 @@ rootProject.name = 'foody'
 
 include 'foody-admin-api'
 include 'foody-common'
-
+include 'foody-customer-api'
 
