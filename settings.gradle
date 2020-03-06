@@ -1,3 +1,7 @@
 rootProject.name = 'foody'
 
-include 'foody-api'
+
+include 'foody-admin-api'
+include 'foody-common'
+
+
