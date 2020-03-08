@@ -1,6 +1,5 @@
 package kr.co.loosie.foody.application;
 
-import kr.co.loosie.foody.application.RestaurantService;
 import kr.co.loosie.foody.domain.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -52,7 +51,7 @@ class RestaurantServiceTest {
 
         restaurants.add(restaurant);
 
-        given(restaurantRepository.findAll()).willReturn(restaurants);
+        given(restaurantRepository.findAllByAddressContaining("Seoul")).willReturn(restaurants);
         given(restaurantRepository.findById(1004L)).willReturn(java.util.Optional.of(restaurant));
     }
 
@@ -77,7 +76,8 @@ class RestaurantServiceTest {
 
     @Test
     public void getRestaurants() {
-        List<Restaurant> restaurants = restaurantService.getRestaurants();
+        String region = "Seoul";
+        List<Restaurant> restaurants = restaurantService.getRestaurants(region);
 
         Restaurant restaurant = restaurants.get(0);
         assertThat(restaurant.getId(), is(1004L));
