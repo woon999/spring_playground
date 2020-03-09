@@ -50,9 +50,10 @@ public class UserController {
 
         return "{}";
     }
-//    1. User list
-//    2. User create -> 회원가입
-//    3. User update
-//    4. User delete -> level:0 => 아무것도 못함
-//    ( 1: customer , 2: restaurant owner , 3: admin)
+
+    @DeleteMapping("/users/{id}")
+    public String delete(@PathVariable Long id){
+        userService.deactiveUser(id);
+        return "{}";
+    }
 }
