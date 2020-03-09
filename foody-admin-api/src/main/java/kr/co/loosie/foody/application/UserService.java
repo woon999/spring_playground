@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -19,12 +20,31 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers(){
+    public List<User> getUsers() {
         List<User> users = userRepository.findAll();
         return users;
     }
 
     public User addUser(String email, String name) {
-            return null;
+        User user = User.builder()
+                .email(email)
+                .name(name)
+                .build();
+
+        return userRepository.save(user);
+
+    }
+
+    public User updateUser(Long id, String email, String name, Long level) {
+//      TODO: restaurantService 예외 처리 참고
+
+        User user = userRepository.findById(id).orElse(null);
+
+        user.setEmail(email);
+        user.setName(name);
+        user.setLevel(level);
+
+
+        return user;
     }
 }
