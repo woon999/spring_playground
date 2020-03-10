@@ -30,6 +30,8 @@ public class User {
     @NotNull
     private Long level;
 
+    private String password;
+
     public Boolean isAdmin() {
         return level >= 100;
     }
