@@ -1,9 +1,7 @@
 package kr.co.loosie.foody.interfaces;
 
-import kr.co.loosie.foody.application.ReviewService;
-import kr.co.loosie.foody.domain.Review;
+import kr.co.loosie.foody.application.UserService;
 import kr.co.loosie.foody.domain.User;
-import kr.co.loosie.foody.interfaces.ReviewController;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +14,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
