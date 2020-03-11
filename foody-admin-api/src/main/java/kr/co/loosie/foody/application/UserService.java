@@ -43,7 +43,6 @@ public class UserService {
         user.setName(name);
         user.setLevel(level);
 
-
         return user;
     }
 

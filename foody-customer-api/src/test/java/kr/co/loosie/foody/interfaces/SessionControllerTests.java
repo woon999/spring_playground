@@ -3,6 +3,7 @@ package kr.co.loosie.foody.interfaces;
 import kr.co.loosie.foody.application.EmailNotExistedException;
 import kr.co.loosie.foody.application.PasswordWrongException;
 import kr.co.loosie.foody.application.UserService;
+import kr.co.loosie.foody.domain.User;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,15 +31,21 @@ class SessionControllerTests {
 
     @Test
     public void createWithValidAttributes() throws Exception {
+        String email = "tester@example.com";
+        String password = "test";
+
+        User mockUser = User.builder().password("ACCESSTOKEN").build();
+        given(userService.authenticate(email,password)).willReturn(mockUser);
 
         mvc.perform(post("/session")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{\"email\":\"tester@example.com\",\"password\":\"test\"}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("location", "/session"))
-                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKEN\"}"));
+                .andExpect(content().string("{\"accessToken\":\"ACCESSTOKE\"}"));
 
-        verify(userService).authenticate(eq("tester@example.com"),eq("test"));
+
+        verify(userService).authenticate(eq(email),eq(password));
     }
 
 

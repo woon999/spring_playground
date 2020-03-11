@@ -2,6 +2,7 @@ package kr.co.loosie.foody.interfaces;
 
 
 import kr.co.loosie.foody.application.UserService;
+import kr.co.loosie.foody.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,12 +22,14 @@ public class SessionController {
     public ResponseEntity<SessionResponseDto> create(
             @RequestBody SessionRequestDto resource
     ) throws URISyntaxException {
-        String accessToken = "ACCESSTOKEN";
+
 
         String email = resource.getEmail();
         String password = resource.getPassword();
 
-        userService.authenticate(email,password);
+        User user = userService.authenticate(email,password);
+
+        String accessToken = user.getAccessToken();
 
         String url = "/session";
         return ResponseEntity.created(new URI(url)).body(

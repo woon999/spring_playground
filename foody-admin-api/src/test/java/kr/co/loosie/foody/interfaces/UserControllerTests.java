@@ -46,7 +46,7 @@ class UserControllerTests {
 
         mvc.perform(get("/users"))
                 .andExpect(status().isOk())
-        .andExpect(content().string(containsString("tester")));
+                .andExpect(content().string(containsString("tester")));
     }
 
     @Test
