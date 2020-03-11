@@ -1,11 +1,11 @@
-package kr.co.loosie.foody.application;
+package kr.co.loosie.foody.interfaces;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Data
 @Builder
-public class SessionDto {
+public class SessionResponseDto {
 
     private String accessToken;
 

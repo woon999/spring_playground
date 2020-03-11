@@ -39,6 +39,7 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public void authenticate(String email, String password) {
+    public User authenticate(String email, String password) {
+        return null;
     }
 }
