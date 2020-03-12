@@ -2,10 +2,10 @@ package kr.co.loosie.foody.domain;
 
 import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.core.Is.is;
 
 //import static org.junit.jupiter.api.Assertions.*;
-import static org.hamcrest.core.Is.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class RestaurantTests {
 
