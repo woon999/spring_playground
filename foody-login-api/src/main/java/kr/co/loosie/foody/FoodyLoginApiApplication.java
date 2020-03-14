@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class FoodyCustomerApiApplication {
+public class FoodyLoginApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FoodyCustomerApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FoodyLoginApiApplication.class, args);
+    }
 
 
 }
