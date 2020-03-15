@@ -5,4 +5,5 @@ include 'foody-admin-api'
 include 'foody-common'
 include 'foody-customer-api'
 include 'foody-login-api'
+include 'foody-restaurant-api'
 
