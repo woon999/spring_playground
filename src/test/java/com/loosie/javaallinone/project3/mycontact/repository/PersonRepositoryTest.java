@@ -1,6 +1,5 @@
 package com.loosie.javaallinone.project3.mycontact.repository;
 
-import com.loosie.javaallinone.project3.mycontact.PersonRepository;
 import com.loosie.javaallinone.project3.mycontact.domain.Person;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +40,8 @@ class PersonRepositoryTest {
 
     @Test
     void hashCodeAndEquals(){
-        Person person1 = new Person("martin",10);
-        Person person2 = new Person("martin",10);
+        Person person1 = new Person("martin",10,"A");
+        Person person2 = new Person("martin",10,"A");
 
         System.out.println(person1.equals(person2));
         System.out.println(person1.hashCode());

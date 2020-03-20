@@ -27,6 +27,7 @@ public class Person {
 
     private String hobby;
 
+    @NonNull
     private String bloodType;
 
     private LocalDate birthday;
@@ -36,8 +37,12 @@ public class Person {
     @ToString.Exclude
     private String phoneNumber;
 
+    private boolean block;
 
+    private String blockReason;
 
+    private LocalDate blockStartDate;
 
+    private LocalDate blockEndDate;
 
 }
