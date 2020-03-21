@@ -11,8 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
-
 
 @SpringBootTest
 class PersonServiceTest {
@@ -36,6 +34,15 @@ class PersonServiceTest {
     }
 
     @Test
+    void getPeopleByName(){
+        givenPeople();
+
+        List<Person> result = personService.getPeopleByName("martin");
+
+        result.forEach(System.out::println);
+    }
+
+    @Test
     void cascadeTest(){
         givenPeople();
 
@@ -48,10 +55,6 @@ class PersonServiceTest {
 
         personRepository.save(person);
         personRepository.findAll().forEach(System.out::println);
-
-//        personRepository.delete(person);
-//        personRepository.findAll().forEach(System.out::println);
-//        blockRepository.findAll().forEach(System.out::println);
 
         person.setBlock(null);
         personRepository.save(person);

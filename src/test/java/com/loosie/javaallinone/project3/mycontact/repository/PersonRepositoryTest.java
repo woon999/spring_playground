@@ -5,11 +5,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.InstanceOfAssertFactories.predicate;
 
 
 @SpringBootTest
@@ -52,5 +54,48 @@ class PersonRepositoryTest {
 
         System.out.println(map);
         System.out.println(map.get(person2));
+    }
+
+    @Test
+    void findByBloodType(){
+        givenPerson("martin", 12, "A");
+        givenPerson("david", 10, "B");
+        givenPerson("dennis", 8, "O");
+        givenPerson("sophia", 6, "AB");
+        givenPerson("benny", 16, "A");
+        givenPerson("john", 13, "A");
+
+
+        List<Person> result = personRepository.findByBloodType("A");
+
+        result.forEach(System.out::println);
+
+    }
+
+    @Test
+    void findByBirthdayBetween(){
+        givenPerson("martin", 12, "A",LocalDate.of(1991,9,10));
+        givenPerson("david", 10, "B",LocalDate.of(1992,11,20));
+        givenPerson("dennis", 8, "O",LocalDate.of(1993,5,12));
+        givenPerson("sophia", 6, "AB",LocalDate.of(1994,3,23));
+        givenPerson("benny", 16, "A",LocalDate.of(1995,2,5));
+
+        List<Person> result = personRepository.findByBirthdayBetween(
+                LocalDate.of(1991,9,10),LocalDate.of(1995,9,10));
+
+        result.forEach(System.out::println);
+
+    }
+
+    private void givenPerson(String name, int age, String bloodType){
+        givenPerson(name,age,bloodType,null);
+    }
+
+    private void givenPerson(String name, int age, String bloodType, LocalDate birthday){
+
+        Person person = new Person(name, age, bloodType);
+        person.setBirthday(birthday);
+        personRepository.save(person);
+
     }
 }
