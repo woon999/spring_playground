@@ -1,7 +1,6 @@
 package com.loosie.javaallinone.project3.mycontact.domain.dto;
 
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,15 +13,15 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 public class Birthday {
-    private int yearOfBirthday;
+    private Integer yearOfBirthday;
 
     @Min(1)
     @Max(12)
-    private int monthOfBirthday;
+    private Integer monthOfBirthday;
 
     @Min(1)
     @Max(31)
-    private int dayOfBirthday;
+    private Integer dayOfBirthday;
 
     public Birthday(LocalDate birthday){
         this.yearOfBirthday = birthday.getYear();
