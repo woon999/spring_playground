@@ -31,13 +31,15 @@ public class PersonService {
 
     @Transactional(readOnly = true)
     public Person getPerson(Long id){
-
         Person person = personRepository.findById(id).orElse(null);
-
 
         log.info("person : {}", person);
 
         return person;
+    }
 
+    @Transactional
+    public void put(Person person){
+        personRepository.save(person);
     }
 }
