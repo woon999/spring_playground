@@ -2,3 +2,7 @@
 GET http://localhost:8080/api/helloworld
 
 ###
+
+GET http://localhost:8080/api/person/1
+
+###
