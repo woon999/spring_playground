@@ -1,6 +1,7 @@
 package com.loosie.javaallinone.project3.mycontact.controller;
 
 
+import com.loosie.javaallinone.project3.mycontact.controller.dto.PersonDto;
 import com.loosie.javaallinone.project3.mycontact.domain.Person;
 import com.loosie.javaallinone.project3.mycontact.repository.PersonRepository;
 import com.loosie.javaallinone.project3.mycontact.service.PersonService;
@@ -32,6 +33,20 @@ public class PersonController {
         log.info("person -> {} " , personRepository.findAll());
     }
 
+    @PutMapping("/{id}")
+    public void modifyPerson(@PathVariable Long id,
+                             @RequestBody PersonDto personDto){
+        personService.modify(id,personDto);
+
+        log.info("person -> {} " , personRepository.findAll());
+    }
+
+    @PatchMapping("/{id}")
+    public void modifyPerson(@PathVariable Long id, String name){
+        personService.modify(id, name);
+
+        log.info("person -> {} " , personRepository.findAll());
+    }
 
 
 }

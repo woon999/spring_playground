@@ -1,8 +1,10 @@
 package com.loosie.javaallinone.project3.mycontact.domain;
 
 
+import com.loosie.javaallinone.project3.mycontact.controller.dto.PersonDto;
 import com.loosie.javaallinone.project3.mycontact.domain.dto.Birthday;
 import lombok.*;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -32,6 +34,8 @@ public class Person {
 
     private String hobby;
 
+    private String address;
+
     @NonNull
     @NotEmpty
     @Column(nullable =  false)
@@ -50,4 +54,31 @@ public class Person {
     @ToString.Exclude
     private Block block;
 
+    public void set(PersonDto personDto){
+        if(personDto.getAge()!=0){
+            this.setAge(personDto.getAge());
+        }
+
+        if (!StringUtils.isEmpty(personDto.getHobby())) {
+            this.setHobby(personDto.getHobby());
+        }
+
+        if (!StringUtils.isEmpty(personDto.getBloodType())) {
+            this.setBloodType(personDto.getBloodType());
+        }
+
+        if (!StringUtils.isEmpty(personDto.getAddress())) {
+            this.setAddress(personDto.getAddress());
+        }
+
+        if (!StringUtils.isEmpty(personDto.getJob())) {
+            this.setJob(personDto.getJob());
+        }
+
+        if (!StringUtils.isEmpty(personDto.getPhoneNumber())) {
+            this.setPhoneNumber(personDto.getPhoneNumber());
+        }
+
+
+    }
 }
