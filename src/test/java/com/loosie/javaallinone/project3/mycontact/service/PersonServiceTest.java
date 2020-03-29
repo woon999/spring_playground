@@ -4,7 +4,7 @@ import com.loosie.javaallinone.project3.mycontact.controller.dto.PersonDto;
 import com.loosie.javaallinone.project3.mycontact.domain.Person;
 import com.loosie.javaallinone.project3.mycontact.domain.dto.Birthday;
 import com.loosie.javaallinone.project3.mycontact.exception.PersonNotFoundException;
-import com.loosie.javaallinone.project3.mycontact.exception.RenameNotPermittedException;
+import com.loosie.javaallinone.project3.mycontact.exception.RenameIsNotPermittedException;
 import com.loosie.javaallinone.project3.mycontact.repository.PersonRepository;
 import org.assertj.core.util.Lists;
 import org.junit.jupiter.api.Test;
@@ -84,7 +84,7 @@ class PersonServiceTest {
         when(personRepository.findById(1L))
                 .thenReturn(Optional.of(new Person("tony")));
 
-        assertThrows(RenameNotPermittedException.class, ()-> personService.modify(1L,mockPersonDto()));
+        assertThrows(RenameIsNotPermittedException.class, ()-> personService.modify(1L,mockPersonDto()));
     }
 
     @Test
