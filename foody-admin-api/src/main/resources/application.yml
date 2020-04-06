@@ -1,22 +1,13 @@
 spring:
-  datasource:
-    url: jdbc:h2:~/data/foody
-  jpa:
-    hibernate:
-      ddl-auto: update
+    datasource:
+      url: jdbc:h2:~/data/foody
+    jpa:
+      hibernate:
+        ddl-auto: update
 
 ---
 
-spring:
-  profiles: test
-  datasource:
-    url: jdbc:h2:mem:test
-
----
-
-spring:
-  profiles: mysql
-  datasource:
-    url: jdbc:mysql://${MYSQL_HOST}:3306/${MYSQL_DATABASE}
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+      spring:
+        profiles: test
+        datasource:
+          url: jdbc:h2:mem:test
