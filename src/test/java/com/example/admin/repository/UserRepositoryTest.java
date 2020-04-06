@@ -2,8 +2,10 @@ package com.example.admin.repository;
 
 import com.example.admin.AdminApplicationTests;
 import com.example.admin.model.entity.User;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -53,8 +55,26 @@ public class UserRepositoryTest extends AdminApplicationTests {
 
     }
 
+    @Test
+    @Transactional //db롤백
     public void delete() {
+        Optional<User> user = userRepository.findById(3L);
 
+        Assertions.assertTrue(user.isPresent());
+
+        user.ifPresent(selectUser ->{
+            userRepository.delete(selectUser);
+        });
+
+        Optional<User> deleteUser = userRepository.findById(3L);
+
+        if(deleteUser.isPresent()){
+            System.out.println("데이터 존재 : " + deleteUser.get());
+        }else{
+            System.out.println("데이터 삭제 데이터 없음");
+        }
+
+        Assertions.assertFalse(deleteUser.isPresent());
     }
 
 }
