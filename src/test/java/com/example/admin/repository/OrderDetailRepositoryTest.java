@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 class OrderDetailRepositoryTest extends AdminApplicationTests {
 
@@ -21,9 +20,9 @@ class OrderDetailRepositoryTest extends AdminApplicationTests {
 
         orderDetail.setOrderAt(LocalDateTime.now());
 
-        orderDetail.setUserId(1L);
+//        orderDetail.setUser(1L);
 
-        orderDetail.setItemId(1L);
+//        orderDetail.setItemId(1L);
 
         OrderDetail newOrderDetail = orderDetailRepository.save(orderDetail);
         Assertions.assertNotNull(newOrderDetail);
