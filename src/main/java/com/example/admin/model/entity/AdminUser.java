@@ -4,30 +4,40 @@ package com.example.admin.model.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
-import javax.persistence.*;
-import java.math.BigDecimal;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Data
 @Entity
-//@ToString(exclude = {"user","item"}) //user,item와 orderdetail 상호참조 ->overflow
-public class OrderDetail {
+public class AdminUser {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String account;
+
+    private String password;
+
     private String status;
 
-    private LocalDateTime arrivalDate;
+    private String role;
 
-    private Integer quantity;
+    private LocalDateTime lastLoginAt;
 
-    private BigDecimal totalPrice;
+    private LocalDateTime passwordUpdatedAt;
+
+    private int loginFailCount;
+
+    private LocalDateTime registeredAt;
+
+    private LocalDateTime unregisteredAt;
 
     private LocalDateTime createdAt;
 
@@ -36,5 +46,5 @@ public class OrderDetail {
     private LocalDateTime updatedAt;
 
     private String updatedBy;
-}
 
+}
