@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@ToString(exclude = {"orderGroup"})
 //@ToString(exclude = {"user","item"}) //user,item와 orderdetail 상호참조 ->overflow
 public class OrderDetail {
 
@@ -39,6 +40,8 @@ public class OrderDetail {
 
     private Long itemId;
 
-    private Long orderGroupId;
+    // OrderDetail N : 1 OrderGroup
+    @ManyToOne
+    private OrderGroup orderGroup;
 }
 
