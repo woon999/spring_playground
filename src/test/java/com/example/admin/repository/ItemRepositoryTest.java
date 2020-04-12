@@ -15,7 +15,7 @@ class ItemRepositoryTest extends AdminApplicationTests {
     private ItemRepository itemRepository;
 
     @Test
-    public void creat(){
+    public void create(){
 
         Item item = new Item();
         item.setStatus("UNREGISTERED");
@@ -27,7 +27,7 @@ class ItemRepositoryTest extends AdminApplicationTests {
         item.setRegisteredAt(LocalDateTime.now());
         item.setCreatedAt(LocalDateTime.now());
         item.setCreatedBy("Partner01");
-        item.setPartnerId(1L);
+//        item.setPartnerId(1L);
 
         Item newItem = itemRepository.save(item);
         Assertions.assertNotNull(newItem);
