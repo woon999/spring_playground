@@ -14,7 +14,7 @@ public class PostController {
     // json, xml, multipart-form / text-plain
 
     @PostMapping(value = "/postMethod")
-    public SearchParam postMethod(@RequestBody SearchParam searchParam){
+    public SearchParam postMethod(@RequestBody SearchParam searchParam) {
 
         return searchParam;
     }
