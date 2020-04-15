@@ -46,16 +46,37 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
     @Override
     public Header<UserApiResponse> read(Long id) {
 
-     return userRepository.findById(id)
-             .map(user -> response(user))
-             .orElseGet(
-                     () -> Header.ERROR("데이터 없음")
-             );
+        return userRepository.findById(id)
+                .map(user -> response(user))
+                .orElseGet(
+                        () -> Header.ERROR("데이터 없음")
+                );
     }
 
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
-        return null;
+        // 1. data
+        UserApiRequest userApiRequest = request.getData();
+
+        // 2. id -> user 데이터를 찾고
+        Optional<User> optional = userRepository.findById(userApiRequest.getId());
+
+        return optional.map(user -> {
+            // 3. data -> update
+            // id
+            user.setAccount(userApiRequest.getAccount())
+                    .setPassword(userApiRequest.getPassword())
+                    .setStatus(userApiRequest.getStatus())
+                    .setPhoneNumber(userApiRequest.getPhoneNumber())
+                    .setEmail(userApiRequest.getEmail())
+                    .setRegisteredAt(userApiRequest.getRegisteredAt())
+                    .setUnregisteredAt(userApiRequest.getUnregisteredAt());
+            return user;
+
+        })
+                .map(user -> userRepository.save(user)) // update -> newUser
+                .map(updateUser -> response(updateUser)) // userApiResponse
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -63,7 +84,7 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
         return null;
     }
 
-    private Header<UserApiResponse> response(User user){
+    private Header<UserApiResponse> response(User user) {
         //user -> userApiResponse
         UserApiResponse userApiResponse = UserApiResponse.builder()
                 .id(user.getId())
