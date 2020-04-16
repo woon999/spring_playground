@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemApiResponse> {
@@ -45,12 +46,35 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
 
     @Override
     public Header<ItemApiResponse> read(Long id) {
-        return null;
+        return itemRepository.findById(id)
+                .map(user -> response(user))
+                .orElseGet(
+                        () -> Header.ERROR("데이터 없음")
+                );
     }
 
     @Override
     public Header<ItemApiResponse> update(Header<ItemApiRequest> request) {
-        return null;
+
+        ItemApiRequest body = request.getData();
+
+        return itemRepository.findById(body.getId())
+                .map(entityItem -> {
+                    entityItem
+                            .setStatus(body.getStatus())
+                            .setName(body.getName())
+                            .setTitle(body.getTitle())
+                            .setContent(body.getContent())
+                            .setPrice(body.getPrice())
+                            .setBrandName(body.getBrandName())
+                            .setRegisteredAt(body.getRegisteredAt())
+                            .setUnregisteredAt(body.getUnregisteredAt());
+
+                    return entityItem;
+                })
+                .map(newEntityItem -> itemRepository.save(newEntityItem))
+                .map(item -> response(item))
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -58,7 +82,7 @@ public class ItemApiLogicService implements CrudInterface<ItemApiRequest, ItemAp
         return null;
     }
 
-    private Header<ItemApiResponse> response(Item item){
+    private Header<ItemApiResponse> response(Item item) {
         ItemApiResponse bdoy = ItemApiResponse.builder()
                 .id(item.getId())
                 .status(item.getStatus())

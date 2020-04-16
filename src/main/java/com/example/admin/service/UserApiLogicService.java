@@ -22,14 +22,14 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
 
-        UserApiRequest userApiRequest = request.getData();
+        UserApiRequest body = request.getData();
 
         User user = User.builder()
-                .account(userApiRequest.getAccount())
-                .password(userApiRequest.getPassword())
+                .account(body.getAccount())
+                .password(body.getPassword())
                 .status("REGISTERED")
-                .phoneNumber(userApiRequest.getPhoneNumber())
-                .email(userApiRequest.getEmail())
+                .phoneNumber(body.getPhoneNumber())
+                .email(body.getEmail())
                 .registeredAt(LocalDateTime.now())
                 .build();
 
@@ -52,21 +52,21 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
     @Override
     public Header<UserApiResponse> update(Header<UserApiRequest> request) {
         // 1. data
-        UserApiRequest userApiRequest = request.getData();
+        UserApiRequest body = request.getData();
 
         // 2. id -> user 데이터를 찾고
-        Optional<User> optional = userRepository.findById(userApiRequest.getId());
+        Optional<User> optional = userRepository.findById(body.getId());
 
         return optional.map(user -> {
             // 3. data -> update
             // id
-            user.setAccount(userApiRequest.getAccount())
-                    .setPassword(userApiRequest.getPassword())
-                    .setStatus(userApiRequest.getStatus())
-                    .setPhoneNumber(userApiRequest.getPhoneNumber())
-                    .setEmail(userApiRequest.getEmail())
-                    .setRegisteredAt(userApiRequest.getRegisteredAt())
-                    .setUnregisteredAt(userApiRequest.getUnregisteredAt());
+            user.setAccount(body.getAccount())
+                    .setPassword(body.getPassword())
+                    .setStatus(body.getStatus())
+                    .setPhoneNumber(body.getPhoneNumber())
+                    .setEmail(body.getEmail())
+                    .setRegisteredAt(body.getRegisteredAt())
+                    .setUnregisteredAt(body.getUnregisteredAt());
             return user;
 
         })
