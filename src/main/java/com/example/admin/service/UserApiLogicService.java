@@ -19,10 +19,6 @@ public class UserApiLogicService implements CrudInterface<UserApiRequest, UserAp
     @Autowired
     private UserRepository userRepository;
 
-    // 1. request data
-    // 2. user 생성
-    // 3. 생성된 데이터 -> UserApiResponse return
-
     @Override
     public Header<UserApiResponse> create(Header<UserApiRequest> request) {
 
