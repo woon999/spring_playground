@@ -44,7 +44,9 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
 
     @Override
     public Header<OrderGroupApiResponse> read(Long id) {
-        return null;
+        return orderGroupRepository.findById(id)
+                .map(this::response)
+                .orElseGet(() -> Header.ERROR("데이터 없음"));
     }
 
     @Override
@@ -63,7 +65,7 @@ public class OrderGroupApiLogicService implements CrudInterface<OrderGroupApiReq
                 .id(orderGroup.getId())
                 .status(orderGroup.getStatus())
                 .orderType(orderGroup.getOrderType())
-                .reveAddress(orderGroup.getRevAddress())
+                .revAddress(orderGroup.getRevAddress())
                 .revName(orderGroup.getRevName())
                 .paymentType(orderGroup.getPaymentType())
                 .totalPrice(orderGroup.getTotalPrice())

@@ -21,7 +21,7 @@ public class OrderGroupApiResponse {
 
     private String orderType;
 
-    private String reveAddress;
+    private String revAddress;
 
     private String revName;
 
