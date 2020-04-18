@@ -1,6 +1,7 @@
 package com.example.admin.repository;
 
 import com.example.admin.AdminApplicationTests;
+import com.example.admin.model.entity.Category;
 import com.example.admin.model.entity.Partner;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -38,7 +39,7 @@ class PartnerRepositoryTest extends AdminApplicationTests {
         partner.setRegisteredAt(registeredAt);
         partner.setCreatedAt(createdAt);
         partner.setCreatedBy(createdBy);
-//        partner.setCategoryId(categoryId);
+//        partner.setCategory(categoryId);
 
         Partner newPartner = partnerRepository.save(partner);
         Assertions.assertNotNull(newPartner);
