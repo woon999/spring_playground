@@ -5,30 +5,38 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class OrderDetailApiRequest {
+public class PartnerApiRequest {
 
     private Long id;
 
+    private String name;
+
     private String status;
 
-    private LocalDateTime arrivalDate;
+    private String address;
 
-    private BigDecimal totalPrice;
+    private String callCenter;
 
-    private Integer quantity;
+    private String partnerNumber;
+
+    private String businessNumber;
+
+    private String ceoName;
+
+    private LocalDateTime registeredAt;
+
+    private LocalDateTime unregisteredAt;
 
     private LocalDateTime createdAt;
 
     private String createdBy;
 
-    private Long itemId;
+    private Long categoryId;
 
-    private Long orderGroupId;
 }
