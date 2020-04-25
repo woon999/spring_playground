@@ -1,6 +1,7 @@
 package com.example.admin.model.entity;
 
 
+import com.example.admin.model.enumclass.OrderType;
 import lombok.*;
 import lombok.experimental.Accessors;
 import org.springframework.data.annotation.CreatedBy;
@@ -30,7 +31,8 @@ public class OrderGroup {
 
     private String status;
 
-    private String orderType; // 일괄 / 개별
+    @Enumerated(EnumType.STRING)
+    private OrderType orderType; // 일괄 / 개별
 
     private String revAddress;
 
