@@ -5,12 +5,14 @@ import com.example.admin.model.enumclass.UserStatus;
 import com.example.admin.model.network.Header;
 import com.example.admin.model.network.request.UserApiRequest;
 import com.example.admin.model.network.response.UserApiResponse;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Service
+@Primary
 public class UserApiLogicService extends BaseService<UserApiRequest, UserApiResponse,User> {
 
 
