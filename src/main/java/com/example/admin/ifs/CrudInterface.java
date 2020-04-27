@@ -1,8 +1,6 @@
 package com.example.admin.ifs;
 
 import com.example.admin.model.network.Header;
-import com.example.admin.model.network.request.UserApiRequest;
-import com.example.admin.model.network.response.UserApiResponse;
 
 public interface CrudInterface<Req, Res> {
 
