@@ -30,8 +30,6 @@ public class PartnerApiLogicService extends BaseService<PartnerApiRequest, Partn
                 .businessNumber(body.getBusinessNumber())
                 .ceoName(body.getCeoName())
                 .registeredAt(body.getRegisteredAt())
-                .createdAt(body.getCreatedAt())
-                .createdBy(body.getCreatedBy())
                 .category(categoryRepository.getOne(body.getCategoryId()))
                 .build();
 
@@ -62,8 +60,6 @@ public class PartnerApiLogicService extends BaseService<PartnerApiRequest, Partn
                             .setBusinessNumber(body.getBusinessNumber())
                             .setCeoName(body.getCeoName())
                             .setRegisteredAt(body.getRegisteredAt())
-                            .setCreatedAt(body.getCreatedAt())
-                            .setCreatedBy(body.getCreatedBy())
                             .setCategory(categoryRepository.getOne(body.getCategoryId()));
                     return partner;
                 })
@@ -96,8 +92,6 @@ public class PartnerApiLogicService extends BaseService<PartnerApiRequest, Partn
                 .ceoName(partner.getCeoName())
                 .registeredAt(partner.getRegisteredAt())
                 .unregisteredAt(partner.getUnregisteredAt())
-                .createdAt(partner.getCreatedAt())
-                .createdBy(partner.getCreatedBy())
                 .categoryId(partner.getCategory().getId())
                 .build();
 

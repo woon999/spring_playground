@@ -33,10 +33,6 @@ public class PartnerApiRequest {
 
     private LocalDateTime unregisteredAt;
 
-    private LocalDateTime createdAt;
-
-    private String createdBy;
-
     private Long categoryId;
 
 }
