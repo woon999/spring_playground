@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -37,4 +38,6 @@ public class OrderGroupApiResponse {
     private  LocalDateTime arrivalDate;
 
     private Long userId;
+
+    private List<ItemApiResponse> itemApiResponseList;
 }
