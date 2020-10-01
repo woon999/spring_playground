@@ -9,7 +9,7 @@ public class HelloController {
 
     @GetMapping("hello")
     public String hello(Model model){
-        model.addAttribute("data", "jongwon!!");
+        model.addAttribute("data", "jongwon");
         return "hello";
     }
 
