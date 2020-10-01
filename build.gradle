@@ -1,0 +1,40 @@
+plugins {
+	id 'org.springframework.boot' version '2.1.16.RELEASE'
+	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+	id 'java'
+}
+
+group = 'jpabook'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+//	compile group: 'org.springframework.data', name: 'spring-data-jpa', version: '2.3.0.RELEASE'
+
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	// devtools ; 개발할 때 유용한 기능 많음  캐시도 없애서 리로딩같은 것을 다 되게 만들어줌
+	implementation 'org.springframework.boot:spring-boot-devtools'
+
+//	이런 라이브러리들은 개발단계에서는 편한데 운영배포 단계에서는 고민해봐야 됨 (성능 저하의 원인이 될 수도 있음)
+//	성능 테스트를 해보고 ㄱㅊ으면 써라. 웬만하면 개발단계에서만 쓰는게 조음
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.6'
+
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+
+}
