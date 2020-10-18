@@ -1,5 +1,6 @@
 package jpabook.jpashop.controller;
 
+import io.swagger.annotations.ApiOperation;
 import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Member;
 import jpabook.jpashop.service.MemberService;
@@ -28,6 +29,7 @@ public class MemberController {
     }
 
     // BindingResult : 코드로 안넘어가고 팅겨버리는 오류를 그대로 담겨서 실행하게 해줌
+    @ApiOperation(value = "NEW Member", notes = "사용자 생성")
     @PostMapping("/members/new")
     public String create(@Valid MemberForm form, BindingResult result){
 
