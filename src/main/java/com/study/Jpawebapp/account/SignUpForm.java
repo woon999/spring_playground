@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 회원가입할 때 받아올 데이
+ * 회원가입할 때 받아올 데이터
  */
 @Data
 public class SignUpForm {
