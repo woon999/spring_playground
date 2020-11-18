@@ -10,6 +10,7 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 
 @Slf4j
 @Controller
@@ -18,6 +19,7 @@ public class AccountController {
 
     private final SignUpFormValidator signUpFormValidator;
     private final AccountService accountService;
+    private final AccountRepository accountRepository;
 
     /**
      * SignUpForm데이터를 받을때 바인더를 설정
@@ -50,6 +52,7 @@ public class AccountController {
         return "redirect:/";
 
     }
+
 
 
 
