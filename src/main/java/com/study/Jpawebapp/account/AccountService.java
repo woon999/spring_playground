@@ -4,11 +4,17 @@ import com.study.Jpawebapp.domain.Account;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -19,12 +25,13 @@ public class AccountService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public void processNewAccount(SignUpForm signUpForm) {
+    public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         //이메일 인증 토큰 생성
         newAccount.generateEmailCheckToken();
 
         sendSignUpConfirmEmail(newAccount);
+        return newAccount;
     }
 
 
@@ -51,4 +58,25 @@ public class AccountService {
         javaMailSender.send(mailMessage);
     }
 
+    public void login(Account account) {
+        // 원래 AuthenticationManager내부에서 사용하는 생성자
+        // 정석정인 방법이 아닌 아래와 같이 코딩한 이유는 현재 인코딩한 패스워드밖에 접근하지 못하기 때문
+        // 정석적인 방법인 플레인 텍스트로 받은 pw를 써야하는데 현재 db에 저장도 안하고 쓸 일도 없기 때문
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                account.getNickname(),
+                account.getPassword(),
+                List.of(new SimpleGrantedAuthority("ROLE_USER")));
+
+        SecurityContextHolder.getContext().setAuthentication(token);
+
+        /**
+         * 원래 정석적인 방법
+        UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
+                username, passsword);
+        Authentication authentication = authenticationManager.authenticate(token);
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(authentication);
+         */
+
+    }
 }
