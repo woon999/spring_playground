@@ -2,12 +2,11 @@ package com.study.Jpawebapp.account;
 
 import com.study.Jpawebapp.domain.Account;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.validation.Valid;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AccountService {
@@ -62,8 +62,9 @@ public class AccountService {
         // 원래 AuthenticationManager내부에서 사용하는 생성자
         // 정석정인 방법이 아닌 아래와 같이 코딩한 이유는 현재 인코딩한 패스워드밖에 접근하지 못하기 때문
         // 정석적인 방법인 플레인 텍스트로 받은 pw를 써야하는데 현재 db에 저장도 안하고 쓸 일도 없기 때문
+        log.info("principal : "+  new UserAccount(account));
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
-                account.getNickname(),
+                new UserAccount(account),
                 account.getPassword(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER")));
 
