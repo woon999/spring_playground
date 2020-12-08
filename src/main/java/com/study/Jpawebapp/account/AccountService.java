@@ -48,7 +48,8 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    private void sendSignUpConfirmEmail(Account newAccount) {
+//    @Transactional
+    public void sendSignUpConfirmEmail(Account newAccount) {
         //이메일 전송
         SimpleMailMessage mailMessage = new SimpleMailMessage();
         mailMessage.setTo(newAccount.getEmail());
@@ -56,6 +57,9 @@ public class AccountService {
         mailMessage.setText("/check-email-token?token="+ newAccount.getEmailCheckToken() +
                 "&email=" + newAccount.getEmail());
         javaMailSender.send(mailMessage);
+
+        //이메일 토큰 내용과 시간 재설정
+        newAccount.generateEmailCheckToken();
     }
 
     public void login(Account account) {

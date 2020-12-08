@@ -1,11 +1,13 @@
 package com.study.Jpawebapp.domain;
 
 import lombok.*;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+@Slf4j
 @Entity
 @Getter @Setter
 @EqualsAndHashCode(of ="id")
@@ -28,6 +30,8 @@ public class Account {
     private boolean emailVerified;
 
     private String emailCheckToken;
+
+    private LocalDateTime emailCheckTokenGenerateAt;
 
     private LocalDateTime joinedAt;
 
@@ -56,6 +60,7 @@ public class Account {
 
     public void generateEmailCheckToken() {
         this.emailCheckToken = UUID.randomUUID().toString();
+        this.emailCheckTokenGenerateAt = LocalDateTime.now();
     }
 
     public void completeSignUp() {
@@ -66,5 +71,10 @@ public class Account {
 
     public boolean isValidToken(String token) {
         return this.emailCheckToken.equals(token);
+    }
+
+    public boolean canSendConfirmEmail() {
+        return this.emailCheckTokenGenerateAt.isBefore(LocalDateTime.now().minusSeconds(10));
+
     }
 }

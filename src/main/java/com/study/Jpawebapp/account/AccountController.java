@@ -4,6 +4,7 @@ import com.study.Jpawebapp.domain.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
@@ -54,6 +55,34 @@ public class AccountController {
 
     }
 
+    /**
+     * 이메일 인증되었는지 확인
+     */
+    @GetMapping("/check-email")
+    public String checkEmail(@CurrentUser Account account, Model model){
+        model.addAttribute("email", account.getEmail());
+        return "account/check-email";
+    }
+
+    /**
+     * 인증 이메일 다시 보내기
+     * 10분에 1번만 재전송 가능
+     */
+    @GetMapping("/resend-confirm-email")
+    public String resendConfirmEmail(@CurrentUser Account account, Model model){
+        if(!account.canSendConfirmEmail()){
+            model.addAttribute("error", "인증 이메일은 1시간에 한번만 전송할 수 있습니다.");
+            model.addAttribute("email", account.getEmail());
+            return "account/check-email";
+        }
+
+        accountService.sendSignUpConfirmEmail(account);
+        return "redirect:/";
+    }
+
+    /**
+     * 이메일 인증하기 (token, email정보 올바르게 입력)
+     */
     @GetMapping("/check-email-token")
     public String checkEmailToken(String token, String email, Model model){
         Account account = accountRepository.findByEmail(email);
