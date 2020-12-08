@@ -11,14 +11,23 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class MainController {
 
+
+    /**
+     * 인증된 사용자 정보 참조
+     */
     @GetMapping("/")
     public String home(@CurrentUser Account account, Model model){
         if (account != null){
-            log.info("controller :" + account);
+            // account != null && !account.emailVerified -> 이메일 인증 메시지 노출
             model.addAttribute(account);
         }
 
         return "index";
+    }
+
+    @GetMapping("/login")
+    public String login(){
+        return "login";
     }
 
 }
