@@ -69,6 +69,8 @@
                     <a class="dropdown-item" >스터디</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#" th:href="@{'/settings/profile'}">설정</a>
+
+                    <!--spring security logout 핸들러가 처리-->
                     <form class="form-inline my-2 my-lg-0" action="#" th:action="@{/logout}" method="post">
                         <button class="dropdown-item" type="submit">로그아웃</button>
                     </form>
