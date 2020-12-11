@@ -10,6 +10,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
@@ -99,13 +100,35 @@ public class AccountController {
 
         account.completeSignUp();
         accountService.login(account);
-//        account.setEmailVerified(true);
-//        account.setJoinedAt(LocalDateTime.now());
         model.addAttribute("numberOfUser", accountRepository.count());
         model.addAttribute("nickname", account.getNickname());
         return view;
 
     }
+
+
+    /**
+     * 프로필 정보 보여주기
+     */
+    @GetMapping("/profile/{nickname}")
+    public String viewProfile(@PathVariable String nickname, Model model, @CurrentUser Account account){
+
+        //nickname을 가진 유저가 있는지 확인
+        Account byNickname = accountRepository.findByNickname(nickname);
+        if(nickname == null){
+            throw new IllegalArgumentException(nickname + "에 해당하는 사용자가 없습니다.");
+        }
+
+        /**
+         *  model.addAttribute(byNickname); == model.addAttribute("account", byNickname);
+         *  "" 선언 안해주면 byNickname객체 이름이 camelcase로 자동으로 삽입됨 -> signUpForm메소드에서 말한 것과 동일한 내용
+         */
+        model.addAttribute(byNickname);
+        model.addAttribute("isOwner", byNickname.equals(account)); // 정보가 일치하면 프로필 주인임을 알 수 있음
+
+        return "account/profile";
+    }
+
 
 
 }
