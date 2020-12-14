@@ -2,6 +2,7 @@ package com.study.Jpawebapp.domain;
 
 import lombok.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
