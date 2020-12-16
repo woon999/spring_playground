@@ -9,7 +9,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Pattern;
 
 /**
- * 회원가입할 때 받아올 데이터
+ * 회원가입할 때 받아올 Data (DTO)
  */
 @Data
 public class SignUpForm {
