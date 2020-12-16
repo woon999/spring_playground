@@ -20,6 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AccountService implements UserDetailsService {
 
@@ -27,7 +28,7 @@ public class AccountService implements UserDetailsService {
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
 
-    @Transactional
+
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
         //이메일 인증 토큰 생성
@@ -60,8 +61,6 @@ public class AccountService implements UserDetailsService {
                 "&email=" + newAccount.getEmail());
         javaMailSender.send(mailMessage);
 
-        //이메일 토큰 내용과 시간 재설정
-        newAccount.generateEmailCheckToken();
     }
 
     public void login(Account account) {
@@ -89,7 +88,9 @@ public class AccountService implements UserDetailsService {
 
     /**
      * DB에 있는 user정보 조회
+     * read only -> 조회 용도이기 때문에 (성능에 유리)
      */
+    @Transactional(readOnly = true)
     @Override
     public UserDetails loadUserByUsername(String emailOrNickname) throws UsernameNotFoundException {
         Account account = accountRepository.findByEmail(emailOrNickname);
@@ -103,5 +104,10 @@ public class AccountService implements UserDetailsService {
 
         //User Principal 반환
         return new UserAccount(account);
+    }
+
+    public void completeSignUp(Account account) {
+        account.completeSignUp();
+        login(account);
     }
 }
