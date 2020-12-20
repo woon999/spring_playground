@@ -13,6 +13,15 @@
         </div>
 
         <div class="col-8">
+
+<!--            프로필 수정완료 메세지-->
+            <div th:if="${message}" class="alert alert-info alert-dismissible fade show mt-3" role="alert">
+                <span th:text="${message}">완료</span>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
             <div class="row">
                 <h2 class="col-sm-12" th:text="${account.nickname}">loosie</h2>
             </div>
