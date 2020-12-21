@@ -44,6 +44,10 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 
 
+	// test lombok
+	testCompile('org.projectlombok:lombok')
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
 
 }
 
