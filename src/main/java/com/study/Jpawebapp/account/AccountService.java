@@ -118,7 +118,7 @@ public class AccountService implements UserDetailsService {
         account.setLocation(profile.getLocation());
         account.setBio(profile.getBio());
 
-        // TODO: 프로필 이미지
+        account.setProfileImage(profile.getProfileImage());
         accountRepository.save(account); // save : 기존 데이터에 merge를 시킴 -> update발생
 
         // TODO : 문제가 하나 더 남음 (프로필 이미지 변경할 때 발견)
