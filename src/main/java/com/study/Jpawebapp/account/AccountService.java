@@ -123,4 +123,9 @@ public class AccountService implements UserDetailsService {
 
         // TODO : 문제가 하나 더 남음 (프로필 이미지 변경할 때 발견)
     }
+
+    public void updatePassword(Account account, String newPassword) {
+        account.setPassword(passwordEncoder.encode(newPassword));
+        accountRepository.save(account); // detached인 상태인 객체(Account)를 명시적으로 merge
+    }
 }
