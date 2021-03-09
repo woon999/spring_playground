@@ -48,6 +48,9 @@ dependencies {
 	testCompile('org.projectlombok:lombok')
 	testAnnotationProcessor 'org.projectlombok:lombok'
 
+	// model mapper
+	implementation group: 'org.modelmapper', name: 'modelmapper', version: '2.3.6'
+
 
 }
 

@@ -1,6 +1,7 @@
 package com.study.Jpawebapp.account;
 
 import com.study.Jpawebapp.domain.Account;
+import com.study.Jpawebapp.settings.Notifications;
 import com.study.Jpawebapp.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -127,5 +128,16 @@ public class AccountService implements UserDetailsService {
     public void updatePassword(Account account, String newPassword) {
         account.setPassword(passwordEncoder.encode(newPassword));
         accountRepository.save(account); // detached인 상태인 객체(Account)를 명시적으로 merge
+    }
+
+    public void updateNotifications(Account account, Notifications notifications) {
+        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
+        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
+        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
+        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
+        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
+        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
+
+        accountRepository.save(account);
     }
 }
