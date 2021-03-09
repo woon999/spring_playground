@@ -5,6 +5,7 @@ import com.study.Jpawebapp.settings.Notifications;
 import com.study.Jpawebapp.settings.Profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -29,6 +30,7 @@ public class AccountService implements UserDetailsService {
     private final AccountRepository accountRepository;
     private final JavaMailSender javaMailSender;
     private final PasswordEncoder passwordEncoder;
+    private final ModelMapper modelMapper;
 
 
     public Account processNewAccount(SignUpForm signUpForm) {
@@ -114,12 +116,17 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateProfile(Account account, Profile profile) {
-        account.setUrl(profile.getUrl());
-        account.setOccupation(profile.getOccupation());
-        account.setLocation(profile.getLocation());
-        account.setBio(profile.getBio());
 
-        account.setProfileImage(profile.getProfileImage());
+        // source : profile -> destination : account
+        // account정보 변경, profile과 account의 변수가 매핑(이름 일치)이 되는 것만 적용됨
+        modelMapper.map(profile, account);
+
+//        account.setUrl(profile.getUrl());
+//        account.setOccupation(profile.getOccupation());
+//        account.setLocation(profile.getLocation());
+//        account.setBio(profile.getBio());
+//        account.setProfileImage(profile.getProfileImage());
+
         accountRepository.save(account); // save : 기존 데이터에 merge를 시킴 -> update발생
 
         // TODO : 문제가 하나 더 남음 (프로필 이미지 변경할 때 발견)
@@ -131,12 +138,17 @@ public class AccountService implements UserDetailsService {
     }
 
     public void updateNotifications(Account account, Notifications notifications) {
-        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
-        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
-        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
-        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
-        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
-        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
+
+        // StudyCreatedByWeb -> modelMapper입장에서는 Nested객체와 혼동함
+
+        modelMapper.map(notifications, account);
+
+//        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
+//        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
+//        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
+//        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
+//        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
+//        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
 
         accountRepository.save(account);
     }
