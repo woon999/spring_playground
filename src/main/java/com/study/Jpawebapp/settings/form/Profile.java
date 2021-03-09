@@ -1,4 +1,4 @@
-package com.study.Jpawebapp.settings;
+package com.study.Jpawebapp.settings.form;
 
 import com.study.Jpawebapp.domain.Account;
 import lombok.Data;

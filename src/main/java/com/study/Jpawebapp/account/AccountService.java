@@ -1,8 +1,8 @@
 package com.study.Jpawebapp.account;
 
 import com.study.Jpawebapp.domain.Account;
-import com.study.Jpawebapp.settings.Notifications;
-import com.study.Jpawebapp.settings.Profile;
+import com.study.Jpawebapp.settings.form.Notifications;
+import com.study.Jpawebapp.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -120,13 +120,6 @@ public class AccountService implements UserDetailsService {
         // source : profile -> destination : account
         // account정보 변경, profile과 account의 변수가 매핑(이름 일치)이 되는 것만 적용됨
         modelMapper.map(profile, account);
-
-//        account.setUrl(profile.getUrl());
-//        account.setOccupation(profile.getOccupation());
-//        account.setLocation(profile.getLocation());
-//        account.setBio(profile.getBio());
-//        account.setProfileImage(profile.getProfileImage());
-
         accountRepository.save(account); // save : 기존 데이터에 merge를 시킴 -> update발생
 
         // TODO : 문제가 하나 더 남음 (프로필 이미지 변경할 때 발견)
@@ -139,17 +132,15 @@ public class AccountService implements UserDetailsService {
 
     public void updateNotifications(Account account, Notifications notifications) {
 
-        // StudyCreatedByWeb -> modelMapper입장에서는 Nested객체와 혼동함
-
+        // StudyCreatedByWeb -> modelMapper입장에서는 Nested객체와 혼동함 (nameTokenizer설정)
         modelMapper.map(notifications, account);
-
-//        account.setStudyCreatedByWeb(notifications.isStudyCreatedByWeb());
-//        account.setStudyCreatedByEmail(notifications.isStudyCreatedByEmail());
-//        account.setStudyEnrollmentResultByWeb(notifications.isStudyEnrollmentResultByWeb());
-//        account.setStudyEnrollmentResultByEmail(notifications.isStudyEnrollmentResultByEmail());
-//        account.setStudyUpdatedByWeb(notifications.isStudyUpdatedByWeb());
-//        account.setStudyUpdatedByEmail(notifications.isStudyUpdatedByEmail());
-
         accountRepository.save(account);
+    }
+
+
+    public void updateNickname(Account account, String nickname) {
+        account.setNickname(nickname);
+        accountRepository.save(account);
+        login(account);
     }
 }

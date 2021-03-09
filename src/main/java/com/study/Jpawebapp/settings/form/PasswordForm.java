@@ -1,4 +1,4 @@
-package com.study.Jpawebapp.settings;
+package com.study.Jpawebapp.settings.form;
 
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
