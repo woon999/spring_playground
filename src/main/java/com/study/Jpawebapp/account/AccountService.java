@@ -1,6 +1,7 @@
 package com.study.Jpawebapp.account;
 
 import com.study.Jpawebapp.domain.Account;
+import com.study.Jpawebapp.domain.Tag;
 import com.study.Jpawebapp.settings.form.Notifications;
 import com.study.Jpawebapp.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -153,5 +155,12 @@ public class AccountService implements UserDetailsService {
         mailMessage.setText("/login-by-email?token=" + account.getEmailCheckToken() +
                 "&email=" + account.getEmail());
         javaMailSender.send(mailMessage);
+    }
+
+    // 관심 주제 태그 추가
+    public void addTag(Account account, Tag tag) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getTags().add(tag));
+
     }
 }

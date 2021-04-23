@@ -3,24 +3,25 @@ package com.study.Jpawebapp.settings;
 import com.study.Jpawebapp.account.AccountService;
 import com.study.Jpawebapp.account.CurrentUser;
 import com.study.Jpawebapp.domain.Account;
-import com.study.Jpawebapp.settings.form.NicknameForm;
-import com.study.Jpawebapp.settings.form.Notifications;
-import com.study.Jpawebapp.settings.form.PasswordForm;
-import com.study.Jpawebapp.settings.form.Profile;
+import com.study.Jpawebapp.domain.Tag;
+import com.study.Jpawebapp.settings.form.*;
 import com.study.Jpawebapp.settings.validator.NicknameValidator;
 import com.study.Jpawebapp.settings.validator.PasswordFormValidator;
+import com.study.Jpawebapp.tag.TagRepository;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.swing.text.html.Option;
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Controller
 @RequiredArgsConstructor
@@ -41,9 +42,13 @@ public class SettingsController {
     static final String SETTINGS_ACCOUNT_VIEW_NAME = "settings/account";
     static final String SETTINGS_ACCOUNT_URL = "/" + SETTINGS_ACCOUNT_VIEW_NAME;
 
+    static final String SETTINGS_TAGS_VIEW_NAME = "settings/tags";
+    static final String SETTINGS_TAGS_URL = "/" + SETTINGS_TAGS_VIEW_NAME;
+
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
+    private final TagRepository tagRepository;
 
     /**
      * AccountController - SignUpForm - SignUpFormValidator와 같은 구조로 동작
@@ -136,6 +141,38 @@ public class SettingsController {
         attributes.addFlashAttribute("message", "알림 설정을 변경했습니다.");
         return "redirect:" + SETTINGS_NOTIFICATIONS_URL;
     }
+
+    /**
+     * 관심 주제
+     */
+    @GetMapping(SETTINGS_TAGS_URL)
+    public String updateTags(@CurrentUser Account account, Model model){
+        model.addAttribute(account);
+        return SETTINGS_TAGS_VIEW_NAME;
+    }
+
+    @PostMapping("/settings/tags/add")
+    @ResponseBody
+    public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
+        String title = tagForm.getTagTitle();
+        // Optional 사용할 경우
+//        Tag tag = tagRepository.findByTitle(title).orElseGet(
+//                () -> tagRepository.save(Tag.builder()
+//                                .title(tagForm.getTagTitle())
+//                                .build()));
+
+        Tag tag = tagRepository.findByTitle(title);
+        if(tag == null){
+            tag = tagRepository.save(Tag.builder().title(tagForm.getTagTitle()).build());
+        }
+
+        accountService.addTag(account, tag);
+
+        return ResponseEntity.ok().build();
+    }
+
+
+
 
 
     /**
