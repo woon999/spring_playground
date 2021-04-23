@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Slf4j
@@ -57,6 +58,10 @@ public class Account {
     private boolean studyEnrollmentResultByWeb = true;
     private boolean studyUpdatedByEmail;
     private boolean studyUpdatedByWeb = true;
+
+    // tag
+    @ManyToMany
+    private Set<Tag> tags;
 
 
     public void generateEmailCheckToken() {
