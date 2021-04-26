@@ -38,23 +38,17 @@ public class AccountService implements UserDetailsService {
 
     public Account processNewAccount(SignUpForm signUpForm) {
         Account newAccount = saveNewAccount(signUpForm);
-        //이메일 인증 토큰 생성
-        newAccount.generateEmailCheckToken();
-
         sendSignUpConfirmEmail(newAccount);
         return newAccount;
     }
 
 
     private Account saveNewAccount(@Valid SignUpForm signUpForm) {
-        Account account = Account.builder()
-                .email(signUpForm.getEmail())
-                .nickname(signUpForm.getNickname())
-                .password(passwordEncoder.encode(signUpForm.getPassword()))
-                .studyCreatedByWeb(true)
-                .studyEnrollmentResultByWeb(true)
-                .studyUpdatedByWeb(true)
-                .build();
+        signUpForm.setPassword(passwordEncoder.encode(signUpForm.getPassword()));
+        Account account = modelMapper.map(signUpForm, Account.class);
+
+        //이메일 인증 토큰 생성
+        account.generateEmailCheckToken();
 
         return accountRepository.save(account);
     }
