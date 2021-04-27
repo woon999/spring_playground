@@ -2,6 +2,7 @@ package com.study.Jpawebapp.account;
 
 import com.study.Jpawebapp.domain.Account;
 import com.study.Jpawebapp.domain.Tag;
+import com.study.Jpawebapp.domain.Zone;
 import com.study.Jpawebapp.settings.form.Notifications;
 import com.study.Jpawebapp.settings.form.Profile;
 import lombok.RequiredArgsConstructor;
@@ -167,5 +168,23 @@ public class AccountService implements UserDetailsService {
     public void removeTag(Account account, Tag tag) {
         Optional<Account> byId = accountRepository.findById(account.getId());
         byId.ifPresent(a -> a.getTags().remove(tag));
+    }
+
+    /**
+     * 지역정보
+     */
+    public Set<Zone> getZones(Account account) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        return byId.orElseThrow().getZones();
+    }
+
+    public void addZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().add(zone));
+    }
+
+    public void removeZone(Account account, Zone zone) {
+        Optional<Account> byId = accountRepository.findById(account.getId());
+        byId.ifPresent(a -> a.getZones().remove(zone));
     }
 }

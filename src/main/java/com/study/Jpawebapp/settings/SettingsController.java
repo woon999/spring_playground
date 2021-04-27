@@ -6,11 +6,12 @@ import com.study.Jpawebapp.account.AccountService;
 import com.study.Jpawebapp.account.CurrentUser;
 import com.study.Jpawebapp.domain.Account;
 import com.study.Jpawebapp.domain.Tag;
+import com.study.Jpawebapp.domain.Zone;
 import com.study.Jpawebapp.settings.form.*;
 import com.study.Jpawebapp.settings.validator.NicknameValidator;
 import com.study.Jpawebapp.settings.validator.PasswordFormValidator;
 import com.study.Jpawebapp.tag.TagRepository;
-import lombok.Getter;
+import com.study.Jpawebapp.zone.ZoneRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +22,14 @@ import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.swing.text.html.Option;
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
 public class SettingsController {
-
-
 
 
     static final String SETTINGS_PROFILE_VIEW_NAME = "settings/profile";
@@ -51,10 +47,14 @@ public class SettingsController {
     static final String SETTINGS_TAGS_VIEW_NAME = "settings/tags";
     static final String SETTINGS_TAGS_URL = "/" + SETTINGS_TAGS_VIEW_NAME;
 
+    static final String SETTINGS_ZONES_VIEW_NAME = "settings/zones";
+    static final String SETTINGS_ZONES_URL = "/" + SETTINGS_ZONES_VIEW_NAME;
+
     private final AccountService accountService;
     private final ModelMapper modelMapper;
     private final NicknameValidator nicknameValidator;
     private final TagRepository tagRepository;
+    private final ZoneRepository zoneRepository;
     private final ObjectMapper objectMapper;
 
     /**
@@ -63,7 +63,7 @@ public class SettingsController {
      * passwordFormValidator는 Bean등록을 안했기 때문에 new로 객체 생성
      **/
     @InitBinder("passwordForm")
-    public void passwordFormInitBinder(WebDataBinder webDataBinder){
+    public void passwordFormInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(new PasswordFormValidator());
     }
 
@@ -73,7 +73,7 @@ public class SettingsController {
     }
 
     @GetMapping(SETTINGS_PROFILE_URL)
-    public String updateProfileForm(@CurrentUser Account account, Model model){
+    public String updateProfileForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
         model.addAttribute(modelMapper.map(account, Profile.class));
 
@@ -84,8 +84,8 @@ public class SettingsController {
     // @ModelAttribute 생략가능
     @PostMapping(SETTINGS_PROFILE_URL)
     public String updateProfile(@CurrentUser Account account, @Valid Profile profile, Errors errors,
-                                Model model, RedirectAttributes attributes){
-        if(errors.hasErrors()){
+                                Model model, RedirectAttributes attributes) {
+        if (errors.hasErrors()) {
             model.addAttribute(account);
             return SETTINGS_PROFILE_VIEW_NAME;
         }
@@ -110,10 +110,10 @@ public class SettingsController {
 
     @PostMapping(SETTINGS_PASSWORD_URL)
     public String updatePassword(@CurrentUser Account account, @Valid PasswordForm passwordForm, Errors errors,
-                                 Model model, RedirectAttributes attributes){
+                                 Model model, RedirectAttributes attributes) {
 
         // 에러
-        if(errors.hasErrors()){
+        if (errors.hasErrors()) {
             model.addAttribute(account);
             return SETTINGS_PASSWORD_VIEW_NAME;
         }
@@ -121,7 +121,7 @@ public class SettingsController {
         // 비밀번호 변경 성공
         accountService.updatePassword(account, passwordForm.getNewPassword());
         attributes.addFlashAttribute("message", "패스워드를 변경했습니다.");
-        return "redirect:"  + SETTINGS_PASSWORD_URL;
+        return "redirect:" + SETTINGS_PASSWORD_URL;
 
     }
 
@@ -168,7 +168,7 @@ public class SettingsController {
         return SETTINGS_TAGS_VIEW_NAME;
     }
 
-    @PostMapping(SETTINGS_TAGS_URL  + "/add")
+    @PostMapping(SETTINGS_TAGS_URL + "/add")
     @ResponseBody
     public ResponseEntity addTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         String title = tagForm.getTagTitle();
@@ -179,7 +179,7 @@ public class SettingsController {
 //                                .build()));
 
         Tag tag = tagRepository.findByTitle(title);
-        if(tag == null){
+        if (tag == null) {
             tag = tagRepository.save(Tag.builder().title(title).build());
         }
 
@@ -188,13 +188,13 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping(SETTINGS_TAGS_URL  + "/remove")
+    @PostMapping(SETTINGS_TAGS_URL + "/remove")
     @ResponseBody
     public ResponseEntity removeTag(@CurrentUser Account account, @RequestBody TagForm tagForm) {
         String title = tagForm.getTagTitle();
         Tag tag = tagRepository.findByTitle(title);
 
-        if(tag == null){
+        if (tag == null) {
             return ResponseEntity.badRequest().build(); // 없는 태그를 삭제할 경우
         }
 
@@ -203,13 +203,50 @@ public class SettingsController {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * 지역 정보
+     */
+    @GetMapping(SETTINGS_ZONES_URL)
+    public String updateZonesForm(@CurrentUser Account account, Model model) throws JsonProcessingException {
+        model.addAttribute(account);
 
+        Set<Zone> zones = accountService.getZones(account);
+        model.addAttribute("zones", zones.stream().map(Zone::toString).collect(Collectors.toList()));
 
+        List<String> allZones = zoneRepository.findAll().stream().map(Zone::toString).collect(Collectors.toList());
+        model.addAttribute("whitelist", objectMapper.writeValueAsString(allZones));
+
+        return SETTINGS_ZONES_VIEW_NAME;
+    }
+
+    @PostMapping(SETTINGS_ZONES_URL + "/add")
+    @ResponseBody
+    public ResponseEntity addZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm) {
+        Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
+        if (zone == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        accountService.addZone(account, zone);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping(SETTINGS_ZONES_URL + "/remove")
+    @ResponseBody
+    public ResponseEntity removeZone(@CurrentUser Account account, @RequestBody ZoneForm zoneForm) {
+        Zone zone = zoneRepository.findByCityAndProvince(zoneForm.getCityName(), zoneForm.getProvinceName());
+        if (zone == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        accountService.removeZone(account, zone);
+        return ResponseEntity.ok().build();
+    }
 
 
     /**
      * 닉네임설정
-      */
+     */
     @GetMapping(SETTINGS_ACCOUNT_URL)
     public String updateAccountForm(@CurrentUser Account account, Model model) {
         model.addAttribute(account);
