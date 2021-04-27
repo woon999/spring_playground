@@ -1,6 +1,6 @@
 package com.study.Jpawebapp.main;
 
-import com.study.Jpawebapp.account.CurrentUser;
+import com.study.Jpawebapp.account.CurrentAccount;
 import com.study.Jpawebapp.domain.Account;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -16,7 +16,7 @@ public class MainController {
      * 인증된 사용자 정보 참조
      */
     @GetMapping("/")
-    public String home(@CurrentUser Account account, Model model){
+    public String home(@CurrentAccount Account account, Model model){
         if (account != null){
             // account != null && !account.emailVerified -> 이메일 인증 메시지 노출
             model.addAttribute(account);
