@@ -42,14 +42,62 @@ public class JpaMain {
 //            }
 
             // 비영속
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("loosie");
+//            Member member = new Member();
+//            member.setId(101L);
+//            member.setName("loosie");
 
             //영속
-            System.out.println("=====BEFORE=====");
-            em.persist(member);
-            System.out.println("=====AFTER=====");
+//            System.out.println("=====BEFORE=====");
+//            em.persist(member);
+//            System.out.println("=====AFTER=====");
+
+            // 1차 캐시 조회
+//            Member member = new Member();
+//            member.setId(101L);
+//            member.setName("loosie");
+//            em.persist(member);
+
+//            Member member1 = em.find(Member.class, 101L);
+//            System.out.println("member1.getId() = " + member1.getId());;
+//            System.out.println("member1.getName() = " + member1.getName());
+
+
+            //DB에서 조회
+//            Member member1 = em.find(Member.class, 101L); //DB
+//            Member member2 = em.find(Member.class, 101L); // 1차
+
+            // 영속 엔티티 동일성 보장
+//            System.out.println(member1 == member2); // true
+
+            // 트랜잭션을 지원하는 쓰기 지연
+//            Member member1 = new Member(150L, "A");
+//            Member member2 = new Member(160L, "B");
+//
+//            em.persist(member1);
+//            em.persist(member2);
+//
+//            System.out.println("-------------");
+
+            // 변경감지
+//            Member member = em.find(Member.class, 150L);
+//            member.setName("ZZZZ");
+//
+//            System.out.println("-------------");
+
+            // em.flush() 사용
+//            Member m ember = new Member(200L, "member200");
+//            em.persist(member);
+//            em.flush();
+//            System.out.println("-------------");
+
+            // 준영속 상태
+            Member member = em.find(Member.class, 150L); // 1차 캐시 저장
+            member.setName("AAAAAA");
+
+            em.clear(); // 영속성 컨텍스트 초기화
+
+            Member member2 = em.find(Member.class, 150L); // 다시 1차 캐시 저장
+            System.out.println("===============");
 
 
             // 트랜잭션 커밋
