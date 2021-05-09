@@ -91,15 +91,21 @@ public class JpaMain {
 //            System.out.println("-------------");
 
             // 준영속 상태
-            Member member = em.find(Member.class, 150L); // 1차 캐시 저장
-            member.setName("AAAAAA");
+//            Member member = em.find(Member.class, 150L); // 1차 캐시 저장
+//            member.setName("AAAAAA");
+//
+//            em.clear(); // 영속성 컨텍스트 초기화
+//
+//            Member member2 = em.find(Member.class, 150L); // 다시 1차 캐시 저장
+//            System.out.println("===============");
 
-            em.clear(); // 영속성 컨텍스트 초기화
 
-            Member member2 = em.find(Member.class, 150L); // 다시 1차 캐시 저장
-            System.out.println("===============");
+            Member member = new Member();
+            member.setId(3L);
+            member.setUsername("loosie3");
+            member.setRoleType(RoleType.GUSET);
 
-
+            em.persist(member);
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
