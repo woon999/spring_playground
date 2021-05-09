@@ -100,6 +100,8 @@ public class JpaMain {
 //            System.out.println("===============");
 
 
+            // EnumType.STRING vs ORDINAL TEST
+            // ORDINAL 사용 x -> Enum 데이터 추가시 기존에 DB에 저장된 타입들 변경 안되어서 혼선 발생
             Member member = new Member();
             member.setId(3L);
             member.setUsername("loosie3");
@@ -113,6 +115,7 @@ public class JpaMain {
         }finally {
             em.close();
         }
+
 
         emf.close();
     }
