@@ -102,10 +102,15 @@ public class JpaMain {
 
             // EnumType.STRING vs ORDINAL TEST
             // ORDINAL 사용 x -> Enum 데이터 추가시 기존에 DB에 저장된 타입들 변경 안되어서 혼선 발생
+//            Member member = new Member();
+//            member.setId(3L);
+//            member.setUsername("loosie3");
+//            member.setRoleType(RoleType.GUSET);
+
+
+            // 기본 키 매핑
             Member member = new Member();
-            member.setId(3L);
-            member.setUsername("loosie3");
-            member.setRoleType(RoleType.GUSET);
+            member.setUsername("B");
 
             em.persist(member);
             // 트랜잭션 커밋
