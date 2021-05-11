@@ -109,8 +109,48 @@ public class JpaMain {
 
 
             // 기본 키 매핑
+//            Member member = new Member();
+//            member.setUsername("B");
+
+
+            //객체를 테이블에 맞추어 모델링
+//            //팀 저장
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            em.persist(team);
+//
+//            //회원 저장
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setTeamId(team.getId());
+//            em.persist(member);
+//
+//            //조회
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            //연관관계가 없음
+//            Team findTeam = em.find(Team.class, findMember.getTeamId());
+
+            //단방향 연관관계
+            //팀 저장
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            //회원 저장
             Member member = new Member();
-            member.setUsername("B");
+            member.setName("member1");
+            member.setTeam(team); //단방향 연관관계 설정, 참조 저장
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+            //조회
+            Member findMember = em.find(Member.class, member.getId());
+
+            //참조를 사용해서 연관관계 조회
+            Team findTeam = findMember.getTeam();
+            System.out.println("findTeam.getName() = " + findTeam.getName());
 
             em.persist(member);
             // 트랜잭션 커밋
