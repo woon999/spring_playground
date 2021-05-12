@@ -163,6 +163,47 @@ public class JpaMain {
 //            em.persist(member);
 
 
+            // 양방향 연관관계
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            em.persist(team);
+//
+//            //회원 저장
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setTeam(team);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//
+//            //조회
+//            Member findMember = em.find(Member.class, member.getId());
+//            // 역방향 조회
+//            List<Member> members =findMember.getTeam().getMembers();
+//
+//            for(Member m : members){
+//                System.out.println("m = " + m.getName());
+//            }
+
+            // 양방향 연관관계 주의할 점
+            //1. 연관관계의 주인에 값 입력 x
+            //2. 양방향 매핑시 연관관계의 주인에 값을 입력해야 한다.
+            Team team = new Team();
+            team.setName("TeamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("member1");
+
+            //역방향(주인이 아닌 방향)만 연관관계 설정
+//            team.getMembers().add(member);
+
+            //연관관계의 주인에 값 설정
+//            member.getTeam(team);
+
+            em.persist(member);
+
 
             // 트랜잭션 커밋
             tx.commit();
