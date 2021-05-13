@@ -195,12 +195,18 @@ public class JpaMain {
 
             Member member = new Member();
             member.setName("member1");
+//            member.setTeam(team); // * Member 방향 연관관계 편의 메소드 생성 *
+            team.addMember(member); // * Team 방향 연관관계 편의 메소드 생성 *
 
             //역방향(주인이 아닌 방향)만 연관관계 설정
 //            team.getMembers().add(member);
 
             //연관관계의 주인에 값 설정
 //            member.getTeam(team);
+
+            // toString무한루프 
+//            Team findTeam = em.find(Team.class, team.getId());
+//            System.out.println("findTeam = " + findTeam);
 
             em.persist(member);
 
