@@ -189,14 +189,14 @@ public class JpaMain {
             // 양방향 연관관계 주의할 점
             //1. 연관관계의 주인에 값 입력 x
             //2. 양방향 매핑시 연관관계의 주인에 값을 입력해야 한다.
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setName("member1");
+//            Team team = new Team();
+//            team.setName("TeamA");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setName("member1");
 //            member.setTeam(team); // * Member 방향 연관관계 편의 메소드 생성 *
-            team.addMember(member); // * Team 방향 연관관계 편의 메소드 생성 *
+//            team.addMember(member); // * Team 방향 연관관계 편의 메소드 생성 *
 
             //역방향(주인이 아닌 방향)만 연관관계 설정
 //            team.getMembers().add(member);
@@ -208,7 +208,7 @@ public class JpaMain {
 //            Team findTeam = em.find(Team.class, team.getId());
 //            System.out.println("findTeam = " + findTeam);
 
-            em.persist(member);
+//            em.persist(member);
 
 
             // 트랜잭션 커밋
