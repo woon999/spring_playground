@@ -210,6 +210,18 @@ public class JpaMain {
 
 //            em.persist(member);
 
+            // 일대다 매핑 테스트
+            Member member = new Member();
+            member.setName("member1");
+
+            em.persist(member);
+
+            Team team = new Team();
+            team.setName("teamA");
+            team.getMembers().add(member);
+
+            em.persist(team);
+
 
             // 트랜잭션 커밋
             tx.commit();
