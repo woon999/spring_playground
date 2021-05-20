@@ -211,17 +211,31 @@ public class JpaMain {
 //            em.persist(member);
 
             // 일대다 매핑 테스트
-            Member member = new Member();
-            member.setName("member1");
+//            Member member = new Member();
+//            member.setName("member1");
+//
+//            em.persist(member);
+//
+//            Team team = new Team();
+//            team.setName("teamA");
+//            team.getMembers().add(member);
+//
+//            em.persist(team);
 
-            em.persist(member);
+            // 상속관계 매핑
+            Movie movie = new Movie();
+            movie.setDirector("a2aaa");
+            movie.setActor("bbb2b");
+            movie.setName("라라2라");
+            movie.setPrice(10000);
 
-            Team team = new Team();
-            team.setName("teamA");
-            team.getMembers().add(member);
+            em.persist(movie);
 
-            em.persist(team);
+            em.flush();
+            em.clear();
 
+            Movie findMovie = em.find(Movie.class, movie.getId());
+            System.out.println("findMovie = " + findMovie);
 
             // 트랜잭션 커밋
             tx.commit();
