@@ -1,5 +1,7 @@
 package hellojpa;
 
+import org.hibernate.Hibernate;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -239,16 +241,67 @@ public class JpaMain {
 //            System.out.println("findMovie = " + findMovie);
 
             // @MappedSuperclass 예시
-            Member member = new Member();
-            member.setName("user1");
-            member.setCreatedBy("lee");
-            member.setCreatedDate(LocalDateTime.now());
+//            Member member = new Member();
+//            member.setName("user1");
+//            member.setCreatedBy("lee");
+//            member.setCreatedDate(LocalDateTime.now());
+//
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
 
+            // 프록시
+//            Member member = em.find(Member.class, 1L);
+//
+//            printMember(member);
+//            printMemberAndTeam(member);
+
+            Member member = new Member();
+            member.setName("hello1");
 
             em.persist(member);
-
             em.flush();
             em.clear();
+
+//            Member findMember = em.find(Member.class, member.getId());
+//            Member findMember = em.getReference(Member.class, member.getId());
+//            System.out.println("findMember.getClass() = " + findMember.getClass());
+//            System.out.println("findMember.getId() = " + findMember.getId());
+//            System.out.println("findMember.getName() = " + findMember.getName());
+
+            // 프록시 특징 - instance of
+//            Member refMember = em.getReference(Member.class, member.getId());
+//            System.out.println("(refMember instanceof Member) = " + (refMember instanceof Member));
+            
+            // 프록시 특징 - 영속성 컨텍스트에 이미 있으면 실제 엔티티 반환
+//            Member findMember = em.find(Member.class, member.getId());
+//            Member refMember = em.getReference(Member.class, member.getId());
+//
+//            System.out.println("(refMember==findMember) = " + (refMember==findMember));
+
+            // 프록시 특징 - 준영속 상태일 때, 프록시 초기화하면 문제 발생
+//            Member refMember = em.getReference(Member.class, member.getId());
+//            System.out.println("refMember.getClass() = " + refMember.getClass());
+//
+//            em.detach(refMember);
+//
+//            refMember.getName();
+
+            // 프록시 확인
+//            Member refMember = em.getReference(Member.class, member.getId());
+//            System.out.println("refMember.getClass() = " + refMember.getClass());
+            //1
+//            refMember.getName();
+//            System.out.println("isLoaded=" + emf.getPersistenceUnitUtil().isLoaded(refMember));
+
+            //2
+//            System.out.println("refMember.getClass().getName() = " + refMember.getClass().getName());
+
+            //3
+//            Hibernate.initialize(refMember); // 강제 초기화
+
 
             // 트랜잭션 커밋
             tx.commit();
@@ -260,6 +313,18 @@ public class JpaMain {
 
 
         emf.close();
+    }
+
+    private static void printMember(Member member){
+        System.out.println("member = " + member.getName());
+    }
+
+    private static void printMemberAndTeam(Member member){
+        String name = member.getName();
+        System.out.println("name = " + name);
+
+        Team team = member.getTeam();
+        System.out.println("team = " + team.getName());
     }
 }
 
