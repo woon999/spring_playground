@@ -315,10 +315,10 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            Member m = em.find(Member.class, member1.getId());
+//            Member m = em.find(Member.class, member1.getId());
 
-            System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
-
+            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
+                    .getResultList();
 
             // 트랜잭션 커밋
             tx.commit();
