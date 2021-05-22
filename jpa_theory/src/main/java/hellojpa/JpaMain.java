@@ -258,12 +258,12 @@ public class JpaMain {
 //            printMember(member);
 //            printMemberAndTeam(member);
 
-            Member member = new Member();
-            member.setName("hello1");
-
-            em.persist(member);
-            em.flush();
-            em.clear();
+//            Member member = new Member();
+//            member.setName("hello1");
+//
+//            em.persist(member);
+//            em.flush();
+//            em.clear();
 
 //            Member findMember = em.find(Member.class, member.getId());
 //            Member findMember = em.getReference(Member.class, member.getId());
@@ -301,6 +301,25 @@ public class JpaMain {
 
             //3
 //            Hibernate.initialize(refMember); // 강제 초기화
+
+            // 지연로딩
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+            
+            Member member1 = new Member();
+            member1.setName("abcd");
+            member1.setTeam(team);
+            em.persist(member1);
+            
+            em.flush();
+            em.clear();
+
+            Member m = em.find(Member.class, member1.getId());
+
+            System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
+
+
 
 
             // 트랜잭션 커밋
