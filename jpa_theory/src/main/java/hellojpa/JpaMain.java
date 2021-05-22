@@ -302,7 +302,7 @@ public class JpaMain {
             //3
 //            Hibernate.initialize(refMember); // 강제 초기화
 
-            // 지연로딩
+            // 지연로딩 & 즉시로딩
             Team team = new Team();
             team.setName("teamA");
             em.persist(team);
@@ -318,8 +318,6 @@ public class JpaMain {
             Member m = em.find(Member.class, member1.getId());
 
             System.out.println("m.getTeam().getClass() = " + m.getTeam().getClass());
-
-
 
 
             // 트랜잭션 커밋
