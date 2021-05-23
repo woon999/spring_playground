@@ -303,22 +303,35 @@ public class JpaMain {
 //            Hibernate.initialize(refMember); // 강제 초기화
 
             // 지연로딩 & 즉시로딩
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-            
-            Member member1 = new Member();
-            member1.setName("abcd");
-            member1.setTeam(team);
-            em.persist(member1);
-            
-            em.flush();
-            em.clear();
+//            Team team = new Team();
+//            team.setName("teamA");
+//            em.persist(team);
+//
+//            Member member1 = new Member();
+//            member1.setName("abcd");
+//            member1.setTeam(team);
+//            em.persist(member1);
+//
+//            em.flush();
+//            em.clear();
+//
+////            Member m = em.find(Member.class, member1.getId());
+//
+//            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
+//                    .getResultList();
 
-//            Member m = em.find(Member.class, member1.getId());
+            // 영속성 전이 CASCADE
+            Child child1 = new Child();
+            Child child2 = new Child();
 
-            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
-                    .getResultList();
+            Parent parent = new Parent();
+            parent.addChild(child1);
+            parent.addChild(child2);
+
+            em.persist(parent);
+            em.persist(child1);
+            em.persist(child2);
+
 
             // 트랜잭션 커밋
             tx.commit();
