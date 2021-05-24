@@ -342,12 +342,28 @@ public class JpaMain {
 //            findParent.getChildList().remove(0);
 
             // 임베디드 타입
-            Member member = new Member();
-            member.setName("abcd");
-            member.setHomeAddress(new Address("city", "street", "101010"));
-            member.setWorkPeriod(new Period());
+//            Member member = new Member();
+//            member.setName("abcd");
+//            member.setHomeAddress(new Address("city", "street", "101010"));
+//            member.setWorkPeriod(new Period());
+//            em.persist(member);
 
+            // 값 타입 공유 참조 - 절대 사용 x
+            Address address = new Address("city", "street", "101010");
+
+            Member member = new Member();
+            member.setName("member1");
+            member.setHomeAddress(address); // 값 공유 참조
             em.persist(member);
+
+            Member member2 = new Member();
+            member2.setName("member2");
+            member2.setHomeAddress(address);// 값 공유 참조
+            em.persist(member2);
+
+            member.getHomeAddress().setCity("newCity"); // 부작용 - 에러 발생
+
+
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
