@@ -349,19 +349,35 @@ public class JpaMain {
 //            em.persist(member);
 
             // 값 타입 공유 참조 - 절대 사용 x
+//            Address address = new Address("city", "street", "101010");
+//
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setHomeAddress(address); // 값 공유 참조
+//            em.persist(member);
+//
+//            Member member2 = new Member();
+//            member2.setName("member2");
+//            member2.setHomeAddress(address);// 값 공유 참조
+//            em.persist(member2);
+//
+//            member.getHomeAddress().setCity("newCity"); // 부작용 - 에러 발생
+
+            // 값 타입 복사
             Address address = new Address("city", "street", "101010");
 
             Member member = new Member();
             member.setName("member1");
-            member.setHomeAddress(address); // 값 공유 참조
+            member.setHomeAddress(address);
             em.persist(member);
 
+            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode()); // 값 복사
             Member member2 = new Member();
             member2.setName("member2");
-            member2.setHomeAddress(address);// 값 공유 참조
+            member2.setHomeAddress(copyAddress);
             em.persist(member2);
 
-            member.getHomeAddress().setCity("newCity"); // 부작용 - 에러 발생
+            member.getHomeAddress().setCity("newCity");
 
 
             // 트랜잭션 커밋
