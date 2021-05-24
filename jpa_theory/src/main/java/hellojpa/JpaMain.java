@@ -364,6 +364,22 @@ public class JpaMain {
 //            member.getHomeAddress().setCity("newCity"); // 부작용 - 에러 발생
 
             // 값 타입 복사
+//            Address address = new Address("city", "street", "101010");
+//
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setHomeAddress(address);
+//            em.persist(member);
+//
+//            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode()); // 값 복사
+//            Member member2 = new Member();
+//            member2.setName("member2");
+//            member2.setHomeAddress(copyAddress);
+//            em.persist(member2);
+//
+//            member.getHomeAddress().setCity("newCity");
+
+            // 불변 객체
             Address address = new Address("city", "street", "101010");
 
             Member member = new Member();
@@ -371,14 +387,8 @@ public class JpaMain {
             member.setHomeAddress(address);
             em.persist(member);
 
-            Address copyAddress = new Address(address.getCity(), address.getStreet(), address.getZipcode()); // 값 복사
-            Member member2 = new Member();
-            member2.setName("member2");
-            member2.setHomeAddress(copyAddress);
-            em.persist(member2);
-
-            member.getHomeAddress().setCity("newCity");
-
+            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode()); // 값 복사
+            member.setHomeAddress(newAddress);
 
             // 트랜잭션 커밋
             tx.commit();
