@@ -1,5 +1,7 @@
 package hellojpa;
 
+import hellojpa.embedded.Address;
+import hellojpa.embedded.Period;
 import org.hibernate.Hibernate;
 
 import javax.persistence.EntityManager;
@@ -339,6 +341,13 @@ public class JpaMain {
 //            Parent findParent = em.find(Parent.class, parent.getId());
 //            findParent.getChildList().remove(0);
 
+            // 임베디드 타입
+            Member member = new Member();
+            member.setName("abcd");
+            member.setHomeAddress(new Address("city", "street", "101010"));
+            member.setWorkPeriod(new Period());
+
+            em.persist(member);
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
@@ -355,12 +364,12 @@ public class JpaMain {
         System.out.println("member = " + member.getName());
     }
 
-    private static void printMemberAndTeam(Member member){
-        String name = member.getName();
-        System.out.println("name = " + name);
-
-        Team team = member.getTeam();
-        System.out.println("team = " + team.getName());
-    }
+//    private static void printMemberAndTeam(Member member){
+//        String name = member.getName();
+//        System.out.println("name = " + name);
+//
+//        Team team = member.getTeam();
+//        System.out.println("team = " + team.getName());
+//    }
 }
 
