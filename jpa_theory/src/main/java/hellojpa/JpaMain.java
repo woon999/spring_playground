@@ -380,15 +380,17 @@ public class JpaMain {
 //            member.getHomeAddress().setCity("newCity");
 
             // 불변 객체
-            Address address = new Address("city", "street", "101010");
+//            Address address = new Address("city", "street", "101010");
+//
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setHomeAddress(address);
+//            em.persist(member);
+//
+//            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode()); // 값 복사
+//            member.setHomeAddress(newAddress);
 
-            Member member = new Member();
-            member.setName("member1");
-            member.setHomeAddress(address);
-            em.persist(member);
 
-            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode()); // 값 복사
-            member.setHomeAddress(newAddress);
 
             // 트랜잭션 커밋
             tx.commit();
