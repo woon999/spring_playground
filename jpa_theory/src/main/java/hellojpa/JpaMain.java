@@ -10,6 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
 
@@ -390,7 +391,47 @@ public class JpaMain {
 //            Address newAddress = new Address("newCity", address.getStreet(), address.getZipcode()); // 값 복사
 //            member.setHomeAddress(newAddress);
 
+            // 값 타입 컬렉션
+            Member member = new Member();
+            member.setName("member1");
+            member.setHomeAddress(new Address("city1", "street", "zipcode"));
 
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add(new AddressEntity("old1", "street", "zipcode"));
+            member.getAddressHistory().add(new AddressEntity("old2", "street", "zipcode"));
+
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+            System.out.println("======start=========");
+            Member findMember = em.find(Member.class, member.getId());
+
+//            List<Address> addresses = findMember.getAddressHistory();
+//            for(Address address : addresses){
+//                System.out.println("address = " + address.getCity());
+//            }
+//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//            for(String fav : favoriteFoods){
+//                System.out.println("fav = " + fav);
+//            }
+
+            // 수정
+//            Address a =findMember.getHomeAddress();
+//            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+
+//            findMember.getFavoriteFoods().remove("치킨");
+//            findMember.getFavoriteFoods().add("한식");
+
+            // equals 설정을 해줘야 삭제됨
+            findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "zipcode"));
+            findMember.getAddressHistory().add(new AddressEntity("newCity1", "street", "zipcode"));
+//            SELECT * FROM MEMBER;
+//            SELECT * FROM ADDRESS;
+//            SELECT * FROM FAVORITE_FOOD;
 
             // 트랜잭션 커밋
             tx.commit();
