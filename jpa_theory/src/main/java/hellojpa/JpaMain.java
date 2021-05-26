@@ -8,6 +8,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
@@ -392,23 +395,23 @@ public class JpaMain {
 //            member.setHomeAddress(newAddress);
 
             // 값 타입 컬렉션
-            Member member = new Member();
-            member.setName("member1");
-            member.setHomeAddress(new Address("city1", "street", "zipcode"));
-
-            member.getFavoriteFoods().add("치킨");
-            member.getFavoriteFoods().add("족발");
-            member.getFavoriteFoods().add("피자");
-
-            member.getAddressHistory().add(new AddressEntity("old1", "street", "zipcode"));
-            member.getAddressHistory().add(new AddressEntity("old2", "street", "zipcode"));
-
-            em.persist(member);
-
-            em.flush();
-            em.clear();
-            System.out.println("======start=========");
-            Member findMember = em.find(Member.class, member.getId());
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setHomeAddress(new Address("city1", "street", "zipcode"));
+//
+//            member.getFavoriteFoods().add("치킨");
+//            member.getFavoriteFoods().add("족발");
+//            member.getFavoriteFoods().add("피자");
+//
+//            member.getAddressHistory().add(new AddressEntity("old1", "street", "zipcode"));
+//            member.getAddressHistory().add(new AddressEntity("old2", "street", "zipcode"));
+//
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
+//            System.out.println("======start=========");
+//            Member findMember = em.find(Member.class, member.getId());
 
 //            List<Address> addresses = findMember.getAddressHistory();
 //            for(Address address : addresses){
@@ -427,12 +430,42 @@ public class JpaMain {
 //            findMember.getFavoriteFoods().add("한식");
 
             // equals 설정을 해줘야 삭제됨
-            findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "zipcode"));
-            findMember.getAddressHistory().add(new AddressEntity("newCity1", "street", "zipcode"));
-//            SELECT * FROM MEMBER;
-//            SELECT * FROM ADDRESS;
-//            SELECT * FROM FAVORITE_FOOD;
+//            findMember.getAddressHistory().remove(new AddressEntity("old1", "street", "zipcode"));
+//            findMember.getAddressHistory().add(new AddressEntity("newCity1", "street", "zipcode"));
 
+            
+            // JPQL
+//            List<Member> result = em.createQuery(
+//                    "select m From Member m where m.name like '%kim%'", Member.class).getResultList();
+//            System.out.println("result = " + result.size());
+//            for(Member member : result){
+//                System.out.println("member = " + member);
+//            }
+
+            // Criteria (사용x)
+//            //Criteria 사용 준비 
+//            CriteriaBuilder cb = em.getCriteriaBuilder();
+//            CriteriaQuery<Member> query = cb.createQuery(Member.class);
+//
+//            //루트 클래스 (조회를 시작할 클래스) 
+//            Root<Member> m = query.from(Member.class);
+//
+//            //쿼리 생성
+//            CriteriaQuery<Member> cq = query.select(m).where(cb.equal(m.get("username"), "kim"));
+//            List<Member> resultList = em.createQuery(cq).getResultList();
+
+            // QueryDSL
+//            JPAFactoryQuery query = new JPAQueryFactory(em); 
+//            QMember m = QMember.member;
+//            List<Member> list = query.selectFrom(m) 
+//                    .where(m.age.gt(18)) .orderBy(m.name.desc())  .fetch(); 
+
+            // Native SQL
+//            String sql =
+//                "SELECT ID, AGE, TEAM_ID, NAME FROM MEMBER WHERE NAME = 'kim'";
+//            List<Member> resultList =
+//                    em.createNativeQuery(sql, Member.class).getResultList();
+            
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
