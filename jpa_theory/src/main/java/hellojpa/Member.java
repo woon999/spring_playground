@@ -13,11 +13,13 @@ import java.util.Set;
 public class Member {
 
     @Id @GeneratedValue
-    @Column(name = "MEMBER_ID")
+    @Column(name = "member_id")
     private Long id;
 
-    @Column(name = "USERNAME")
+    @Column(name = "username")
     private String name;
+
+    private int age;
 
     // 기간
     @Embedded
@@ -25,7 +27,11 @@ public class Member {
 
     // 집 주소
     @Embedded
-    private Address homeAddress;
+    private Address address;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member")
+    private Team team;
 
     // 직장 주소
 //    @Embedded
@@ -69,6 +75,14 @@ public class Member {
         this.id = id;
     }
 
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
     public String getName() {
         return name;
     }
@@ -86,11 +100,11 @@ public class Member {
     }
 
     public Address getHomeAddress() {
-        return homeAddress;
+        return address;
     }
 
     public void setHomeAddress(Address homeAddress) {
-        this.homeAddress = homeAddress;
+        this.address = homeAddress;
     }
 
 //    public Set<String> getFavoriteFoods() {

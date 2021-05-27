@@ -3,6 +3,8 @@ package hellojpa;
 import hellojpa.maapedsuper.BaseEntity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Team extends BaseEntity {
@@ -12,9 +14,9 @@ public class Team extends BaseEntity {
 
     private String name;
 
-//    @OneToMany
-//    @JoinColumn(name ="TEAM_ID")
-//    List<Member> members = new ArrayList<>();
+    @OneToMany
+    @JoinColumn(name ="team_id")
+    List<Member> members = new ArrayList<>();
 
     public Long getId() {
         return id;

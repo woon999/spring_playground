@@ -465,7 +465,35 @@ public class JpaMain {
 //                "SELECT ID, AGE, TEAM_ID, NAME FROM MEMBER WHERE NAME = 'kim'";
 //            List<Member> resultList =
 //                    em.createNativeQuery(sql, Member.class).getResultList();
-            
+
+            // 프로젝션
+            Member member = new Member();
+            member.setName("member1");
+            member.setAge(20);
+            em.persist(member);
+
+            em.flush();
+            em.clear();
+
+            //SELECT m FROM Member m
+//            List<Member> result = em.createQuery("select m From Member m", Member.class)
+//                    .getResultList();
+//            Member findMember = result.get(0);
+//            findMember.setName("change"); // 변경됨 (영속성 컨텍스트 관리 됨)
+
+            // SELECT m.team FROM Member m -> 엔티티 프로젝션
+//            List<Team> result = em.createQuery("select m.team From Member m", Team.class)
+//                    .getResultList();
+
+            // SELECT m.address FROM Member m
+//            String sql ="select m.address From Member m";
+//            em.createQuery(sql, Member.class)
+//                    .getResultList();
+
+            // SELECT m.username, m.age FROM Member m
+//            em.createQuery("select distinct m.username, m.age From Member m", Member.class)
+//                    .getResultList();
+
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
