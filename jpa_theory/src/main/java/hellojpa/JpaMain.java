@@ -527,7 +527,13 @@ public class JpaMain {
 
             em.flush();
             em.clear();
-            String query = "select m from Member m, Team t where m.useranme = t.name";
+//            String query = "select m from Member m, Team t where m.useranme = t.name";
+//            List<Member> resultList = em.createQuery(query, Member.class)
+//                    .getResultList();
+
+            // 서브 쿼리 (FROM x)
+            String query = "select mm.age, mm.username " +
+                    "from from (select m.age, m.useranme from Member m) as mm";
             List<Member> resultList = em.createQuery(query, Member.class)
                     .getResultList();
 
