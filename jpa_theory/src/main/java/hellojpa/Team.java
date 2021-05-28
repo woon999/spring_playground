@@ -7,16 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Team extends BaseEntity {
+public class Team {
 
     @Id @GeneratedValue
+    @Column(name = "team_id")
     private Long id;
 
     private String name;
 
-    @OneToMany
-    @JoinColumn(name ="team_id")
+    @OneToMany(mappedBy = "team")
     List<Member> members = new ArrayList<>();
+
+    public List<Member> getMembers() {
+        return members;
+    }
+
+    public void setMembers(List<Member> members) {
+        this.members = members;
+    }
 
     public Long getId() {
         return id;

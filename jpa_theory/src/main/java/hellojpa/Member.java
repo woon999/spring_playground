@@ -22,18 +22,30 @@ public class Member {
     private int age;
 
     // 기간
-    @Embedded
-    private Period workPeriod;
+//    @Embedded
+//    private Period workPeriod;
 
     // 집 주소
-    @Embedded
-    private Address address;
+//    @Embedded
+//    private Address address;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "member")
+    @JoinColumn(name ="team_id")
     private Team team;
 
-    // 직장 주소
+    public void changeTeam(Team team){
+        this.team = team;
+        team.getMembers().add(this);
+    }
+
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+// 직장 주소
 //    @Embedded
 //    @AttributeOverrides({
 //            @AttributeOverride(name ="city",
@@ -59,14 +71,6 @@ public class Member {
 //    @JoinColumn(name = "MEMBER_ID")
 //    private List<AddressEntity> addressHistory = new ArrayList<>();
 
-//    public List<AddressEntity> getAddressHistory() {
-//        return addressHistory;
-//    }
-//
-//    public void setAddressHistory(List<AddressEntity> addressHistory) {
-//        this.addressHistory = addressHistory;
-//    }
-
     public Long getId() {
         return id;
     }
@@ -90,30 +94,6 @@ public class Member {
     public void setName(String name) {
         this.name = name;
     }
-
-    public Period getWorkPeriod() {
-        return workPeriod;
-    }
-
-    public void setWorkPeriod(Period workPeriod) {
-        this.workPeriod = workPeriod;
-    }
-
-    public Address getHomeAddress() {
-        return address;
-    }
-
-    public void setHomeAddress(Address homeAddress) {
-        this.address = homeAddress;
-    }
-
-//    public Set<String> getFavoriteFoods() {
-//        return favoriteFoods;
-//    }
-//
-//    public void setFavoriteFoods(Set<String> favoriteFoods) {
-//        this.favoriteFoods = favoriteFoods;
-//    }
 
 
     @Override

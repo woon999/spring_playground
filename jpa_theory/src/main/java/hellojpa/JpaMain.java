@@ -495,24 +495,41 @@ public class JpaMain {
 //                    .getResultList();
 
             //페이징 쿼리
-            for(int i=0; i<100; i++) {
-                Member member = new Member();
-                member.setName("member"+i);
-                member.setAge(i);
-                em.persist(member);
-            }
+//            for(int i=0; i<100; i++) {
+//                Member member = new Member();
+//                member.setName("member"+i);
+//                member.setAge(i);
+//                em.persist(member);
+//            }
+//
+//            em.flush();
+//            em.clear();
+//            String jpql = "select m from Member m order by m.age desc";
+//            List<Member> resultList = em.createQuery(jpql, Member.class)
+//                                    .setFirstResult(1)
+//                                    .setMaxResults(10)
+//                                    .getResultList();
+//            System.out.println("resultList.size() = " + resultList.size());
+//            for(Member member : resultList){
+//                System.out.println("member = " + member);
+//            }
+
+            // 조인
+            Team team = new Team();
+            team.setName("teamA");
+            em.persist(team);
+
+            Member member = new Member();
+            member.setName("teamA");
+            member.setAge(10);
+            member.setTeam(team);
+            em.persist(member);
 
             em.flush();
             em.clear();
-            String jpql = "select m from Member m order by m.age desc";
-            List<Member> resultList = em.createQuery(jpql, Member.class)
-                                    .setFirstResult(1)
-                                    .setMaxResults(10)
-                                    .getResultList();
-            System.out.println("resultList.size() = " + resultList.size());
-            for(Member member : resultList){
-                System.out.println("member = " + member);
-            }
+            String query = "select m from Member m, Team t where m.useranme = t.name";
+            List<Member> resultList = em.createQuery(query, Member.class)
+                    .getResultList();
 
             // 트랜잭션 커밋
             tx.commit();
