@@ -115,4 +115,12 @@ public class Member {
 //        this.favoriteFoods = favoriteFoods;
 //    }
 
+
+    @Override
+    public String toString() {
+        return "Member{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age + '}';
+    }
 }

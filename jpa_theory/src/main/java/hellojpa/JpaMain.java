@@ -467,13 +467,13 @@ public class JpaMain {
 //                    em.createNativeQuery(sql, Member.class).getResultList();
 
             // 프로젝션
-            Member member = new Member();
-            member.setName("member1");
-            member.setAge(20);
-            em.persist(member);
-
-            em.flush();
-            em.clear();
+//            Member member = new Member();
+//            member.setName("member1");
+//            member.setAge(20);
+//            em.persist(member);
+//
+//            em.flush();
+//            em.clear();
 
             //SELECT m FROM Member m
 //            List<Member> result = em.createQuery("select m From Member m", Member.class)
@@ -493,6 +493,26 @@ public class JpaMain {
             // SELECT m.username, m.age FROM Member m
 //            em.createQuery("select distinct m.username, m.age From Member m", Member.class)
 //                    .getResultList();
+
+            //페이징 쿼리
+            for(int i=0; i<100; i++) {
+                Member member = new Member();
+                member.setName("member"+i);
+                member.setAge(i);
+                em.persist(member);
+            }
+
+            em.flush();
+            em.clear();
+            String jpql = "select m from Member m order by m.age desc";
+            List<Member> resultList = em.createQuery(jpql, Member.class)
+                                    .setFirstResult(1)
+                                    .setMaxResults(10)
+                                    .getResultList();
+            System.out.println("resultList.size() = " + resultList.size());
+            for(Member member : resultList){
+                System.out.println("member = " + member);
+            }
 
             // 트랜잭션 커밋
             tx.commit();
