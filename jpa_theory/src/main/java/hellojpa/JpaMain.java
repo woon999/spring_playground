@@ -515,15 +515,15 @@ public class JpaMain {
 //            }
 
             // 조인
-            Team team = new Team();
-            team.setName("teamA");
-            em.persist(team);
-
-            Member member = new Member();
-            member.setName("teamA");
-            member.setAge(10);
-            member.setTeam(team);
-            em.persist(member);
+//            Team team = new Team();
+//            team.setName("teamA");
+//            em.persist(team);
+//
+//            Member member = new Member();
+//            member.setName("teamA");
+//            member.setAge(10);
+//            member.setTeam(team);
+//            em.persist(member);
 //
 //            em.flush();
 //            em.clear();
@@ -552,18 +552,36 @@ public class JpaMain {
 
 
             // jpql 함수
-            String query = "select concat('a', 'b') From Member m  ";
+//            String query = "select concat('a', 'b') From Member m  ";
+//            List<String> resultList = em.createQuery(query, String.class)
+//                    .getResultList();
+//            for(String s : resultList){
+//                System.out.println("s = " + s);
+//            }
+
+            // 사용자 정의 함수
+            Member member1 = new Member();
+            member1.setName("memberA");
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setName("memberB");
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+            String query = "select function('group_concat', m.username) from Member m";
             List<String> resultList = em.createQuery(query, String.class)
                     .getResultList();
             for(String s : resultList){
                 System.out.println("s = " + s);
             }
 
-
-
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
+            e.printStackTrace();
             tx.rollback();
         }finally {
             em.close();

@@ -17,7 +17,7 @@ public class Member {
     private Long id;
 
     @Column(name = "username")
-    private String name;
+    private String username;
 
     private int age;
 
@@ -88,11 +88,11 @@ public class Member {
     }
 
     public String getName() {
-        return name;
+        return username;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.username = name;
     }
 
 
@@ -100,7 +100,7 @@ public class Member {
     public String toString() {
         return "Member{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", name='" + username + '\'' +
                 ", age=" + age + '}';
     }
 }
