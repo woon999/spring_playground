@@ -560,6 +560,25 @@ public class JpaMain {
 //            }
 
             // 사용자 정의 함수
+//            Member member1 = new Member();
+//            member1.setName("memberA");
+//            em.persist(member1);
+//
+//            Member member2 = new Member();
+//            member2.setName("memberB");
+//            em.persist(member2);
+//
+//            em.flush();
+//            em.clear();
+//
+//            String query = "select function('group_concat', m.username) from Member m";
+//            List<String> resultList = em.createQuery(query, String.class)
+//                    .getResultList();
+//            for(String s : resultList){
+//                System.out.println("s = " + s);
+//            }
+
+            // 경로 표현식
             Member member1 = new Member();
             member1.setName("memberA");
             em.persist(member1);
@@ -571,10 +590,10 @@ public class JpaMain {
             em.flush();
             em.clear();
 
-            String query = "select function('group_concat', m.username) from Member m";
-            List<String> resultList = em.createQuery(query, String.class)
+            String query = "select m.team from Member m";
+            List<Team> resultList = em.createQuery(query, Team.class)
                     .getResultList();
-            for(String s : resultList){
+            for(Team s : resultList){
                 System.out.println("s = " + s);
             }
 
