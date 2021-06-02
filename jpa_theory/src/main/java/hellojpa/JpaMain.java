@@ -579,23 +579,67 @@ public class JpaMain {
 //            }
 
             // 경로 표현식
+//            Member member1 = new Member();
+//            member1.setName("memberA");
+//            em.persist(member1);
+//
+//            Member member2 = new Member();
+//            member2.setName("memberB");
+//            em.persist(member2);
+//
+//            em.flush();
+//            em.clear();
+//
+//            String query = "select m.team from Member m";
+//            List<Team> resultList = em.createQuery(query, Team.class)
+//                    .getResultList();
+//            for(Team s : resultList){
+//                System.out.println("s = " + s);
+//            }
+
+            // 페치 조인
+            Team teamA = new Team();
+            teamA.setName("teamA");
+            em.persist(teamA);
+
+            Team teamB = new Team();
+            teamB.setName("teamB");
+            em.persist(teamB);
+
             Member member1 = new Member();
             member1.setName("memberA");
+            member1.setTeam(teamA);
             em.persist(member1);
 
             Member member2 = new Member();
             member2.setName("memberB");
+            member2.setTeam(teamA);
             em.persist(member2);
 
-            em.flush();
-            em.clear();
+            Member member3 = new Member();
+            member3.setName("memberC");
+            member3.setTeam(teamB);
+            em.persist(member3);
 
-            String query = "select m.team from Member m";
-            List<Team> resultList = em.createQuery(query, Team.class)
-                    .getResultList();
-            for(Team s : resultList){
-                System.out.println("s = " + s);
+//            String jpql = "select m from Member m join fetch m.team";
+//            List<Member> members = em.createQuery(jpql, Member.class).getResultList();
+
+//            for (Member member : members) {
+//                //페치 조인으로 회원과 팀을 함께 조회해서 지연 로딩X
+//                System.out.println("username = " + member.getName() + ", "+
+//                        "teamName = " + member.getTeam().getName());
+//            }
+
+            String jpql = "select t from Team t join fetch t.members";
+            List<Team> result = em.createQuery(jpql, Team.class).getResultList();
+            for (Team team : result) {
+                //페치 조인으로 회원과 팀을 함께 조회해서 지연 로딩X
+                System.out.println("team = " + team.getName() + "| members ="+ team.getMembers().size());
+                for(Member member : team.getMembers()){
+                    System.out.println("-> member = " + member);
+                }
             }
+
 
             // 트랜잭션 커밋
             tx.commit();
