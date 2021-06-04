@@ -630,16 +630,29 @@ public class JpaMain {
 //                        "teamName = " + member.getTeam().getName());
 //            }
 
-            String jpql = "select t from Team t join fetch t.members";
-            List<Team> result = em.createQuery(jpql, Team.class).getResultList();
-            for (Team team : result) {
-                //페치 조인으로 회원과 팀을 함께 조회해서 지연 로딩X
-                System.out.println("team = " + team.getName() + "| members ="+ team.getMembers().size());
-                for(Member member : team.getMembers()){
-                    System.out.println("-> member = " + member);
-                }
-            }
+//            String jpql = "select t from Team t join fetch t.members";
+//            List<Team> result = em.createQuery(jpql, Team.class).getResultList();
+//            for (Team team : result) {
+//                //페치 조인으로 회원과 팀을 함께 조회해서 지연 로딩X
+//                System.out.println("team = " + team.getName() + "| members ="+ team.getMembers().size());
+//                for(Member member : team.getMembers()){
+//                    System.out.println("-> member = " + member);
+//                }
+//            }
 
+            //엔티티 직접 사용
+
+             // 엔티티를 파라미터로 전달
+            String jpql = "select m from Member m where m = :member";
+            List resultList = em.createQuery(jpql)
+                        .setParameter("member", member1)
+                    .getResultList();
+
+              // 식별자를 직접 전달
+            String jpql2 = "select m from Member m where m.id = :member";
+            List resultList2 = em.createQuery(jpql2)
+                    .setParameter("member", member1)
+                    .getResultList();
 
             // 트랜잭션 커밋
             tx.commit();
