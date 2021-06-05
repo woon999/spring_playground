@@ -621,6 +621,9 @@ public class JpaMain {
             member3.setTeam(teamB);
             em.persist(member3);
 
+            em.flush();
+            em.clear();
+
 //            String jpql = "select m from Member m join fetch m.team";
 //            List<Member> members = em.createQuery(jpql, Member.class).getResultList();
 
@@ -643,17 +646,26 @@ public class JpaMain {
             //엔티티 직접 사용
 
              // 엔티티를 파라미터로 전달
-            String jpql = "select m from Member m where m = :member";
-            List resultList = em.createQuery(jpql)
-                        .setParameter("member", member1)
-                    .getResultList();
+//            String jpql = "select m from Member m where m = :member";
+//            List resultList = em.createQuery(jpql)
+//                        .setParameter("member", member1)
+//                    .getResultList();
+//
+//              // 식별자를 직접 전달
+//            String jpql2 = "select m from Member m where m.id = :member";
+//            List resultList2 = em.createQuery(jpql2)
+//                    .setParameter("member", member1)
+//                    .getResultList();
 
-              // 식별자를 직접 전달
-            String jpql2 = "select m from Member m where m.id = :member";
-            List resultList2 = em.createQuery(jpql2)
-                    .setParameter("member", member1)
-                    .getResultList();
-
+            // Named 쿼리 - 어노테이션
+            List<Member> resultList =
+                    em.createNamedQuery("Member.findByUsername", Member.class)
+                            .setParameter("username", "회원1")
+                            .getResultList();
+            for(Member member : resultList){
+                System.out.println("member = " + member);
+            }
+            
             // 트랜잭션 커밋
             tx.commit();
         }catch (Exception e){
