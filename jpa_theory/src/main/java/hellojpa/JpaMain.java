@@ -658,13 +658,19 @@ public class JpaMain {
 //                    .getResultList();
 
             // Named 쿼리 - 어노테이션
-            List<Member> resultList =
-                    em.createNamedQuery("Member.findByUsername", Member.class)
-                            .setParameter("username", "회원1")
-                            .getResultList();
-            for(Member member : resultList){
-                System.out.println("member = " + member);
-            }
+//            List<Member> resultList =
+//                    em.createNamedQuery("Member.findByUsername", Member.class)
+//                            .setParameter("username", "회원1")
+//                            .getResultList();
+//            for(Member member : resultList){
+//                System.out.println("member = " + member);
+//            }
+
+            // 벌크 연산
+            String qlString = "update Member m set m.age = 20";
+            int resultCount = em.createQuery(qlString).executeUpdate();
+
+            System.out.println("resultCount = " + resultCount);
             
             // 트랜잭션 커밋
             tx.commit();
