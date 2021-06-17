@@ -2,3 +2,6 @@ spring:
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+  h2:
+    console:
+      enabled: true
