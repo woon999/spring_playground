@@ -4,7 +4,6 @@ import com.loosie.book.springboot.domain.posts.Posts;
 import com.loosie.book.springboot.domain.posts.PostsRepository;
 import com.loosie.book.springboot.web.dto.PostsSaveRequestDto;
 import static org.assertj.core.api.Assertions.assertThat;
-import  org.assertj.core.api.Assertions;
 
 import com.loosie.book.springboot.web.dto.PostsUpdateRequestDto;
 import org.junit.After;
@@ -93,12 +92,12 @@ public class PostApiControllerTest {
 
          //then
          assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
-         assertThat(requestEntity.getBody()).isNotEqualTo(0L);
+         System.out.println("####"+ responseEntity.getBody());
+         assertThat(responseEntity.getBody()).isGreaterThan(0L);
 
          List<Posts> all = postsRepository.findAll();
          assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
          assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
-
 
 
       }
