@@ -4,6 +4,7 @@ import com.loosie.book.springboot.domain.posts.Posts;
 import com.loosie.book.springboot.domain.posts.PostsRepository;
 import com.loosie.book.springboot.web.dto.PostsSaveRequestDto;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 import com.loosie.book.springboot.web.dto.PostsUpdateRequestDto;
 import org.junit.After;
@@ -22,7 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.List;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(webEnvironment = RANDOM_PORT)
 public class PostApiControllerTest {
 
     @LocalServerPort

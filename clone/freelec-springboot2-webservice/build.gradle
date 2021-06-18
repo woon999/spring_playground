@@ -30,6 +30,7 @@ dependencies {
     annotationProcessor('org.projectlombok:lombok')
     compileOnly('org.projectlombok:lombok')
     compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-mustache')
     compile('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
     testCompile group: 'junit', name: 'junit', version: '4.12'
