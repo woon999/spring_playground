@@ -5,3 +5,5 @@ spring:
   h2:
     console:
       enabled: true
+  profiles:
+    include: oauth
