@@ -9,3 +9,12 @@ spring:
     include: oauth
   session:
     store-type: jdbc
+  #test OAuth
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: test
+            client-secret: test
+            scope: profile, email

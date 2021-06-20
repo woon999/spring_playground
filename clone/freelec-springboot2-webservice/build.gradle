@@ -35,6 +35,7 @@ dependencies {
     compile('org.springframework.session:spring-session-jdbc')
     compile('com.h2database:h2')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile('org.springframework.security:spring-security-test')
     testCompile group: 'junit', name: 'junit', version: '4.12'
 
 }
