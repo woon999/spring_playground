@@ -19,6 +19,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver 
 
     /**
      * Controller 메서드가 특정 파라미터를 지원하는지 판단
+     *
      * 1) @LoginUser 어노테이션이 붙어있는지
      * 2) 파라미터 클래스타입 SessionUser.class인지
      *   ==>  1) && 2) ? true : false
