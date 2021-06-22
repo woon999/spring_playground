@@ -32,6 +32,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
         // OAuth2 서비스 id (구글, 카카오, 네이버)
         String registrationId = userRequest.getClientRegistration().getRegistrationId();
+
         // OAuth2 로그인 진행 시 키가 되는 필드 값(PK)
         String userNameAttributeName = userRequest.getClientRegistration().getProviderDetails().getUserInfoEndpoint().getUserNameAttributeName();
 
