@@ -12,7 +12,10 @@
 9. git 코드 푸시되면 자동 배포 - Travis CI 배포 자동화
 10. 24/365 무중단 배포 서비스 - NGINX  
 
-## 블로그 내용 및 후기 정리
+## 공부한 내용 블로그 정리
+- [스프링으로 OAuth2 로그인 구현하기1 - 구글](https://loosie.tistory.com/300)
+- [스프링으로 OAuth2 로그인 구현하기2 - 네이버](https://loosie.tistory.com/301)
+- [스프링으로 OAuth2 로그인 구현하기3 - 카카오](https://loosie.tistory.com/302)
 
 
 
