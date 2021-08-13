@@ -13,9 +13,11 @@
 10. 24/365 무중단 배포 서비스 - NGINX  
 
 ## 공부한 내용 블로그 정리
+- [스프링 프로젝트 구조 설계하기 (DDD)](https://loosie.tistory.com/296)
 - [스프링으로 OAuth2 로그인 구현하기1 - 구글](https://loosie.tistory.com/300)
 - [스프링으로 OAuth2 로그인 구현하기2 - 네이버](https://loosie.tistory.com/301)
-- [스프링으로 OAuth2 로그인 구현하기3 - 카카오](https://loosie.tistory.com/302)
+- [스프링으로 OAuth2 로그인 구현하기3 - 카카오 (책 내용 x)](https://loosie.tistory.com/302)
+- [로그인 유저 어노테이션 기반으로 정보 가져오기](https://loosie.tistory.com/303)
 
 
 
