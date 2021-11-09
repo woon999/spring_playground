@@ -31,6 +31,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// devtools ; 개발할 때 유용한 기능 많음  캐시도 없애서 리로딩같은 것을 다 되게 만들어줌
 	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-hibernate5'
+
 
 //	이런 라이브러리들은 개발단계에서는 편한데 운영배포 단계에서는 고민해봐야 됨 (성능 저하의 원인이 될 수도 있음)
 //	성능 테스트를 해보고 ㄱㅊ으면 써라. 웬만하면 개발단계에서만 쓰는게 조음
