@@ -36,7 +36,7 @@ public class OrderSimpleApiController {
         return all;
     }
 
-    // N+1문제 발생
+    // N+1문제 발생 (initDB기준 5개의 쿼리 발생)
     @GetMapping("/api/v2/simple-orders")
     public List<SimpleOrderDto> orderV2(){
         List<Order> orders = orderRepository.findAll(new OrderSearch());
@@ -44,6 +44,16 @@ public class OrderSimpleApiController {
                 .map(o -> new SimpleOrderDto(o))
                 .collect(Collectors.toList());
 
+        return result;
+    }
+
+    // (initDB기준 1개 쿼리로 최적화)
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> ordersV3(){
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        List<SimpleOrderDto> result = orders.stream()
+                .map(SimpleOrderDto::new)
+                .collect(Collectors.toList());
         return result;
     }
 
