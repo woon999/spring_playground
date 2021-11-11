@@ -1,15 +1,27 @@
 package jpabook.jpashop.api;
 
+import jpabook.jpashop.domain.Address;
 import jpabook.jpashop.domain.Order;
 import jpabook.jpashop.domain.OrderItem;
+import jpabook.jpashop.domain.OrderStatus;
 import jpabook.jpashop.repository.OrderRepository;
 import jpabook.jpashop.repository.OrderSearch;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
+/**
+ * xToOne (ManyToOne, OneToOne), OneTox (OneToMany)
+ * Order
+ * Order -> Member (N : 1)
+ * Order -> Delivery (1 : 1)
+ * Order -> OrderItem (1 : N)
+ */
 @RestController
 @RequiredArgsConstructor
 public class OrderApiController {
@@ -28,5 +40,57 @@ public class OrderApiController {
         }
         return all;
     }
+
+    /**
+     * select order
+     * order1 -> member -> delivery -> orderItems -> ( item1, item2) //6
+     * order2 -> member -> delivery -> orderItems -> ( item1, item2) // 5
+     * 쿼리 총 11개 발생
+     */
+    @GetMapping("/api/v2/orders")
+    public List<OrderDto> ordersV2(){
+        List<Order> orders = orderRepository.findAll(new OrderSearch());
+        List<OrderDto> collect = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(Collectors.toList());
+        return collect;
+    }
+
+    @Data
+    static class OrderDto{
+        private Long orderId;
+        private String name;
+        private LocalDateTime orderDate;
+        private OrderStatus orderStatus;
+        private Address address;
+        private List<OrderItemDto> orderItems; // new! OrderItem도 꼭 Dto로 받아야 함
+
+        public OrderDto(Order order) {
+            orderId = order.getId();
+            name = order.getMember().getName();
+            orderDate = order.getOrderDate();
+            orderStatus = order.getStatus();
+            address = order.getDelivery().getAddress();
+
+            orderItems = order.getOrderItems().stream()
+                    .map(orderItem -> new OrderItemDto(orderItem))
+                    .collect(Collectors.toList());
+
+        }
+    }
+
+    @Data
+    static class OrderItemDto{
+        private String itemName; // 상품명
+        private int orderPrice; // 주문 가격
+        private int count; // 주문 수량
+
+        public OrderItemDto(OrderItem orderItem) {
+            itemName = orderItem.getItem().getName();
+            orderPrice = orderItem.getOrderPrice();
+            count = orderItem.getCount();
+        }
+    }
+
 
 }
