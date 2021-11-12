@@ -103,14 +103,31 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    /**
+     * 페이징과 한계 돌파
+     * toOne관계는 패치조인 해도 데이터 뻥튀기 x
+     * toMany관계는 패치조인하면 성능 최적화 불가
+     * @return
+     */
     public List<Order> findAllWithItem() {
         return em.createQuery(
                 "select distinct o from Order o" +
-                        " join fetch o.member m"+
-                        " join fetch o.delivery d"+
+                        " join fetch o.member m"+  // toOne
+                        " join fetch o.delivery d"+ // toOne
                         " join fetch  o.orderItems oi"+
                         " join fetch oi.item i", Order.class)
                 .getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m"+
+                        " join fetch o.delivery d", Order.class)
+                .setFirstResult(offset)
+                .setMaxResults(limit)
+                .getResultList();
+
     }
 }
 
