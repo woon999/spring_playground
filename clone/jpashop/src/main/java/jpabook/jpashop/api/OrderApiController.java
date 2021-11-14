@@ -89,9 +89,22 @@ public class OrderApiController {
         return collect;
     }
 
+    /**
+     * JPA에서 DTO 직접 조회 - N+1문제 발생
+     * toOne은 join으로 해결하면 됨
+     * toMany 조회는 따로 for문을 돌려야하기 때문 N+1문제 발생
+     */
     @GetMapping("/api/v4/orders")
     public List<OrderQueryDto> ordersV4(){
         return orderQueryRepository.findOrderQueryDtos();
+    }
+
+    /**
+     * JPA에서 DTO 직접 조회 - 컬렉션 조회 최적화
+     */
+    @GetMapping("/api/v5/orders")
+    public List<OrderQueryDto> ordersV5(){
+        return orderQueryRepository.findAllByDto_optimization();
     }
 
     @Data
