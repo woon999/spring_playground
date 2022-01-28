@@ -35,3 +35,49 @@ PrincipalDetails에서 PrincipalDetails 감싸준 User객체를 PrincipalDetails
 
 Security Session 안에 => Authentication 안에 => UserDetails 타입 필요
 
+
+<br>
+
+## 2. OAuth2 로그인 구현
+시큐리티 세션에 있는 Authentication 객체 안에 UserDetails, OAuth2User 객체를 저장할 수 있음
+- UserDetails: 기존 로그인 유저 객체, OAuth2User: OAuth 로그인 유저 객체
+- 그래서 PrincipalDetails에 UserDetails, OAuth2User 모두 구현해야 함
+
+CustomOAuth2UserService loadUser(), PrincipalDetailsService loadUserByUsername()
+- loadUser, loadUserByUsername에서 각각 로그인 유저 객체를 시큐리티 session에 있는 ([UserDetails로 포장된] Authentication 객체)로 보내준다.
+- return PrincipalDetails -> Authentication 객체에 저장 
+- 함수 종료시 @AuthenticationPrincipal 어노테이션이 만들어진다.
+- loadUserByUsername(): loginForm으로 부터 받은 user 데이터에 대한 후처리되는 함수 (return new PrincipalDetails(user);) // UserDetails
+- loadUser(): 구글로부터 받은 userRequest 데이터에 대한 후처리되는 함수 (return new PrincipalDetails(user, oAuth2User.getAttributes());)  // OAuth2User
+
+<br> 
+
+### OAuth2 유저 객체 
+#### oauth2 google user
+username = google_{sub}
+password = "암호화(겟인데어)" > 의미없음
+email = {email}
+role = "ROLE_USER"
+provider = "google"
+providerId = {sub}
+
+<br> 
+
+### @AuthenticationPrincipal
+@AuthenticationPrincipal 어노테이션으로 Authentication에 저장되어 있는 일반, OAuth 로그인 유저 객체 모두 받아올 수 있음
+- authentication.getPrincipal() == PrincipalDetails 객체
+- authentication.getPrincipal().getUser() == @AuthenticationPrincipal달린 principalDetails.getUser()
+~~~
+@GetMapping("/user")
+public @ResponseBody String testLogin(Authentication authentication){
+    PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+    System.out.println("User : " + principalDetails.getUser());
+    return "user";
+}
+
+@GetMapping("/user")
+public @ResponseBody String user(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    System.out.println("User : " + principalDetails.getUser());
+    return "user";
+}
+~~~
