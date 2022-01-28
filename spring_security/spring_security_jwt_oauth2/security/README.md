@@ -54,12 +54,12 @@ CustomOAuth2UserService loadUser(), PrincipalDetailsService loadUserByUsername()
 
 ### OAuth2 유저 객체 
 #### oauth2 google user
-username = google_{sub}
-password = "암호화(겟인데어)" > 의미없음
-email = {email}
-role = "ROLE_USER"
-provider = "google"
-providerId = {sub}
+- username = google_{sub}
+- password = "암호화(겟인데어)" > 의미없음
+- email = {email}
+- role = "ROLE_USER"
+- provider = "google"
+- providerId = {sub}
 
 <br> 
 
