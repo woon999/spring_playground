@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.example.security.config.auth.PrincipalDetails;
 import com.example.security.config.oauth.provider.FacebookUserInfo;
 import com.example.security.config.oauth.provider.GoogleUserInfo;
+import com.example.security.config.oauth.provider.KakaoUserInfo;
 import com.example.security.config.oauth.provider.NaverUserInfo;
 import com.example.security.config.oauth.provider.OAuth2UserInfo;
 import com.example.security.model.User;
@@ -47,7 +48,9 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
 		} else if(userRequest.getClientRegistration().getRegistrationId().equals("naver")){
 			System.out.println("네이버 로그인 요청");
 			oAuth2UserInfo = new NaverUserInfo((Map)oAuth2User.getAttributes().get("response"));
-
+		} else if(userRequest.getClientRegistration().getRegistrationId().equals("kakao")){
+			System.out.println("카카오 로그인 요청");
+			oAuth2UserInfo = new KakaoUserInfo((Map)oAuth2User.getAttributes());
 		} else {
 			System.out.println("구글, 페이스북, 네이버만 지원됩니다.");
 		}
