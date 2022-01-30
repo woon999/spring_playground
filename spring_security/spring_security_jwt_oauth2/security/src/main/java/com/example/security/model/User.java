@@ -9,6 +9,8 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.CreationTimestamp;
 
+import com.sun.istack.NotNull;
+
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,9 +31,14 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	@NotNull
 	private String username;
+	@NotNull
 	private String password;
+	@NotNull
 	private String email;
+	@NotNull
 	private String role;
 
 	private String provider; // oauth (ex. google)
@@ -50,6 +57,13 @@ public class User {
 		this.provider = provider;
 		this.providerId = providerId;
 		this.createDate = createDate;
+	}
+
+	public User update(String username, String email){
+		this.username = username;
+		this.email = email;
+
+		return this;
 	}
 }
 
