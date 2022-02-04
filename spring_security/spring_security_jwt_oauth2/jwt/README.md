@@ -28,18 +28,6 @@ RSA방식은 있는 이는 비대칭키 방식(공개키, 개인키)를 만들�
 
 <br>
 
-
-## Authorization 인증
-### Basic 인증
-ID, PW를 직접 보내야하기 때문에 https 통신에서만 사용 가능
-   
-### Bearer 인증
-(ID, PW) -> 토큰으로 변경하여 토큰을 통해 통신하는 방식
-- 토큰이 노출이 되면 보안 위험있기는 마찬가지
-- JWT 토큰이 주로 사용됨
-
-<br>
-
 ## Spring Security 설정
 ### http.csrf().disable();
 
@@ -48,8 +36,39 @@ ID, PW를 직접 보내야하기 때문에 https 통신에서만 사용 가능
 ### .formLogin().disable()
 
 ### .httpBasic().disable()
+쿠키 http only : false
+
 
 ### @CroosOrigin vs CorsFilter
 인증 유무 차이
 - 인증이 필요없을 때는 Controller단에 @CrossOrigin 설정하면 됨.
 - 인증이 필요할 때는 시큐리티 필터에 CorsFilter 걸어줘야 함.
+
+<br>
+
+## Authorization 인증
+쿠키는 서버가 많아지면 많아질수록 확장성에 안좋음. 그래서 header에 Authorization에 담아서 보내는데 Basic, Bearer인증 방식이 있음.
+
+### Basic 인증
+ID, PW를 직접 보내야하기 때문에 https 통신에서만 사용 가능
+   
+### Bearer 인증
+(ID, PW) -> 토큰으로 변경하여 토큰을 통해 통신하는 방식
+- 토큰이 노출이 되면 보안 위험있기는 마찬가지
+- JWT 토큰이 주로 사용됨
+
+
+<br>
+
+## 서블릿 필터 체인
+### 우선순위-
+- 시큐리티 필터가 먼저 실행
+- 그 다음에 일반 필터들이 실행
+
+### 시큐리티 필터에 등록하기 SecurityConfig 
+http.addFilterBefore(Filter filter, Class<? extends Filter> beforeFilter)
+- 시큐리티 필터보다 먼저 실행
+
+http.addFilterAfter(Filter filter, Class<? extends Filter> afterFilter)
+- 시큐리티 필터가 모두 끝나고 나서 실행됨 
+
