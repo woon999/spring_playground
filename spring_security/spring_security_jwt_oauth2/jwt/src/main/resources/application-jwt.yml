@@ -1,0 +1,4 @@
+# 원래 .gitignore로 파일 숨겨야 함
+jwt:
+  expiration_time: 600_000 # 10분
+  secret: 1234

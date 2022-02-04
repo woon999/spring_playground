@@ -1,6 +1,20 @@
 package com.example.jwt.config.jwt;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+import lombok.Data;
+
+@Data
+@Component
+@ConfigurationProperties("jwt")
 public class JwtProperties {
-	public static final long EXPIRATION_TIME = 60_000*10; // 10분
-	public static final String SECRET = "1234";
+	public String expirationTime;
+	public String secret;
+	public static final String TOKEN_PREFIX = "Bearer ";
+	public static final String HEADER_STRING = "Authorization";
+
+	public int getExpirationTime() {
+		return Integer.parseInt(expirationTime);
+	}
 }

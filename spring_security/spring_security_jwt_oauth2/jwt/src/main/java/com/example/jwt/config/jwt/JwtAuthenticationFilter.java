@@ -31,6 +31,7 @@ import lombok.RequiredArgsConstructor;
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
 	private final AuthenticationManager authenticationManager;
+	private final JwtProperties jwtProperties;
 
 	// /login 요청을 하면 로그인 시도를 위해 실행되는 함수
 	// 1. username, pw 받아서 유저가 맞는지 확인
@@ -75,12 +76,12 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		String jwtToken = JWT.create()
 			.withSubject(principalDetails.getUsername())
-			.withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
+			.withExpiresAt(new Date(System.currentTimeMillis()+ jwtProperties.getExpirationTime()))
 			.withClaim("id", principalDetails.getUser().getId())
 			.withClaim("username", principalDetails.getUser().getUsername())
-			.sign(Algorithm.HMAC256(JwtProperties.SECRET));
+			.sign(Algorithm.HMAC512(jwtProperties.getSecret()));
 
-		response.addHeader("Authorization", "Bearer " + jwtToken);
+		response.addHeader(JwtProperties.HEADER_STRING, JwtProperties.TOKEN_PREFIX + jwtToken);
 		System.out.println(jwtToken);
 	}
 }

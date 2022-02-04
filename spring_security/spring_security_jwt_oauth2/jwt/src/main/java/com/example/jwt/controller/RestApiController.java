@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.jwt.config.jwt.JwtProperties;
 import com.example.jwt.model.User;
 import com.example.jwt.repository.UserRepository;
 
@@ -18,7 +19,7 @@ public class RestApiController {
 
 	private final UserRepository userRepository;
 	private final BCryptPasswordEncoder bCryptPasswordEncoder;
-
+	private final JwtProperties jwtProperties;
 
 	@GetMapping("home")
 	public String home(){
@@ -27,7 +28,7 @@ public class RestApiController {
 
 	@PostMapping("token")
 	public String token(){
-		return "<h1>token</h1>";
+		return jwtProperties.getExpirationTime() + "<h1>token</h1>";
 	}
 
 	@PostMapping("join")
@@ -36,6 +37,24 @@ public class RestApiController {
 		user.setRoles("ROLE_USER");
 		userRepository.save(user);
 		return user.getId()+ "<h1>회원가입 완료 </h1>";
+	}
+
+	// USER , MANAGER, ADMIN
+	@GetMapping("/api/v1/user")
+	public String user(){
+		return "<h1> user </h1>";
+	}
+
+	// MANAGER, ADMIN
+	@GetMapping("/api/v1/manager")
+	public String manager(){
+		return "<h1> manager </h1>";
+	}
+
+	// ADMIN
+	@GetMapping("/api/v1/admin")
+	public String admin(){
+		return "<h1> admin </h1>";
 	}
 }
 

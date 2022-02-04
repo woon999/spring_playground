@@ -15,7 +15,7 @@ public class MyFilter1 implements Filter {
 		IOException,
 		ServletException {
 
-		System.out.println("필터 1");
+		System.out.println("========= 필터 1 =========");
 		chain.doFilter(request, response); // 다시 필터 체인에 태워줘야 함. 안태워주면 필터 종료됨
 
 	}

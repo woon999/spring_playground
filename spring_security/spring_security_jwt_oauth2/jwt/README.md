@@ -120,7 +120,20 @@ if username, password 로그인 정상
 요청할 때 마다 헤더에 들어있는 jwt토큰을 가지고 요청하고 서버는 jwt토큰이 유효한지 검증하고 인가를 내림
 - 그런데 jwt 토큰이 유효한지 판단하는 필터가 따로 없기 때문에 이에 대한 필터를 직접 만들어야 함 
 
-### jwt 토큰 검증 필터 만들기
+<br>
 
+### jwt 토큰 검증 필터 만들기
+BasicAuthenticationFilter 필터를 사용하여 권한, 인증 절차 거침
+[BasicAuthenticationFilter 필터](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.htmlhttps://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html)
+- HTTP 요청의 BASIC 인증 헤더를 처리하여 결과를 SecurityContextHolder에 넣어준다.
+
+#### 동작과정
+1. 헤더에 jwt 토큰이 들어있을 경우에만 동작
+2. 서버가 들고있는 secret 키로 복호화하여 username이 존재하는지 확인
+3. 존재한다면 인증된 객체(Authentication)d에 권한과 함께 넣어줌
+4. 인증 객체를 SecurityContextHolder 세션에 넣고 응답 보냄
+5. 그러면 security가 세션에 있는 정보를 통해 권한 인가를 해줌
+
+ 
  
 
