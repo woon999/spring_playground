@@ -61,9 +61,11 @@ ID, PW를 직접 보내야하기 때문에 https 통신에서만 사용 가능
 <br>
 
 ## 서블릿 필터 체인
-### 우선순위-
+
+
+### 우선순위
 - 시큐리티 필터가 먼저 실행
-- 그 다음에 일반 필터들이 실행
+- 그 다음에 일반 필터들이 실행 (FilterRegistrationBean)
 
 ### 시큐리티 필터에 등록하기 SecurityConfig 
 http.addFilterBefore(Filter filter, Class<? extends Filter> beforeFilter)
@@ -71,4 +73,7 @@ http.addFilterBefore(Filter filter, Class<? extends Filter> beforeFilter)
 
 http.addFilterAfter(Filter filter, Class<? extends Filter> afterFilter)
 - 시큐리티 필터가 모두 끝나고 나서 실행됨 
+
+### 시큐리티 필터 체인
+<img width="700" alt="스크린샷 2022-02-04 오후 2 24 16" src="https://user-images.githubusercontent.com/54282927/152476884-9292e1b2-9fa9-4c72-8778-ea1d5924d9cc.png">
 
