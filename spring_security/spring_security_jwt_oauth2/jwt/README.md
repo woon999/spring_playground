@@ -100,3 +100,27 @@ http.addFilterAfter(Filter filter, Class<? extends Filter> afterFilter)
 attemptAuthentication 실행 후 인증이 정상적으로 되었으면 successfulAuthentication 함수가 실행됨
 - JWT 토큰을 만들어서 request 요청한 사용자에게 JWT 토큰을 response 해주면 된다.
 
+<br>
+
+## 세션 vs 토큰
+### 세션ID를 이용한 인증 
+if username, password 로그인 정상
+- 서버쪽 세션 ID 생성
+- 클라이언트 쿠키 세션 ID를 응답
+
+요청할 때 마다 쿠키값에 들어있는 세션 ID를 들고 서버쪽으로 요청하고 서버는 세션 ID가 유효한지 검증하고 접근권한에 대한 인가를 내림
+
+<br>
+
+### jwt 토큰을 이용한 인증
+if username, password 로그인 정상
+- 서버에서 jwt 토큰 생성
+- 클라이언트 쪽으로 jwt 토큰을 응답
+
+요청할 때 마다 헤더에 들어있는 jwt토큰을 가지고 요청하고 서버는 jwt토큰이 유효한지 검증하고 인가를 내림
+- 그런데 jwt 토큰이 유효한지 판단하는 필터가 따로 없기 때문에 이에 대한 필터를 직접 만들어야 함 
+
+### jwt 토큰 검증 필터 만들기
+
+ 
+

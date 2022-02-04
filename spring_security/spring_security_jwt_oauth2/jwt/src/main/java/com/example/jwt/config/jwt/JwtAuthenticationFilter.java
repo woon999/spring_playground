@@ -1,7 +1,7 @@
 package com.example.jwt.config.jwt;
 
-import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.Date;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -14,6 +14,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.example.jwt.config.auth.PrincipalDetails;
 import com.example.jwt.model.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -67,6 +69,18 @@ public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 	protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
 		Authentication authResult) throws IOException, ServletException {
 		System.out.println("successfulAuthentication 실행 : 유저 로그인 인증 완료");
-		super.successfulAuthentication(request, response, chain, authResult);
+
+		// 해당 정보를 통해 jwt 토큰 생성
+		PrincipalDetails principalDetails = (PrincipalDetails)authResult.getPrincipal();
+
+		String jwtToken = JWT.create()
+			.withSubject(principalDetails.getUsername())
+			.withExpiresAt(new Date(System.currentTimeMillis()+ JwtProperties.EXPIRATION_TIME))
+			.withClaim("id", principalDetails.getUser().getId())
+			.withClaim("username", principalDetails.getUser().getUsername())
+			.sign(Algorithm.HMAC256(JwtProperties.SECRET));
+
+		response.addHeader("Authorization", "Bearer " + jwtToken);
+		System.out.println(jwtToken);
 	}
 }
