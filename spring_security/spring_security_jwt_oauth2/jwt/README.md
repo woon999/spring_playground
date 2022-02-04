@@ -77,3 +77,26 @@ http.addFilterAfter(Filter filter, Class<? extends Filter> afterFilter)
 ### 시큐리티 필터 체인
 <img width="700" alt="스크린샷 2022-02-04 오후 2 24 16" src="https://user-images.githubusercontent.com/54282927/152476884-9292e1b2-9fa9-4c72-8778-ea1d5924d9cc.png">
 
+<br>
+
+## 로그인 처리 진행
+### 시큐리티 필터 UsernamePasswordAuthenticationFilter을 이용하여 로그인 처리 진행
+- /login으로 (username, password) POST 요청하면 동작됨 
+- formLogin.disable()하면 동작안하지만, addFilter로 해당 필터 등록하면 따로 이 필터만 동작됨
+
+### 동작 과정 attemptAuthentication
+1. ObjectMapper를 이용하여 json 객체 User정보에 매핑해줌
+2. UsernamePasswordAuthenticationToken에 (username, password)을 담음
+3. authenticationManager로 authenticate 메서드에 해당 인증 요청 정보(authenticationToken)를 넣어 동작시킴
+4. authenticationManager로 로그인 시도하면 PrincipalDetailsService가 호출되어 loadUserByUsername() 실행됨.
+5. loadUserByUsername에서 DB에서 유저정보를 조회하여 정보가 존재하면 PrincipalDetails(User) 객체 반환
+6. authentication객체가 담기면 로그인 완료되었다는 뜻
+7. return authentication 객체 반환
+
+리턴되면서 authentication 객체(로그인한 정보; 인증된 객체)가 session 영역에 저장됨
+- jwt토큰을 사용하면 세션을 만들 이유는 없지만 리턴하는 이유는 권한 관리를 security가 대신 해주기 때문에 세션에 넣어줌
+
+### 동작 과정 successfulAuthentication
+attemptAuthentication 실행 후 인증이 정상적으로 되었으면 successfulAuthentication 함수가 실행됨
+- JWT 토큰을 만들어서 request 요청한 사용자에게 JWT 토큰을 response 해주면 된다.
+
