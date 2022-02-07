@@ -1,4 +1,4 @@
-package hellojpa;
+package hellojpa.domain;
 
 import javax.persistence.*;
 

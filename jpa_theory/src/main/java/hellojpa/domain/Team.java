@@ -1,6 +1,4 @@
-package hellojpa;
-
-import hellojpa.maapedsuper.BaseEntity;
+package hellojpa.domain;
 
 import javax.persistence.*;
 import java.util.ArrayList;

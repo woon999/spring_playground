@@ -1,19 +1,12 @@
-package hellojpa;
-
-import hellojpa.embedded.Address;
-import hellojpa.embedded.Period;
+package hellojpa.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 @Entity
-@NamedQuery(
-        name = "Member.findByUsername",
-        query= "select m from Member m where m.username = :username"
-)
+// @NamedQuery(
+//         name = "Member.findByUsername",
+//         query= "select m from Member m where m.username = :username"
+// )
 public class Member {
 
     @Id @GeneratedValue

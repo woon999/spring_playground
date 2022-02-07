@@ -123,8 +123,7 @@ if username, password 로그인 정상
 <br>
 
 ### jwt 토큰 검증 필터 만들기
-BasicAuthenticationFilter 필터를 사용하여 권한, 인증 절차 거침
-[BasicAuthenticationFilter 필터](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.htmlhttps://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html)
+[BasicAuthenticationFilter 필터](https://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.htmlhttps://docs.spring.io/spring-security/site/docs/current/api/org/springframework/security/web/authentication/www/BasicAuthenticationFilter.html) 를 사용하여 권한, 인증 절차 거침
 - HTTP 요청의 BASIC 인증 헤더를 처리하여 결과를 SecurityContextHolder에 넣어준다.
 
 #### 동작과정
