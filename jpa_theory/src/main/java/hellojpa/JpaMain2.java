@@ -95,5 +95,44 @@ public class JpaMain2 {
         }
     }
 
+    @Test
+    void persistence(){
+        // 비영속
+        Member member = new Member();
+        member.setName("hello world");
+        System.out.println("====== BEFORE =======");
+
+        // 영속
+        em.persist(member);
+        System.out.println("====== AFTER =======");
+    }
+
+    @Test
+    void flush(){
+        Member member = new Member();
+        member.setName("hello world");
+        em.persist(member);
+        System.out.println("====== BEFORE =======");
+        em.flush(); // flush 처리
+        System.out.println("====== AFTER =======");
+    }
+
+    /**
+     * 준영속 상태 - 영속성 분리
+     *
+     * em.detach(entity): 특정 엔티티만 준영속 상태로 전환
+     * em.clear(): 영속성 컨텍스트를 완전히 초기화
+     * em.close(): 영속성 컨텍스트 종료
+     */
+    @Test
+    void detach(){
+        Member member = new Member();
+        member.setName("hello world!!!");
+
+        System.out.println("====== BEFORE =======");
+        em.detach(member);
+        System.out.println("====== AFTER =======");
+    }
+
 }
 
