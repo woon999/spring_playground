@@ -16,7 +16,7 @@ WebSecurityConfigurerAdapter를 상속받은 파일
 #### PrincipalDetails 클래스
 Security ContextHolder에 넣는 유저 정보 타입은 Authentication 객체이어야 한다 
 -> Authentication 객체 안에는 UserDetails타입으로 User정보를 받는다.
--> 그래서 우리는 User정보를 개 감싸서 내보내줘야 한다. 
+-> 그래서 우리는 User정보를 감싸서 내보내줘야 한다. 
 
 #### PrincipalDetailsService
 PrincipalDetails에서 PrincipalDetails 감싸준 User객체를 PrincipalDetailsService에서 반환한다.  
