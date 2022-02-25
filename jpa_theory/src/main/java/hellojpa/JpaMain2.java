@@ -134,5 +134,25 @@ public class JpaMain2 {
         System.out.println("====== AFTER =======");
     }
 
+    // @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Test
+    void identity(){
+        // 비영속
+        Member member = new Member();
+        member.setName("hello world");
+        System.out.println("====== BEFORE =======");
+
+        /**
+         * 위에 persistence()에서는 insert 쿼리가 commit()시점에 나갔다.
+         * 그런데 만약 ID를 Identity전략으로 설정해주면 persist단계에서 쿼리가 나가게 된다.
+         * 이유: 엔티티가 영속 상태가 되려면 식별자가 반드시 필요하다.
+         *       Identity 전략은 엔티티를 DB에 저장해야 식별자를 구할 수 있으므로 em.persist()를 호출하는 즉시 INSERT SQL이 DB에 전달된다.
+         *       따라서 이 전략은 트랜잭션을 지원하는 쓰기 지연이 동작하지 않는다.
+         */
+        // 영속
+        em.persist(member);
+        System.out.println("member id = " + member.getId());
+        System.out.println("====== AFTER =======");
+    }
 }
 
