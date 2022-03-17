@@ -1,4 +1,4 @@
-# Spring + Docker + AWS EC2 배포
+# Spring 프로젝트 Docker 배포 (로컬, AWS EC2) 배포
 ## 환경설정
 - SpringBoot 2.6.4
 - Java 11
