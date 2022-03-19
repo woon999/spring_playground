@@ -2,6 +2,7 @@
 - default : 8080
 - real1 : 8081
 - real2 : 8082
+
  
 <br>
 
@@ -77,3 +78,7 @@ server{
 
 Mac OS 경우 /etc/apache2/httpd.conf파일에 들어가서 Listen 80 주석 처리해줘야 됨
 
+<br>
+
+ret
+- https://hellokoding.com/docker-compose-with-spring-boot-nginx/
