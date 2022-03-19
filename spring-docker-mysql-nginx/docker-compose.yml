@@ -1,0 +1,51 @@
+version: "3"
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysqldb
+    environment:
+      - MYSQL_DATABASE=test
+      - MYSQL_ROOT_PASSWORD=root
+    ports:
+      - 3307:3306
+    volumes:
+      - app-db-data:/var/lib/mysql
+    networks:
+      - spring-net
+
+  spring-nginx-mysql-app:
+    image: spring-nginx-mysql-app
+    container_name: app
+    build: .
+    restart: always
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+      MYSQL_PORT: 3306
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    networks:
+      - spring-net
+
+  nginx:
+    container_name: spring-nginx
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - spring-nginx-mysql-app
+    networks:
+      - spring-net
+
+volumes:
+  app-db-data:
+
+networks:
+  spring-net:
