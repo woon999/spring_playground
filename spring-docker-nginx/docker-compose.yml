@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  nginx:
+    container_name: spring-nginx
+    image: nginx
+    restart: always
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    depends_on:
+      - spring-nginx-app
+
+  spring-nginx-app:
+    restart: always
+    build: .
+    ports:
+      - 8080:8081
+    environment:
+      - "SPRING_PROFILE=real1"
