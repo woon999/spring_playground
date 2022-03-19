@@ -3,6 +3,16 @@
 - real1 : 8081
 - real2 : 8082
 
+<br>
+
+## nginx 잘 동작하는지 확인하기
+### 1. docker로 nginx 실행
+- Mac OS 경우 /etc/apache2/httpd.conf파일에 들어가서 Listen 80 주석 처리해줘야 됨
+~~~
+$ docker run -p 80:80 nginx # nginx 실행
+~~~
+### 2. http://localhost로 확인
+"Welcome to nginx!" 페이지뜨면 확인 
  
 <br>
 
