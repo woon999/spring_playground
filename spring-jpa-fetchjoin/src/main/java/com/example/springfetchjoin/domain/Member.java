@@ -4,7 +4,6 @@ import static javax.persistence.FetchType.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
@@ -27,8 +26,12 @@ public class Member {
 	@JoinColumn(name ="team_id")
 	private Team team;
 
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne( fetch = LAZY)
 	@JoinColumn(name = "wallet_id")
 	private Wallet wallet;
 
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
+		wallet.setMember(this);
+	}
 }

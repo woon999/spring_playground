@@ -23,22 +23,26 @@ class SpringFetchjoinApplicationTests {
 	@Autowired
 	EntityManager em;
 
+	private Long mId;
+	private Long wId;
+	private Long tId;
 	@BeforeEach
 	void setUp(){
-		Wallet wallet = new Wallet();
-		wallet.setAmount("100");
-		em.persist(wallet);
 
 		// Member - Team (N:1)
 		Team team = new Team();
 		team.setName("teamA");
 		em.persist(team);
+		tId = team.getId();
 
 		Team team2 = new Team();
 		team2.setName("teamB");
 		em.persist(team2);
 
 		for(int i=1; i<=5; i++){
+			Wallet wallet = new Wallet();
+			wallet.setAmount("100");
+
 			Member member = new Member();
 			member.setName("member"+i);
 			if(i%2==0) {
@@ -46,8 +50,13 @@ class SpringFetchjoinApplicationTests {
 			}else{
 				member.setTeam(team2);
 			}
+
 			member.setWallet(wallet);
 			em.persist(member);
+			em.persist(wallet);
+
+			wId = wallet.getId();
+			mId = member.getId();
 		}
 		em.flush();
 		em.clear();
@@ -149,6 +158,29 @@ class SpringFetchjoinApplicationTests {
 				System.out.println("member = " + member.getName());
 			}
 		}
+	}
+
+	@Test
+	void oneToOne_주인_객체가_조회(){
+		Member member = em.createQuery("select m from Member m "
+			+ "where m.id = :id"
+			, Member.class)
+			.setParameter("id", mId)
+			.getSingleResult();
+
+		System.out.println(member.getWallet().getClass()); // 프록시 객체
+	}
+
+	// Not Lazy
+	@Test
+	void oneToOne_주인이_아닌_객체가_조회(){
+		Wallet wallet = em.createQuery("select w from Wallet w "+
+			"where w.id = :id"
+			, Wallet.class)
+			.setParameter("id" , wId)
+			.getSingleResult();
+
+		System.out.println(wallet.getMember().getClass()); // 프록시 객체 x, 진짜 객체
 	}
 
 }
