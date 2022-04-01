@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+    url: jdbc:tc:mysql:8://testdb/
+    username: test
+    password: 1234
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+
+  sql:
+    init:
+      mode: always
