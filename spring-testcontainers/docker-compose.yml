@@ -1,0 +1,34 @@
+version: '3.1'
+
+services:
+  mysql:
+    image: mysql
+    container_name: mysqldb
+    environment:
+      - MYSQL_DATABASE=foodb
+      - MYSQL_ROOT_PASSWORD=foo
+    ports:
+      - 3307:3306
+    networks:
+      - spring-net
+
+  spring-testcontainers-app:
+    image: spring-testcontainers-app
+    container_name: spring-testcontainers-app
+    build: .
+    restart: always
+    environment:
+      MYSQL_HOST: mysqldb
+      MYSQL_DATABASE: foodb
+      MYSQL_USER: root
+      MYSQL_PASSWORD: foo
+      MYSQL_PORT: 3306
+    ports:
+      - 8080:8080
+    depends_on:
+      - mysql
+    networks:
+      - spring-net
+
+networks:
+  spring-net:

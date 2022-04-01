@@ -1,0 +1,16 @@
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:test}
+    username: ${MYSQL_USER:test_user}
+    password: ${MYSQL_PASSWORD:1234}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    properties:
+      hibernate:
+        format_sql: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+
+#  sql:
+#    init:
+#      mode: always
