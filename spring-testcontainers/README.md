@@ -171,7 +171,48 @@ insert into customers (first_name, last_name) values ('test2', 'lee');
 
 
  
+## TestContainers 정보 스프링 테스트에서 사용하기
+#### @ContextConfiguration
+- 스프링 테스트 컨텍스트가 사용할 설정 파일 또는 컨텍스트를 커스터마이징할 수 있는 방법을 제공한다.
+
+#### ApplicationContextInitializer
+- 스프링 ApplicationContext를 프로그래밍으로 초기화 할 때 사용할 수 있는 콜백 인터페이스로, 특정 프로파일을 활성화 하거나, 프로퍼티 소스를 추가하는 등의 작업을 할 수 있다.
+
+#### TestPropertyValues
+- 테스트용 프로퍼티 소스를 정의할 때 사용한다.
+
+~~~
+@ActiveProfiles("test")
+@Testcontainers
+@SpringBootTest
+@ContextConfiguration(initializers = CustomerIntegrationTest2.ContainerPropertyInitializer.class)
+class CustomerIntegrationTest2 {
+
+	@Value("${container.port}") int port;
+
+	@Container
+	private static GenericContainer container = new GenericContainer("mysql:8")
+		.withExposedPorts(3307);
+
+	@Test
+	void get_container_mapped_port_by_3307() {
+		System.out.println("port = " + port);
+	}
+
+	static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
+		@Override
+		public void initialize(ConfigurableApplicationContext applicationContext) {
+			TestPropertyValues.of("container.port=" + container.getMappedPort(3307))
+				.applyTo(applicationContext);
+		}
+	}
+}
+~~~
  
  
+<br>
+
+## TestContainers를 여러 통합테스트에 한 번에 적용하기
+
  
 
