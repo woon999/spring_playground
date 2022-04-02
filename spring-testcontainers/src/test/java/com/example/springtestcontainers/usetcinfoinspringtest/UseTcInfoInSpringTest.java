@@ -1,7 +1,6 @@
-package com.example.springtestcontainers;
+package com.example.springtestcontainers.usetcinfoinspringtest;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.util.TestPropertyValues;
@@ -11,19 +10,17 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
-import org.testcontainers.junit.jupiter.Testcontainers;
 
 @ActiveProfiles("test")
-@Testcontainers
 @SpringBootTest
-@ContextConfiguration(initializers = CustomerIntegrationTest2.ContainerPropertyInitializer.class)
-class CustomerIntegrationTest2 {
+@ContextConfiguration(initializers = UseTcInfoInSpringTest.ContainerPropertyInitializer.class)
+class UseTcInfoInSpringTest {
 
 	@Value("${container.port}") int port;
 
 	@Container
 	private static GenericContainer container = new GenericContainer("mysql:8")
-		.withExposedPorts(3307);
+		.withExposedPorts(3308);
 
 	@Test
 	void get_container_mapped_port_by_3307() {
@@ -33,7 +30,7 @@ class CustomerIntegrationTest2 {
 	static class ContainerPropertyInitializer implements ApplicationContextInitializer<ConfigurableApplicationContext>{
 		@Override
 		public void initialize(ConfigurableApplicationContext applicationContext) {
-			TestPropertyValues.of("container.port=" + container.getMappedPort(3307))
+			TestPropertyValues.of("container.port=" + container.getMappedPort(3308))
 				.applyTo(applicationContext);
 		}
 	}

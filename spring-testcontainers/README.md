@@ -124,28 +124,24 @@ class CustomerIntegrationTest {
     - 참고: https://github.com/testcontainers/testcontainers-java/blob/master/modules/mysql/src/main/java/org/testcontainers/containers/MySQLContainer.java
 
 #### container 값 설정하기
-- 그런데 사실상 이러한 설정값이 무의미한게 아무값이나 입력되어도 컨테이너는 다 정상적으로 작동
+- 그런데 사실상 이러한 설정값들은 무의미함. 아무값이나 입력되어도 컨테이너는 다 정상적으로 작동. 
 ~~~
 @Container
-private static MySQLContainer container = new MySQLContainer("mysql:8")
-    .withDatabaseName("testdb")
-    .withPassword("1234");
+private static MySQLContainer container = new MySQLContainer("mysql:8");
+    // .withDatabaseName("testdb")
+    // .withPassword("1234");
 ~~~
 
 <br>
 
-- mysql settings : jdbc:tc:mysql:5.7.34://hostname/databasename?TC_MY_CNF=somepath/mysql_conf_override
-    - mysql 8 :  jdbc:tc:mysql:8:///
+- mysql settings : ex. jdbc:tc:mysql:5.7.34://hostname/databasename?TC_MY_CNF=somepath/mysql_conf_override
+    - mysql 8 :  jdbc:tc:mysql:8:///testdb
     - 참고: https://www.testcontainers.org/modules/databases/mysql/
 ~~~
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:mysql:8://testdb/
-    username: test
-    password: 1234
-  jpa:
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    url: jdbc:tc:mysql:8:///testdb
   sql:
     init:
       mode: always
@@ -168,7 +164,6 @@ insert into customers (first_name, last_name) values ('test2', 'lee');
 
 
 <br>
-
 
  
 ## TestContainers 정보 스프링 테스트에서 사용하기
@@ -212,7 +207,93 @@ class CustomerIntegrationTest2 {
  
 <br>
 
-## TestContainers를 여러 통합테스트에 한 번에 적용하기
+## TestContainers 싱글톤 컨테이너로 Mysql 연동하여 통합 및 단위 테스트하기  
+때로는 여러 테스트 클래스에 대해 한 번만 시작되는 컨테이너를 정의하는 것이 유용할 수 있습니다. 
+Testcontainers 확장에서 제공하는 이 사용 사례에 대한 특별한 지원은 없습니다. 대신 다음 패턴을 사용하여 구현할 수 있습니다.
 
+<br>
+
+### 통합테스트 @SpringBootTest기 커스텀하기 
+#### 1. AbstractContainerBaseTest 추상 클래스를 생성해서 통합 테스트하는 클래스에 상속해준다. 
+~~~
+public abstract class AbstractContainerBaseTest {
+	static final MySQLContainer container = new MySQLContainer("mysql:8")
+		.withDatabaseName("testdb")
+		.withPassword("1234");
+
+	static {
+		container.start();
+	}
+}
+~~~
+
+<br>
+
+#### 2. 통합 테스트 애노테이션을 따로 커스텀한다. 
+- @Transactional, @ActiveProfiles("test")로 test 프로필 매핑, 단위테스트 롤백 처리
+- 그런데 profile: test만 매핑되어도 testContainers db 연동되어 실행됨. 따로 container.start()없이    
+~~~
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@ActiveProfiles("test")
+@Transactional
+@SpringBootTest
+public @interface IntegrationTest {
+}
+~~~
+
+<br>
+
+#### 3. 통합 테스트를 하는 클래스에 @IntegrationTest 애노테이션 명시 및 AbstractContainerBaseTest 추상클래스 상속
+- profile test로 설정 -> application-test.yml에 명시된 tc db 실행되어 동작
+- AbstractContainerBaseTest 싱글턴 컨테이너로 실행
+
+##### 참고
+- 싱글톤 컨테이너는 기본 클래스가 로드될 때 한 번만 시작됩니다. 
+그러면 컨테이너를 상속하는 모든 테스트 클래스에서 사용할 수 있습니다. 
+테스트 스위트의 끝에서 Testcontainers 코어에 의해 시작된 Ryuk 컨테이너는 싱글톤 컨테이너 중지를 처리합니다 .
+- https://www.testcontainers.org/test_framework_integration/manual_lifecycle_control/#singleton-containers
  
+~~~
+@IntegrationTest
+class FooIntegrationTest1 extends AbstractContainerBaseTest {
+}
 
+..
+
+@IntegrationTest
+class FooIntegrationTest2 extends AbstractContainerBaseTest {
+}
+
+..
+
+@IntegrationTest
+class FooIntegrationTest3 extends AbstractContainerBaseTest {
+}
+~~~
+ 
+ 
+<br>
+
+### 단위 테스트 @DataJapTest 커스텀하기
+~~~
+@Retention(RetentionPolicy.RUNTIME)
+@Target(ElementType.TYPE)
+@ActiveProfiles("test")
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+public @interface TCDataJpaTest {
+}
+~~~
+
+~~~
+@TCDataJpaTest
+class CustomerRepositoryTest extends AbstractContainerBaseTest {
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Test
+    // ...	
+}
+~~~
