@@ -275,6 +275,7 @@ class FooIntegrationTest3 extends AbstractContainerBaseTest {
 <br>
 
 ### 단위 테스트 @DataJapTest 커스텀하기
+- AutoConfigureTestDatabase None: @DataJpaTest에서 자동으로 매핑되는 테스트 디비 설정 None으로 변경. TC 컨테이너 디비와 매핑해줄 것이기 때문 
 ~~~
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
