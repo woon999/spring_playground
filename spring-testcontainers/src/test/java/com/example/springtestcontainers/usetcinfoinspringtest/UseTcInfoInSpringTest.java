@@ -10,9 +10,11 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 @ActiveProfiles("test")
 @SpringBootTest
+@Testcontainers
 @ContextConfiguration(initializers = UseTcInfoInSpringTest.ContainerPropertyInitializer.class)
 class UseTcInfoInSpringTest {
 
@@ -23,7 +25,7 @@ class UseTcInfoInSpringTest {
 		.withExposedPorts(3308);
 
 	@Test
-	void get_container_mapped_port_by_3307() {
+	void get_container_mapped_port_by_3308() {
 		System.out.println("port = " + port);
 	}
 

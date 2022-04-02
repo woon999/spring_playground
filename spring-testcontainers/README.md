@@ -1,4 +1,4 @@
-
+# testContainer로 테스트환경 구축하기
 ## 1. 로컬 환경 구성
 - docker-compose로 spring과 mysql을 실행
 ~~~
@@ -214,15 +214,15 @@ Testcontainers 확장에서 제공하는 이 사용 사례에 대한 특별한 �
 <br>
 
 ### 통합테스트 @SpringBootTest기 커스텀하기 
-#### 1. AbstractContainerBaseTest 추상 클래스를 생성해서 통합 테스트하는 클래스에 상속해준다. 
+#### 1. AbstractContainerBaseTest 추상 클래스를 생성해서 통합 테스트하는 클래스에 상속해준다.
+- 그런데 profile: test만 매핑되어도 testContainers db 연동되어 실행됨. 따로 container.start()없이 그래도 일단 명시적으로 표기는 해둠.  
 ~~~
 public abstract class AbstractContainerBaseTest {
-	static final MySQLContainer container = new MySQLContainer("mysql:8")
-		.withDatabaseName("testdb")
-		.withPassword("1234");
-
+	static final String MYSQL_IMAGE = "mysql:8";
+	static final MySQLContainer MY_SQL_CONTAINER;
 	static {
-		container.start();
+		MY_SQL_CONTAINER = new MySQLContainer(MYSQL_IMAGE);
+		MY_SQL_CONTAINER.start();
 	}
 }
 ~~~
@@ -230,8 +230,7 @@ public abstract class AbstractContainerBaseTest {
 <br>
 
 #### 2. 통합 테스트 애노테이션을 따로 커스텀한다. 
-- @Transactional, @ActiveProfiles("test")로 test 프로필 매핑, 단위테스트 롤백 처리
-- 그런데 profile: test만 매핑되어도 testContainers db 연동되어 실행됨. 따로 container.start()없이    
+- @ActiveProfiles("test")로 test 프로필 매핑, @Transactional로 테스트 롤백 처리
 ~~~
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
@@ -294,6 +293,6 @@ class CustomerRepositoryTest extends AbstractContainerBaseTest {
 	private CustomerRepository customerRepository;
 
 	@Test
-    // ...	
+        // ...	
 }
 ~~~
