@@ -6,10 +6,14 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     properties:
       hibernate:
+
         format_sql: true
+
   jpa:
     hibernate:
       ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
 
   sql:
     init:

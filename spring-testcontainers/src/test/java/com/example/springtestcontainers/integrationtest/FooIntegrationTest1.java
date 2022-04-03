@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.example.springtestcontainers.AbstractContainerBaseTest;
 import com.example.springtestcontainers.Customer;
 import com.example.springtestcontainers.CustomerRepository;
 
