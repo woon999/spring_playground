@@ -81,70 +81,109 @@ maven
 3. "mysql:8"이미지를 추가하여 MySQLContainer 인스턴스를 생성한다.
     - [mysql 이미지 참고](https://hub.docker.com/_/mysql)
     - container가 모든 단위테스트마다 생성되지 않도록 static은 필수
-4. MySQLContainer에 (database=test, username=test, password=test) 값을 넣어줘 생성한다. 
-5. 실행하면 docker를 새로 띄워서 mysql 내부에 있는 데이터가 정상적으로 동작한다.
+
+### 로컬 DB 설정과 매핑
+test 프로필 설정을 따로 해주지 않으면 application.yml 설정을 참고한다. 그래서 test db 설정도 그와 일치하게 되므로 container 값도 그와 똑같이 설정해준다.
+
+application.yml
+~~~
+spring:
+  datasource:
+    url: jdbc:mysql://${MYSQL_HOST:localhost}:${MYSQL_PORT:3306}/${MYSQL_DATABASE:test}
+    username: ${MYSQL_USER:test_user}
+    password: ${MYSQL_PASSWORD:1234}
 ~~~
 
-@ActiveProfiles("test")
+<br>
+
+CustomerIntegrationTest
+- @DynamicPropertySource로 jdbcUrl은 testContainer로 오버라이딩해준다. 
+~~~
+@Transactional
+@SpringBootTest
 @Testcontainers
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class CustomerIntegrationTest {
 
 	@Autowired
 	private CustomerRepository customerRepository;
 
 	@Container
-	private static MySQLContainer container = new MySQLContainer("mysql:8");
+	private static MySQLContainer mysqlContainer = new MySQLContainer("mysql:8")
+					.withDatabaseName("test")
+					.withUsername("test_user")
+					.withPassword("1234");
 
-	static {
-		container.start();
+        @DynamicPropertySource
+	public static void overrideProps(DynamicPropertyRegistry registry){
+		registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+	
 	}
-
 	@Test
-	void schema_script_data_should_be_two() {
-		List<Customer> customers = customerRepository.findAll();
-		customers.forEach(System.out::println);
-		assertEquals(customers.size(), 2);
-	}
+	// ...
 
-	@Test
-	void when_using_a_clean_db_this_should_be_empty() {
-		customerRepository.deleteAll();
-		List<Customer> customers = customerRepository.findAll();
-		System.out.println(customers.size());
-		assertEquals(customers.size(), 0);
-	}
 }
 ~~~
 
 <br>
 
-### @ActiveProfiles("test") 애노테이션 추가
+### 테스트 독립 환경 배포
+다음과 같이 컨테이너 자체에 있는 디폴트 값 설정을 오버라이딩하면 굳이 로컬 DB 설정과 매핑을 시켜주지 않아도 된다.
 - MysqlContainer 기본값 (databaseName = "test", user="test", password="test")
-    - 참고: https://github.com/testcontainers/testcontainers-java/blob/master/modules/mysql/src/main/java/org/testcontainers/containers/MySQLContainer.java
+    - 참고: https://github.com/testcontainers/testcontainers-java/blob/master/modules/mysql/src/main/java/org/testcontainers/containers/MySQLContainer.java 
+- @DynamicPropertySource로 다음 값을 오버라이딩하여 실행하면 docker를 새로 띄워서 mysql 컨테이너가 정상적으로 동작한다.
+~~~
+@Transactional
+@SpringBootTest
+@Testcontainers
+class CustomerIntegrationTest {
 
-#### container 값 설정하기
-- 그런데 사실상 이러한 설정값들은 무의미함. 아무값이나 입력되어도 컨테이너는 다 정상적으로 작동. 
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Container
+	private static MySQLContainer mysqlContainer = new MySQLContainer("mysql:8");
+
+
+	@DynamicPropertySource
+	public static void overrideProps(DynamicPropertyRegistry registry){
+		registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
+		registry.add("spring.datasource.username", mysqlContainer::getUsername);
+		registry.add("spring.datasource.password", mysqlContainer::getPassword);
+	}
+
+
+	@Test
+	// ...
+}
+
 ~~~
-@Container
-private static MySQLContainer container = new MySQLContainer("mysql:8");
-    // .withDatabaseName("testdb")
-    // .withPassword("1234");
-~~~
+
 
 <br>
 
+### @ActiveProfiles("test") 애노테이션 사용하기
+testcontainers mysql 8은 `jdbc:tc:mysql:8:///`로 url을 설정해주면 된다.
 - mysql settings : ex. jdbc:tc:mysql:5.7.34://hostname/databasename?TC_MY_CNF=somepath/mysql_conf_override
-    - mysql 8 :  jdbc:tc:mysql:8:///testdb
-    - 참고: https://www.testcontainers.org/modules/databases/mysql/
+    - 참고: https://www.testcontainers.org/modules/databases/mysql/ 
 ~~~
 spring:
   datasource:
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
-    url: jdbc:tc:mysql:8:///testdb
-  sql:
-    init:
-      mode: always
+    url: jdbc:tc:mysql:8:///
+~~~
+
+~~~
+@ActiveProfiles("test")
+@Transactional
+@SpringBootTest
+class CustomerIntegrationTest {
+
+	@Autowired
+	private CustomerRepository customerRepository;
+
+	@Test
+	// ...
+}
 ~~~
 
 <br>
@@ -154,6 +193,16 @@ testContainers가 정상적으로 동작하니 이젠 test에서만 사용할 �
 1. test data 값을 /test/resources/schema.sql 파일에 입력한다.
 2. 실행하면 로컬에서 실행되고 있는 DB와 다른 데이터 출력되는 것을 확인할 수 있다.
 3. local은 ('jong', 'lee') ... , test는 ('test', 'lee') ...
+
+appliction-test.yml에 설정 추가
+~~~
+spring:
+  sql:
+    init:
+      mode: always  
+~~~
+
+/test/resources/schema.sql
 ~~~
 DROP TABLE IF EXISTS customers;
 create table customers(id BIGINT not null auto_increment primary key, first_name VARCHAR(255), last_name VARCHAR(255));
