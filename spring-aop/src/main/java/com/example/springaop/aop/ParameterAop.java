@@ -9,6 +9,9 @@ import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.DeleteMapping;
+
+import com.example.springaop.annotation.Timer;
 
 @Aspect
 @Component
@@ -16,9 +19,7 @@ public class ParameterAop {
 
 	// controller 패키지 하위에 모두 적용
 	@Pointcut("execution(* com.example.springaop.controller..*.*(..))")
-	private void cut(){
-
-	}
+	private void cut(){}
 
 	@Before("cut()")
 	public void before(JoinPoint joinPoint){
