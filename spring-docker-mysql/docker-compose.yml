@@ -8,11 +8,12 @@ services:
     container_name: mysqldb
     environment:
       - MYSQL_DATABASE=test
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=loosie
+      - MYSQL_ROOT_PASSWORD=shR9cjs!114
     volumes:
       - app-db-data:/var/lib/mysql
     ports:
-      - 3307:3306
+      - 3306:3306
     networks:
       - spring-net
 
@@ -27,7 +28,7 @@ services:
       MYSQL_PASSWORD: root
       MYSQL_PORT: 3306
     ports:
-      - 9090:8080
+      - 8080:8080
     depends_on:
       - mysql
     networks:
