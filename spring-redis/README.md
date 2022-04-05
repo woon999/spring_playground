@@ -4,10 +4,11 @@ spring 프로젝트에서 Redis 캐싱 데이터 set, get을 하는 방법은 �
 2. CrudRepository를 이용하는 방법 (high level API, JPA 처럼 사용)
 
 더 추상화된 high level이 다루기 쉽다. 일반적인 용도는 2번 방법으로도 충분하므로 이번 실습에서는 `2번 방법`으로 진행 
+- https://docs.spring.io/spring-data/redis/docs/current/reference/html/#redis.repositories
 
 <br> 
 
-##1. Spring Redis 의존성 추가
+## 1. Spring Redis 의존성 추가
 spring boot 2.0이상부터는 jedis가 아닌 lettuce를 이용해서 redis에 접속하는게 디폴트이다. 
 - gradle 의존성 > data-redis > lettuce 라이브러리
 
@@ -18,7 +19,7 @@ implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 
 <br>
 
-##2. redis 실행하기
+## 2. redis 실행하기
 docker로 redis 이미지를 받아와 실행
 - redis 디폴트 폴트: 6379
 - [docker hub _Redis](https://hub.docker.com/_/redis)
@@ -31,7 +32,7 @@ $ docker ps # redis 실행 확인
 
 <br>
 
-##3. 캐싱할 데이터 만들기
+## 3. 캐싱할 데이터 만들기
 ### 3-1. 데이터 클래스 생성
 - @RedisHash("{redis-key}") : Redis에 저장되는 Key
 - @Id ~ : redis에 저장되는 ID
