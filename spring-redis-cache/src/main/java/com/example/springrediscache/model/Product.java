@@ -1,4 +1,4 @@
-package com.example.springrediscache.domain;
+package com.example.springrediscache.model;
 
 import java.io.Serializable;
 
@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product {
+public class Product implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,4 +23,10 @@ public class Product {
 	private String name;
 	private int quantity;
 	private long price;
+
+	public void update(Product product) {
+		this.name = product.getName();
+		this.quantity = product.getQuantity();
+		this.price = product.getPrice();
+	}
 }
