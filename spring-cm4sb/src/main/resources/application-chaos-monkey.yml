@@ -1,0 +1,26 @@
+spring:
+  config:
+    activate:
+      on-profile: chaos-monkey
+
+
+# https://codecentric.github.io/chaos-monkey-spring-boot/latest/#endpoints
+management:
+  endpoint:
+    chaosmonkey:
+      enabled: true
+    chaosmonkeyjmx:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        # include specific endpoints
+        include:
+          - health
+          - info
+          - chaosmonkey
+
+chaos:
+  monkey:
+    watcher:
+      repository: true
