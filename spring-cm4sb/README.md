@@ -74,3 +74,26 @@ $ http post localhost:8080/actuator/chaosmonkey/assaults level=3 latencyRangeSta
 - level 3: 3번 요청에 1번 공격 
 - latencyRangeStart=2000 latencyRangeEnd=5000: 2초부터 5초내로 응답 지연시키기  
 - latencyActive=true: latency 어택 활성화 
+
+<br>
+
+
+## Jmeter로 CM4SB 응답 지연 테스트하기 
+Jmeter로 GET post/1 테스트
+- Thread: 20
+- Ramp-up Period: 1
+- Loop Count: infinite
+<img width="1400" alt="스크린샷 2022-04-18 오후 10 55 32" src="https://user-images.githubusercontent.com/54282927/163818537-135af957-45c4-4592-9fea-8614b5fee46d.png">
+
+<br>
+
+### 응답지연 공격 설정 전
+summary +  94584 in 00:00:30 = 3152.8/s Avg: 6 Min: 1 Max: 34 Err: 0 (0.00%) Active: 20 Started: 20 Finished: 0
+### 응답지연 공격 설정 후
+summary + 543 in 00:00:30 = 18.2/s Avg: 1110 Min: 1 Max: 4990 Err: 0 (0.00%) Active: 20 Started: 20 Finished: 0
+
+<img width="1400" alt="스크린샷 2022-04-18 오후 10 50 38" src="https://user-images.githubusercontent.com/54282927/163818425-5f7aecb2-e710-430b-a977-576245aa3e18.png">
+
+
+---
+
