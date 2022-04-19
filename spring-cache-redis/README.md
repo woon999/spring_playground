@@ -7,7 +7,31 @@
 
 <br> 
 
-### Redis Config
+## 1. Spring Redis 의존성 추가
+spring boot 2.0이상부터는 jedis가 아닌 lettuce를 이용해서 redis에 접속하는게 디폴트이다. 
+- gradle 의존성 > data-redis > lettuce 라이브러리
+
+jedis, lettuce 모두 redis 접속 connecton pool 관리 라이브러리이며, lettuce가 성능이 더 좋기에 디폴트로 세팅되어 있다.
+~~~
+implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+~~~
+
+<br>
+
+## 2. redis 실행하기
+docker로 redis 이미지를 받아와 실행
+- redis 디폴트 폴트: 6379
+- [docker hub _Redis](https://hub.docker.com/_/redis)
+~~~
+$ docker pull redis # redis 이미지 받기
+$ docer images # redis 이미지 확인
+$ docker run -p 6379:6379 --name some-redis -d redis # redis 시작하기
+$ docker ps # redis 실행 확인 
+~~~
+
+<br>
+
+## 3.Redis Config
 #### Serializer
 - JdkSerializationRedisSerializer: 디폴트로 등록되어있는 Serializer이다.
 - StringRedisSerializer: String 값을 정상적으로 읽어서 저장한다. 그러나 엔티티나 VO같은 타입은 cast 할 수 없다.
@@ -38,6 +62,24 @@ public class RedisConfig {
 	}
 }
 ~~~
+
+<br>
+
+## 4.Redis-cli 실행시켜서 확인하기
+~~~
+# 이전에 실행한 redis와 link해서 실행 
+$ docker run -it --link some-redis:redis --rm redis redis-cli -h some-redis
+
+# 또는
+# 처음부터 network 생성해서 실행해도 됨 
+$ docker network create redis-net
+$ docker run -p 6379:6379 --network redis-net --name some-redis -d redis
+$ docker run -it --network redis-net --rm redis redis-cli -h some-redis
+~~~
+
+<br>
+
+---
 
 
 

@@ -16,8 +16,12 @@
 - [spring-docker-mysql (docker, docker-compose)](https://github.com/loosie/spring_practice/tree/master/spring-docker-mysql)
 - [spring-docker-nginx (docker, docker-compose)](https://github.com/loosie/spring_practice/tree/master/spring-docker-nginx)
 - [spring-docker-mysql-nginx (docker, docker-compose)](https://github.com/loosie/spring_practice/tree/master/spring-docker-mysql-nginx)
+### spring-cache
+- [spring-cache(local-memory)](https://github.com/loosie/spring_practice/tree/master/spring-cache)
+- [spring-cache-redis](https://github.com/loosie/spring_practice/tree/master/spring-cache-redis)
 ### spring-test
 - [spring-testcontainers-mysql](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers)
+- [spring-cm4sb](https://github.com/loosie/spring_practice/tree/master/spring-cm4sb)
 ### clone
 - [freelec-springboot2-webservice - 스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://jojoldu.tistory.com/463)
 - [jpashop - jpa기반 상품 주문 웹 애플리케이션](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard)
