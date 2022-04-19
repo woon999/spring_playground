@@ -65,7 +65,7 @@ public class RedisConfig {
 
 <br>
 
-##4. Redis-cli 실행시켜서 확인하기
+## 4.Redis-cli 실행시켜서 확인하기
 ~~~
 # 이전에 실행한 redis와 link해서 실행 
 $ docker run -it --link some-redis:redis --rm redis redis-cli -h some-redis
@@ -76,6 +76,10 @@ $ docker network create redis-net
 $ docker run -p 6379:6379 --network redis-net --name some-redis -d redis
 $ docker run -it --network redis-net --rm redis redis-cli -h some-redis
 ~~~
+
+<br>
+
+---
 
 
 
