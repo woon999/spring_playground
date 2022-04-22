@@ -20,7 +20,8 @@
 - [spring-cache(local-memory)](https://github.com/loosie/spring_practice/tree/master/spring-cache)
 - [spring-cache-redis](https://github.com/loosie/spring_practice/tree/master/spring-cache-redis)
 ### spring-test
-- [spring-testcontainers-mysql](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers)
+- [spring-testcontainers-mysql](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-mysql)
+- [spring-testcontainers-redis](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-redis)
 - [spring-cm4sb](https://github.com/loosie/spring_practice/tree/master/spring-cm4sb)
 ### clone
 - [freelec-springboot2-webservice - 스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://jojoldu.tistory.com/463)
