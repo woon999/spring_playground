@@ -75,15 +75,14 @@ public class LocalStackTestContainersTest {
 ## Integration Test에서 LocalStack
 ### 1. 빈 오버라이딩하기
 #### Local S3Config 클래스
-- AmazonS3 빈 생성 
+AmazonS3 빈 생성 
 ~~~
 @Configuration
 public class S3Config {
 	@Bean
 	public AmazonS3 amazonS3() {
-		AmazonS3 s3Builder = AmazonS3ClientBuilder.standard()
+		return AmazonS3ClientBuilder.standard()
 			.build();
-		return s3Builder;
 	}
 }
 ~~~
