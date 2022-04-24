@@ -1,0 +1,41 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.7'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+repositories {
+	mavenCentral()
+}
+
+ext {
+	set('testcontainersVersion', "1.16.2")
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// localstack
+	testImplementation "org.testcontainers:localstack:1.16.3"
+
+	// testContainers
+	testImplementation "org.testcontainers:junit-jupiter:1.16.3"
+
+	// aws s3
+	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.testcontainers:testcontainers-bom:${testcontainersVersion}"
+	}
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
