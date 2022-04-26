@@ -18,11 +18,6 @@ class S3ControllerTest {
 	@Autowired
 	TestRestTemplate testRestTemplate;
 
-	@BeforeEach
-	void setUp(){
-		amazonS3.createBucket(S3Controller.BUCKET_NAME);
-	}
-
 	@Test
 	public void test(){
 		String id = "1";
