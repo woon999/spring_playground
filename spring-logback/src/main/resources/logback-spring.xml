@@ -26,16 +26,29 @@
         </rollingPolicy>
     </appender>
 
-    <!-- root 로그 설정 (logging.level.root=info)-->
-    <root level="info">
-        <!--     참조할 appender - STDOUT -->
-        <appender-ref ref="STDOUT" />
-    </root>
-
-    <!-- org.springframework.web 로그 설정 (logging.level.root=info)-->
-    <logger name="org.springframework.web" level="debug">
-        <!--     참조할 appender - FILE -->
-        <appender-ref ref="FILE" />
-    </logger>
-
+    <!-- spring profile별 로그 설정 -->
+    <springProfile name="local">
+        <!-- root 로그 설정 (logging.level.root=info)-->
+        <root level="info">
+            <!--     참조할 appender - STDOUT -->
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+    <springProfile name="dev">
+        <root level="debug">
+            <!--     참조할 appender - STDOUT -->
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+    <springProfile name="real">
+        <root level="info">
+            <!--     참조할 appender - STDOUT -->
+            <appender-ref ref="STDOUT" />
+        </root>
+        <!-- org.springframework.web 로그 설정 (logging.level.root=info)-->
+        <logger name="org.springframework.web" level="debug">
+            <!--     참조할 appender - FILE -->
+            <appender-ref ref="FILE" />
+        </logger>
+    </springProfile>
 </configuration>

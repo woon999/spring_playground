@@ -1,3 +1,10 @@
+spring:
+  profiles:
+    group:
+      "default": "local"
+      "dev": "dev"
+      "real": "real"
+
 #logging:
 #  level:
 #    root: debug
