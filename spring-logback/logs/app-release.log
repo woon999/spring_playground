@@ -15,3 +15,20 @@
 [2022-05-04 15:44:12:14216][http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
 [2022-05-04 15:44:12:14216][http-nio-8080-exec-1] DEBUG o.s.w.s.m.m.a.RequestResponseBodyMethodProcessor - Nothing to write: null body
 [2022-05-04 15:44:12:14218][http-nio-8080-exec-1] DEBUG o.s.web.servlet.DispatcherServlet - Completed 200 OK
+[2022-05-04 18:06:16:2774] DEBUG 35832 --- [           main] s.w.s.m.m.a.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+[2022-05-04 18:06:16:2833] DEBUG 35832 --- [           main] s.w.s.m.m.a.RequestMappingHandlerMapping : 3 mappings in 'requestMappingHandlerMapping'
+[2022-05-04 18:06:16:2863] DEBUG 35832 --- [           main] o.s.w.s.h.SimpleUrlHandlerMapping        : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+[2022-05-04 18:06:16:2872] DEBUG 35832 --- [           main] .m.m.a.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+[2022-05-04 18:06:25:11435] INFO  35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+[2022-05-04 18:06:25:11436] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected StandardServletMultipartResolver
+[2022-05-04 18:06:25:11436] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected AcceptHeaderLocaleResolver
+[2022-05-04 18:06:25:11436] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected FixedThemeResolver
+[2022-05-04 18:06:25:11437] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@6076c66
+[2022-05-04 18:06:25:11437] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Detected org.springframework.web.servlet.support.SessionFlashMapManager@146f3d22
+[2022-05-04 18:06:25:11437] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+[2022-05-04 18:06:25:11437] INFO  35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+[2022-05-04 18:06:25:11453] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : GET "/", parameters={}
+[2022-05-04 18:06:25:11458] DEBUG 35832 --- [nio-8081-exec-1] s.w.s.m.m.a.RequestMappingHandlerMapping : Mapped to com.example.springlogs.FooController#log()
+[2022-05-04 18:06:25:11553] DEBUG 35832 --- [nio-8081-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+[2022-05-04 18:06:25:11553] DEBUG 35832 --- [nio-8081-exec-1] m.m.a.RequestResponseBodyMethodProcessor : Nothing to write: null body
+[2022-05-04 18:06:25:11555] DEBUG 35832 --- [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed 200 OK

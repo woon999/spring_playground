@@ -1,36 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <springProfile name="local, dev">
+    <!-- 로그 패턴에 색상 적용 %clr(pattern){color}
+        https://logback.qos.ch/manual/layouts.html#coloring
+    -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <springProfile name="dev">
         <property resource="application-dev-log.yml" />
     </springProfile>
     <springProfile name="real1, real2">
         <property resource="application-real-log.yml" />
     </springProfile>
 
-    <!-- log 기록 절대 위치 설정 -->
-<!--    <property name="LOG_PATH" value="./logs" />-->
-<!--    <property name="LOG_FILE_NAME" value="app-release" />-->
-<!--    <property name="LOG_MAX_HISTORY" value="30" />-->
-<!--    <property name="LOG_TOTAL_SIZE_CAP" value="3GB" />-->
+    <!-- log 변수 값 설정 -->
     <springProperty name="LOG_PATH" source= "log.config.path" />
     <springProperty name="LOG_FILE_NAME" source= "log.config.filename" />
     <springProperty name="LOG_MAX_HISTORY" source= "log.config.maxHistory" />
     <springProperty name="LOG_TOTAL_SIZE_CAP" source= "log.config.totalSizeCap" />
 
+    <property name="CONSOLE_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
+    <property name="FILE_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n"/>
 
-    <!-- 콘솔(STDOUT)에 log 기록 -->
+    <!-- 콘솔(STDOUT) -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <layout class="ch.qos.logback.classic.PatternLayout">
-            <Pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{36} - %msg%n</Pattern>
+            <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
         </layout>
     </appender>
 
+    <!-- 파일(FILE) -->
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--     log 기록할 파일 위치 설정 -->
         <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
         <!--     log 기록 타입 인코딩 -->
         <encoder>
-            <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
+            <pattern>${FILE_LOG_PATTERN}</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
@@ -42,29 +48,30 @@
     </appender>
 
     <!-- spring profile별 로그 설정 -->
+    <!--  local 환경  -->
     <springProfile name="local">
-        <!-- root 로그 설정 (logging.level.root=info)-->
         <root level="info">
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
         </root>
     </springProfile>
+    <!--  dev 환경  -->
     <springProfile name="dev">
-        <root level="info">
+        <root level="debug">
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
         </root>
-        <logger name="org.springframework.web" level="info">
+        <logger name="org.springframework.web" level="debug">
             <!--     참조할 appender - FILE -->
             <appender-ref ref="FILE" />
         </logger>
     </springProfile>
+    <!--  real 환경  -->
     <springProfile name="real1, real2">
         <root level="info">
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
         </root>
-        <!-- org.springframework.web 로그 설정 (logging.level.root=info)-->
         <logger name="org.springframework.web" level="debug">
             <!--     참조할 appender - FILE -->
             <appender-ref ref="FILE" />
