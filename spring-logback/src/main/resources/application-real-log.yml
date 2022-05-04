@@ -1,0 +1,6 @@
+log:
+  config:
+    path: ./logs
+    filename: app-release
+    maxHistory: 30 # 7일
+    totalSizeCap: 1GB # 로그 파일 사이즈

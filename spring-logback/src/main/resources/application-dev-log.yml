@@ -1,0 +1,6 @@
+log:
+  config:
+    path: ./logs
+    filename: app-dev
+    maxHistory: 7 # 7일
+    totalSizeCap: 10MB # 로그 파일 사이즈

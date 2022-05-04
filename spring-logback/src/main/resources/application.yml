@@ -1,10 +1,8 @@
 spring:
   profiles:
     group:
-      "default": "local"
-      "dev": "dev"
-      "real": "real"
+      "default": "local, dev-log"
+      "dev": "dev, dev-log"
+      "real1": "real1, real-log"
+      "real2": "real2, real-log"
 
-#logging:
-#  level:
-#    root: debug

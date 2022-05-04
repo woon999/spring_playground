@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+    <springProfile name="local, dev">
+        <property resource="application-dev-log.yml" />
+    </springProfile>
+    <springProfile name="real1, real2">
+        <property resource="application-real-log.yml" />
+    </springProfile>
+
     <!-- log 기록 절대 위치 설정 -->
-    <property name="LOGS_ABSOLUTE_PATH" value="./logs" />
+<!--    <property name="LOG_PATH" value="./logs" />-->
+<!--    <property name="LOG_FILE_NAME" value="app-release" />-->
+<!--    <property name="LOG_MAX_HISTORY" value="30" />-->
+<!--    <property name="LOG_TOTAL_SIZE_CAP" value="3GB" />-->
+    <springProperty name="LOG_PATH" source= "log.config.path" />
+    <springProperty name="LOG_FILE_NAME" source= "log.config.filename" />
+    <springProperty name="LOG_MAX_HISTORY" source= "log.config.maxHistory" />
+    <springProperty name="LOG_TOTAL_SIZE_CAP" source= "log.config.totalSizeCap" />
+
 
     <!-- 콘솔(STDOUT)에 log 기록 -->
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
@@ -12,17 +27,17 @@
 
     <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <!--     log 기록할 파일 위치 설정 -->
-        <file>${LOGS_ABSOLUTE_PATH}/logback.log</file>
+        <file>${LOG_PATH}/${LOG_FILE_NAME}.log</file>
         <!--     log 기록 타입 인코딩 -->
         <encoder>
             <pattern>[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%thread] %-5level %logger{35} - %msg%n</pattern>
         </encoder>
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>logFile.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <fileNamePattern>${LOG_PATH}/${LOG_FILE_NAME}.%d{yyyy-MM-dd}.log</fileNamePattern>
             <!-- keep 30 days' worth of history capped at 3GB total size -->
-            <maxHistory>30</maxHistory>
-            <totalSizeCap>3GB</totalSizeCap>
+            <maxHistory>${LOG_MAX_HISTORY}</maxHistory>
+            <totalSizeCap>${LOG_TOTAL_SIZE_CAP}</totalSizeCap>
         </rollingPolicy>
     </appender>
 
@@ -35,12 +50,16 @@
         </root>
     </springProfile>
     <springProfile name="dev">
-        <root level="debug">
+        <root level="info">
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
         </root>
+        <logger name="org.springframework.web" level="info">
+            <!--     참조할 appender - FILE -->
+            <appender-ref ref="FILE" />
+        </logger>
     </springProfile>
-    <springProfile name="real">
+    <springProfile name="real1, real2">
         <root level="info">
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
