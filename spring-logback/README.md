@@ -135,9 +135,83 @@ RollingFileAppender는 FileAppender를 상속하여 로그 파일을 rollover한
 
 <br>
 
+## 콘솔 로그 색상 입히기
+https://logback.qos.ch/manual/layouts.html#coloring 참고
+- %clr(pattern){color}로 하면 색상을 입힐 수 있다. FILE 패턴에는 색상을 입힐 수 없으므로 넣으면 안된다.
+~~~
+<!-- 로그 패턴에 색상 적용 %clr(pattern){color}
+        https://logback.qos.ch/manual/layouts.html#coloring
+    -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
+
+    <property name="CONSOLE_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative]  %clr(%-5level) %clr(${PID:-}){magenta} %clr(---){faint} %clr([%15.15thread]){faint} %clr(%-40.40logger{36}){cyan} %clr(:){faint} %msg%n"/>
+    <property name="FILE_LOG_PATTERN"
+              value="[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n"/>
+~~~
+
+<br>
+
 ## Spring 앱 Profile에 따라 로그 기록 설정하기
 실수로 다른 환경에 로그 기록이 덮어씌워지거나 갱신되는 일을 방지하고자 프로젝트 운영시 각 실행 환경에 따라 로그 전략을 다르게 설정해줘야 한다. sping에서 실행된 profile에 따라 조건들을 xml에서 설정할 수 있다. 다음은 spring profile이 local, dev, real 환경에 따라 서로 다른 로그를 출력하는 xml 설정 파일이다.
+- springProfile로 설정 yml을 불러온다.
+- yml에 있는 변수들을 설정한다.
+- 다시 springProfile로 appender를 적용하면 끝
+~~~
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 로그 패턴에 색상 적용 %clr(pattern){color}
+        https://logback.qos.ch/manual/layouts.html#coloring
+    -->
+    <conversionRule conversionWord="clr" converterClass="org.springframework.boot.logging.logback.ColorConverter" />
 
+    <springProfile name="dev">
+        <property resource="application-dev-log.yml" />
+    </springProfile>
+    <springProfile name="real1, real2">
+        <property resource="application-real-log.yml" />
+    </springProfile>
+
+    <!-- log 변수 값 설정 -->
+    <springProperty name="LOG_PATH" source= "log.config.path" />
+    <springProperty name="LOG_FILE_NAME" source= "log.config.filename" />
+    <springProperty name="LOG_MAX_HISTORY" source= "log.config.maxHistory" />
+    <springProperty name="LOG_TOTAL_SIZE_CAP" source= "log.config.totalSizeCap" />
+
+    <!-- 생략 -->
+
+    <!-- spring profile별 로그 설정 -->
+    <!--  local 환경  -->
+    <springProfile name="local">
+        <root level="info">
+            <!--     참조할 appender - STDOUT -->
+            <appender-ref ref="STDOUT" />
+        </root>
+    </springProfile>
+    <!--  dev 환경  -->
+    <springProfile name="dev">
+        <root level="debug">
+            <!--     참조할 appender - STDOUT -->
+            <appender-ref ref="STDOUT" />
+        </root>
+        <logger name="org.springframework.web" level="debug">
+            <!--     참조할 appender - FILE -->
+            <appender-ref ref="FILE" />
+        </logger>
+    </springProfile>
+    <!--  real 환경  -->
+    <springProfile name="real1, real2">
+        <root level="info">
+            <!--     참조할 appender - STDOUT -->
+            <appender-ref ref="STDOUT" />
+        </root>
+        <logger name="org.springframework.web" level="debug">
+            <!--     참조할 appender - FILE -->
+            <appender-ref ref="FILE" />
+        </logger>
+    </springProfile>
+</configuration>
+~~~
 
 <br>
 

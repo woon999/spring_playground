@@ -5,6 +5,8 @@
 - [메서드 실행시간 측정 AOP](https://github.com/loosie/spring_practice/commit/1f2a3d4994e31a2c93d6adf057c6a68fcd85b86c)
 - [메서드 파라미터, 리턴값 로그 AOP](https://github.com/loosie/spring_practice/commit/e4254bc4b676fac82acf8cc96ce9d87373a67084)
 - [메세지 암/복호화 AOP](https://github.com/loosie/spring_practice/commit/e4254bc4b676fac82acf8cc96ce9d87373a67084)
+### spring-log
+- [logback 사용하기](https://github.com/loosie/spring_practice/tree/master/spring-logback)
 ### spring-jpa
 - [jpa 기초](https://github.com/loosie/spring_practice/tree/master/spring-jpa)
 - [jpa fetch 전략 (Fetchjoin 실습) + @OneToOne 양방향 Lazy문제](https://github.com/loosie/spring_practice/tree/master/spring-jpa-fetchjoin)
@@ -23,6 +25,7 @@
 - [spring-testcontainers-mysql](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-mysql)
 - [spring-testcontainers-redis](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-redis)
 - [spring-cm4sb](https://github.com/loosie/spring_practice/tree/master/spring-cm4sb)
+- [spring-archunit](https://github.com/loosie/spring_practice/tree/master/spring-archunit)
 ### clone
 - [freelec-springboot2-webservice - 스프링 부트와 AWS로 혼자 구현하는 웹 서비스](https://jojoldu.tistory.com/463)
 - [jpashop - jpa기반 상품 주문 웹 애플리케이션](https://www.inflearn.com/course/%EC%8A%A4%ED%94%84%EB%A7%81%EB%B6%80%ED%8A%B8-JPA-%ED%99%9C%EC%9A%A9-1/dashboard)
