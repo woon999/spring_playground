@@ -16,12 +16,13 @@ ArchUnit은 plain Java unit test 프레임워크를 사용하여 Java 코드의 
 
 ## ArchUnit 사용법
 ### 의존성 검사 예제
-foo 패키지에서 bar 패키지에 의존할 수 없도록 규칙 정의 
+rule: foo 패키지에서 bar 패키지에 의존할 수 없도록 규칙 정의한다.
+
 <img width="352" alt="스크린샷 2022-05-05 오후 9 42 30" src="https://user-images.githubusercontent.com/54282927/166925224-d13e3b17-6536-4d48-8935-afca62fce7ba.png">
 
 <br>
 
-### 1. 선언형 검사
+### 방법 1. 선언형 검사
 아키텍처에 맞도록 규칙을 먼저 선언해놓고, rule.check()을 사용해 모든 클래스의 규칙을 한 번에 검사하는 방식이다. 
 ArchUnit으로 다음과 같이 테스트 코드를 작성한다.
 ~~~
@@ -55,7 +56,7 @@ void layeredArchitectureTest(){
 
 <br>
 
-### 2. ArchUnit 테스트 클래스 생성 
+### 방법 2. ArchUnit 테스트 클래스 생성 
 아키텍처 검사를 하는 클래스를 따로 생성하여 관리할 수도 있다.
 - 다음과 같이 클래스 위에 `@AnalyzeClasses(packagesOf = App.class)`을 명시한다. App.class는 스프링 앱을 실행하는 클래스를 입력해주면 된다.
 - @ArchTest를 명시하고 똑같이 아키텍처 검사 코드를 작성하면 rule.check()까지 자동으로 검사해준다.
@@ -73,3 +74,8 @@ public class LayeredArchitectureTest {
 }
 
 ~~~
+
+---
+ref
+- https://www.inflearn.com/course/the-java-application-test/dashboard
+- https://d2.naver.com/helloworld/9222129
