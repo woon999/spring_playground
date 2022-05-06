@@ -215,4 +215,15 @@ https://logback.qos.ch/manual/layouts.html#coloring 참고
 
 <br>
 
+## Logback Sync appender vs Async appender
+- Thread group: 8
+- Loop Count: 10
+### Sync appender
+- 처리량: 7.0/s
+<img width="1077" alt="스크린샷 2022-05-06 오후 9 00 11" src="https://user-images.githubusercontent.com/54282927/167128150-d96736bd-d506-432d-93fd-12a9db384732.png">
+
+### Async appender
+- 처리량: 10.7/s (Sync보다 약 1.5배 더 빠름 )
+<img width="1077" alt="스크린샷 2022-05-06 오후 9 02 14" src="https://user-images.githubusercontent.com/54282927/167128143-1d28718d-5af8-4e63-9456-c32e6568a4d1.png">
+
 ---

@@ -47,6 +47,23 @@
         </rollingPolicy>
     </appender>
 
+    <!-- 비동기 파일(FILE)
+      includeCallerData: 비동기 로깅에서도 Method Name 및 Line Number 등 위치 정보를 출력하게 해주는 옵션
+      queueSize: 기본값은 256, Log4j2와 동일하게 1024로 설정
+      neverBlock: false(기본값)면 로그 발생시 Queue에 넣을 공간이 없으면 빈 공간이 생길 때 까지 블락킹 상태로 기다리며, 로그를 유실하지 않는다.
+      discardingThreshold: Queue에 남은 용량이 {해당 설정값 n}%이하가 되면, WARN 미만 로그가 유실되기 시작한다.
+                    - 기본 값은 20이며, Queue 남은 용량이 20%이하가 되면 로그 유실이 발생한다.
+                    - 0으로 세팅하면 Queue에 쌓인 로그를 드랍하지 않는다.
+    -->
+    <appender name="FILE-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
+        <appender-ref ref="FILE" />
+        <includeCallerData>true</includeCallerData>
+<!--        <queueSize>1024</queueSize>-->
+        <queueSize>1</queueSize>
+        <neverBlock>false</neverBlock>
+        <discardingThreshold>20</discardingThreshold>
+    </appender>
+
     <!-- spring profile별 로그 설정 -->
     <!--  local 환경  -->
     <springProfile name="local">
@@ -57,13 +74,19 @@
     </springProfile>
     <!--  dev 환경  -->
     <springProfile name="dev">
-        <root level="debug">
+        <root level="info">
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
         </root>
-        <logger name="org.springframework.web" level="debug">
+<!--        <logger name="org.springframework.web" level="debug">-->
+<!--            &lt;!&ndash;     참조할 appender - FILE &ndash;&gt;-->
+<!--            <appender-ref ref="FILE" />-->
+<!--        </logger>-->
+        <logger name="com.example.springlogs" level="debug">
             <!--     참조할 appender - FILE -->
-            <appender-ref ref="FILE" />
+<!--                <appender-ref ref="FILE" /> &lt;!&ndash; 169ms &ndash;&gt;-->
+            <appender-ref ref="FILE-ASYNC" />
+<!--            125 ms-->
         </logger>
     </springProfile>
     <!--  real 환경  -->
