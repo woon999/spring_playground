@@ -7,6 +7,7 @@
 - [메세지 암/복호화 AOP](https://github.com/loosie/spring_practice/commit/e4254bc4b676fac82acf8cc96ce9d87373a67084)
 ### spring-log
 - [logback 사용하기](https://github.com/loosie/spring_practice/tree/master/spring-logback)
+- [log4j2 사용하기](https://github.com/loosie/spring_practice/tree/master/spring-log4j2)
 ### spring-jpa
 - [jpa 기초](https://github.com/loosie/spring_practice/tree/master/spring-jpa)
 - [jpa fetch 전략 (Fetchjoin 실습) + @OneToOne 양방향 Lazy문제](https://github.com/loosie/spring_practice/tree/master/spring-jpa-fetchjoin)
