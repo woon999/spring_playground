@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Configuration status="INFO">
+    <Properties>
+        <Property name="LOG_PATTERN">[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n</Property>
+    </Properties>
+    <Appenders>
+        <Console name="console" target="SYSTEM_OUT">
+            <!-- 콘솔창에 log가 찍힐 내용의 포맷(?)을 지정 -->
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <!-- additivity : flase일 경우 root로그와 중복으로 찍히는 것을 방지 -->
+<!--        <logger name="springframework.web" level="DEBUG" additivity="false">-->
+<!--            <appender-ref ref="file" level="DEBUG"/>-->
+<!--        </logger>-->
+        <Root level="info">
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+
+</Configuration>
+

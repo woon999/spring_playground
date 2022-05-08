@@ -14,7 +14,10 @@ public class FooController {
 
 	@GetMapping("")
 	public void log() {
-		log.info("log info");
+		log.debug("debug message");
+		log.info("info message");
+		log.warn("warn message");
+		log.error("error message");
 	}
 
 }
