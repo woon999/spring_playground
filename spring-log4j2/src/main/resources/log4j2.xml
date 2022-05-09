@@ -8,13 +8,24 @@
             <!-- 콘솔창에 log가 찍힐 내용의 포맷(?)을 지정 -->
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
+
+        <RollingFile name="file"
+                     fileName="./logs/app.log"
+                    filePattern="./logs/app-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="1" />
+                <SizeBasedTriggeringPolicy size="10000KB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" fileIndex="min" />
+        </RollingFile>
     </Appenders>
 
     <Loggers>
         <!-- additivity : flase일 경우 root로그와 중복으로 찍히는 것을 방지 -->
-<!--        <logger name="springframework.web" level="DEBUG" additivity="false">-->
-<!--            <appender-ref ref="file" level="DEBUG"/>-->
-<!--        </logger>-->
+        <logger name="org.springframework.web" level="debug" additivity="false">
+            <AppenderRef ref="file"/>
+        </logger>
         <Root level="info">
             <AppenderRef ref="console"/>
         </Root>

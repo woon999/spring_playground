@@ -1,0 +1,22 @@
+[2022-05-09 23:02:47:3272] DEBUG  --- [           main] .annotation.RequestMappingHandlerAdapter : ControllerAdvice beans: 0 @ModelAttribute, 0 @InitBinder, 1 RequestBodyAdvice, 1 ResponseBodyAdvice
+[2022-05-09 23:02:48:3333] DEBUG  --- [           main] .annotation.RequestMappingHandlerMapping : 3 mappings in 'requestMappingHandlerMapping'
+[2022-05-09 23:02:48:3367] DEBUG  --- [           main] .servlet.handler.SimpleUrlHandlerMapping : Patterns [/webjars/**, /**] in 'resourceHandlerMapping'
+[2022-05-09 23:02:48:3376] DEBUG  --- [           main] tation.ExceptionHandlerExceptionResolver : ControllerAdvice beans: 0 @ExceptionHandler, 1 ResponseBodyAdvice
+[2022-05-09 23:02:52:8105] INFO   --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Initializing Servlet 'dispatcherServlet'
+[2022-05-09 23:02:52:8105] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Detected StandardServletMultipartResolver
+[2022-05-09 23:02:52:8105] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Detected AcceptHeaderLocaleResolver
+[2022-05-09 23:02:52:8105] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Detected FixedThemeResolver
+[2022-05-09 23:02:52:8106] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Detected org.springframework.web.servlet.view.DefaultRequestToViewNameTranslator@19647566
+[2022-05-09 23:02:52:8106] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Detected org.springframework.web.servlet.support.SessionFlashMapManager@100807ca
+[2022-05-09 23:02:52:8107] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : enableLoggingRequestDetails='false': request parameters and headers will be masked to prevent unsafe logging of potentially sensitive data
+[2022-05-09 23:02:52:8107] INFO   --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Completed initialization in 2 ms
+[2022-05-09 23:02:52:8114] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : GET "/", parameters={}
+[2022-05-09 23:02:52:8120] DEBUG  --- [nio-8080-exec-1] .annotation.RequestMappingHandlerMapping : Mapped to com.example.springlog4j2.FooController#log()
+[2022-05-09 23:02:52:8220] DEBUG  --- [nio-8080-exec-1] ation.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+[2022-05-09 23:02:52:8220] DEBUG  --- [nio-8080-exec-1] ation.RequestResponseBodyMethodProcessor : Nothing to write: null body
+[2022-05-09 23:02:52:8223] DEBUG  --- [nio-8080-exec-1] gframework.web.servlet.DispatcherServlet : Completed 200 OK
+[2022-05-09 23:03:08:23640] DEBUG  --- [nio-8080-exec-3] gframework.web.servlet.DispatcherServlet : GET "/", parameters={}
+[2022-05-09 23:03:08:23641] DEBUG  --- [nio-8080-exec-3] .annotation.RequestMappingHandlerMapping : Mapped to com.example.springlog4j2.FooController#log()
+[2022-05-09 23:03:08:23642] DEBUG  --- [nio-8080-exec-3] ation.RequestResponseBodyMethodProcessor : Using 'application/json', given [*/*] and supported [application/json, application/*+json, application/json, application/*+json]
+[2022-05-09 23:03:08:23642] DEBUG  --- [nio-8080-exec-3] ation.RequestResponseBodyMethodProcessor : Nothing to write: null body
+[2022-05-09 23:03:08:23642] DEBUG  --- [nio-8080-exec-3] gframework.web.servlet.DispatcherServlet : Completed 200 OK
