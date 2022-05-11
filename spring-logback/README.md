@@ -215,15 +215,18 @@ https://logback.qos.ch/manual/layouts.html#coloring 참고
 
 <br>
 
-## Logback Sync appender vs Async appender
+## Logback appender vs Async appender
 - Thread group: 8
 - Loop Count: 10
-### Sync appender
-- 처리량: 7.0/s
-<img width="1077" alt="스크린샷 2022-05-06 오후 9 00 11" src="https://user-images.githubusercontent.com/54282927/167128150-d96736bd-d506-432d-93fd-12a9db384732.png">
+### appender
+- 처리량: 7.8t/s
+<img width="1000" alt="스크린샷 2022-05-11 오후 2 44 39" src="https://user-images.githubusercontent.com/54282927/167778258-e682daea-4fac-4b4c-a528-bcb7794bbf4b.png">
 
 ### Async appender
-- 처리량: 10.7/s (Sync보다 약 1.5배 더 빠름 )
-<img width="1077" alt="스크린샷 2022-05-06 오후 9 02 14" src="https://user-images.githubusercontent.com/54282927/167128143-1d28718d-5af8-4e63-9456-c32e6568a4d1.png">
+- 처리량: 9.9t/s
+<img width="1000" alt="스크린샷 2022-05-11 오후 2 39 47" src="https://user-images.githubusercontent.com/54282927/167778267-a1799af9-bfe9-4a67-96e2-517c081d3def.png">
+
+성능 측정 결과 AsynAppender가 약 1.3배 더 빠르게 기록되는 것을 확인할 수 있었다.
+
 
 ---

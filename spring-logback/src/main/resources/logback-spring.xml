@@ -57,11 +57,10 @@
     -->
     <appender name="FILE-ASYNC" class="ch.qos.logback.classic.AsyncAppender">
         <appender-ref ref="FILE" />
-        <includeCallerData>true</includeCallerData>
-<!--        <queueSize>1024</queueSize>-->
-        <queueSize>1</queueSize>
-        <neverBlock>false</neverBlock>
-        <discardingThreshold>20</discardingThreshold>
+        <includeCallerData>false</includeCallerData>
+        <discardingThreshold>0</discardingThreshold>
+        <queueSize>1024</queueSize>
+        <neverBlock>true</neverBlock>
     </appender>
 
     <!-- spring profile별 로그 설정 -->
@@ -78,15 +77,10 @@
             <!--     참조할 appender - STDOUT -->
             <appender-ref ref="STDOUT" />
         </root>
-<!--        <logger name="org.springframework.web" level="debug">-->
-<!--            &lt;!&ndash;     참조할 appender - FILE &ndash;&gt;-->
-<!--            <appender-ref ref="FILE" />-->
-<!--        </logger>-->
         <logger name="com.example.springlogs" level="debug">
             <!--     참조할 appender - FILE -->
-<!--                <appender-ref ref="FILE" /> &lt;!&ndash; 169ms &ndash;&gt;-->
-            <appender-ref ref="FILE-ASYNC" />
-<!--            125 ms-->
+<!--                <appender-ref ref="FILE" /> &lt;!&ndash; 7.8/s &ndash;&gt;-->
+            <appender-ref ref="FILE-ASYNC" /><!-- 125 ms-->
         </logger>
     </springProfile>
     <!--  real 환경  -->
