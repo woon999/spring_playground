@@ -9,22 +9,46 @@
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
-        <RollingFile name="file"
+        <RollingFile name="File"
                      fileName="./logs/app.log"
-                    filePattern="./logs/app-%d{yyyy-MM-dd}-%i.log">
+                    filePattern="./logs/app.%d{yyyy-MM-dd}-%i.log">
             <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
             <Policies>
-                <TimeBasedTriggeringPolicy interval="1" />
-                <SizeBasedTriggeringPolicy size="10000KB" />
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB" />
             </Policies>
             <DefaultRolloverStrategy max="20" fileIndex="min" />
         </RollingFile>
+
+<!--        AsyncAppender-->
+        <Async name="AsyncAppender">
+            <AppenderRef ref="File"/>
+        </Async>
+
+<!--        Async Logger-->
+        <RollingRandomAccessFile name="RandomAccessFile" fileName="./logs/app.log"
+                          filePattern="./logs/app.%d{yyyy-MM-dd}-%i.log"
+                          immediateFlush="false" append="false">
+            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="10MB" />
+            </Policies>
+            <DefaultRolloverStrategy max="20" fileIndex="min" />
+        </RollingRandomAccessFile>
     </Appenders>
 
     <Loggers>
         <!-- additivity : flase일 경우 root로그와 중복으로 찍히는 것을 방지 -->
-        <logger name="org.springframework.web" level="debug" additivity="false">
-            <AppenderRef ref="file"/>
+        <logger name="com.example.springlog4j2" level="debug" additivity="false">
+<!--         Sync   8.4t/s-->
+<!--            <AppenderRef ref="File"/>-->
+
+<!--            Async Appender 9.9t/s -->
+            <AppenderRef ref="AsyncAppender"/>
+
+<!--            Async Logger 85.7t/s -->
+<!--            <AppenderRef ref="RandomAccessFile"/>-->
         </logger>
         <Root level="info">
             <AppenderRef ref="console"/>
