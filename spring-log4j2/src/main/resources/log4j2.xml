@@ -5,7 +5,6 @@
     </Properties>
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
-            <!-- 콘솔창에 log가 찍힐 내용의 포맷(?)을 지정 -->
             <PatternLayout pattern="${LOG_PATTERN}"/>
         </Console>
 
