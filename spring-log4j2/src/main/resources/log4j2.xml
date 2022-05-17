@@ -10,11 +10,11 @@
 
         <RollingFile name="File"
                      fileName="./logs/app.log"
-                    filePattern="./logs/app.%d{yyyy-MM-dd}-%i.log">
-            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+                    filePattern="./logs/app-%d{yyyy-MM-dd}-%i.log">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
-                <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10MB" />
+                <TimeBasedTriggeringPolicy interval="1"/>
+                <SizeBasedTriggeringPolicy size="100KB" />
             </Policies>
             <DefaultRolloverStrategy max="20" fileIndex="min" />
         </RollingFile>
@@ -25,13 +25,13 @@
         </Async>
 
 <!--        Async Logger-->
-        <RollingRandomAccessFile name="RandomAccessFile" fileName="./logs/app.log"
-                          filePattern="./logs/app.%d{yyyy-MM-dd}-%i.log"
-                          immediateFlush="false" append="false">
-            <PatternLayout pattern="${LOG_PATTERN}" charset="UTF-8"/>
+        <RollingRandomAccessFile name="RandomAccessFile" fileName="logs/app.log"
+                          filePattern="logs/app-%d{yyyy-MM-dd}-%i.log"
+                          immediateFlush="false" append="true" ignoreExceptions="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
-                <TimeBasedTriggeringPolicy/>
-                <SizeBasedTriggeringPolicy size="10MB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100KB" />
             </Policies>
             <DefaultRolloverStrategy max="20" fileIndex="min" />
         </RollingRandomAccessFile>
