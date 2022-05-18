@@ -44,10 +44,10 @@
 <!--            <AppenderRef ref="File"/>-->
 
 <!--            Async Appender 9.9t/s -->
-            <AppenderRef ref="AsyncAppender"/>
+<!--            <AppenderRef ref="AsyncAppender"/>-->
 
 <!--            Async Logger 85.7t/s -->
-<!--            <AppenderRef ref="RandomAccessFile"/>-->
+            <AppenderRef ref="RandomAccessFile"/>
         </logger>
         <Root level="info">
             <AppenderRef ref="console"/>

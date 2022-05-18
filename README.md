@@ -1,6 +1,8 @@
 # Spring 
 ### spring-core
 - [spring-core](https://github.com/loosie/spring_practice/tree/master/spring-core)
+### spring-batch
+- [spring-batch](https://github.com/loosie/spring_practice/tree/master/spring-batch)
 ### spring-aop
 - [메서드 실행시간 측정 AOP](https://github.com/loosie/spring_practice/commit/1f2a3d4994e31a2c93d6adf057c6a68fcd85b86c)
 - [메서드 파라미터, 리턴값 로그 AOP](https://github.com/loosie/spring_practice/commit/e4254bc4b676fac82acf8cc96ce9d87373a67084)

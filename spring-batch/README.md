@@ -1,0 +1,21 @@
+# 스프링 배치 Spring Batch 사용하기
+## 1. 기본 라이브러리 설정
+- Spring Batch, JPA, Mysql, H2, Lombok 사용
+<img width="600" alt="스크린샷 2022-05-18 오후 4 51 00" src="https://user-images.githubusercontent.com/54282927/168987157-5c63f912-c8ac-438b-94cf-7d05ceece770.png">
+
+<br>
+
+~~~
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-batch'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	compileOnly 'org.projectlombok:lombok'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'mysql:mysql-connector-java'
+	annotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	testImplementation 'org.springframework.batch:spring-batch-test'
+}
+~~~
+
+
