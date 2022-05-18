@@ -1,0 +1,6 @@
+spring:
+  profiles:
+    default: local
+  batch:
+    jdbc:
+      initialize-schema: always

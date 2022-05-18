@@ -79,3 +79,71 @@ public class SimpleJobConfiguration {
 
 ### 실행 결과 
 <img width="1680" alt="스크린샷 2022-05-18 오후 5 55 22" src="https://user-images.githubusercontent.com/54282927/169000211-25d59b6f-4f2b-4e82-af10-879aa28fdda8.png">
+
+
+<br>
+
+## 3. DB 사용하기
+### 3-1. 프로필 별로 application.yml 설정하기
+#### application-local.yml
+Local 환경은 h2 인메모리 DB를 사용한다. 
+~~~
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+~~~
+
+#### applicatiion-real.yml
+real 배포 환경에서는 mysql을 사용한다.
+~~~
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/batch_db
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD}
+      driver-class-name: com.mysql.cj.jdbc.Driver
+~~~
+
+<br>
+
+#### application-real.yml
+~~~
+spring:
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/batch_db
+      username: test_user
+      password: 1234
+      driver-class-name: com.mysql.jdbc.Driver
+~~~
+
+<br> 
+
+### Mysql schem-mysql.sql
+그냥 실행하면 에러가 발생한다. Spring Batch의 기본 도메인 테이블을 미리 생성해줘야 한다.  
+- [shift + shift] -> `mysql-schema.sql` 검색 -> Mysql DB에 접속하여 해당 쿼리 실행
+- 또는 yml에 아래와 같이 설정하면  `mysql-schema.sql`가 자동으로 실행되어 DB 테이블으 생성해준다.
+~~~
+spring:
+  batch:
+    jdbc:
+      initialize-schema: always
+~~~  
+
+### Batch 테이블 생성
+<img width="414" alt="스크린샷 2022-05-19 오전 1 00 45" src="https://user-images.githubusercontent.com/54282927/169092352-a9e080dd-2aee-4200-b9ed-60793ebfa091.png">
+
+
+<br>
+
+
+### Mysql 연동 성공 
+그리고 앱을 실행하면 다음과 같이 정상적으로 Job이 실행되는 것을 확인할 수 있다.
+
+<img width="1657" alt="스크린샷 2022-05-19 오전 1 18 00" src="https://user-images.githubusercontent.com/54282927/169092361-fff36f96-45a0-4e8b-9463-5e6cb132e47b.png">
+
