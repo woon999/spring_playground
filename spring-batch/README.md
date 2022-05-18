@@ -97,34 +97,23 @@ spring:
       driver-class-name: org.h2.Driver
 ~~~
 
-#### applicatiion-real.yml
-real 배포 환경에서는 mysql을 사용한다.
-~~~
-spring:
-  datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://localhost:3306/batch_db
-      username: ${DB_USERNAME}
-      password: ${DB_PASSWORD}
-      driver-class-name: com.mysql.cj.jdbc.Driver
-~~~
-
 <br>
 
 #### application-real.yml
+real 배포 환경에서는 mysql을 사용한다.
+
 ~~~
 spring:
   datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://localhost:3306/batch_db
-      username: test_user
-      password: 1234
-      driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/batch_db
+    username: test_user
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
 ~~~
 
 <br> 
 
-### Mysql schem-mysql.sql
+### Mysql schem-mysql.sql으로 테이블 생성하기
 그냥 실행하면 에러가 발생한다. Spring Batch의 기본 도메인 테이블을 미리 생성해줘야 한다.  
 - [shift + shift] -> `mysql-schema.sql` 검색 -> Mysql DB에 접속하여 해당 쿼리 실행
 - 또는 yml에 아래와 같이 설정하면  `mysql-schema.sql`가 자동으로 실행되어 DB 테이블으 생성해준다.
@@ -146,4 +135,71 @@ spring:
 그리고 앱을 실행하면 다음과 같이 정상적으로 Job이 실행되는 것을 확인할 수 있다.
 
 <img width="1657" alt="스크린샷 2022-05-19 오전 1 18 00" src="https://user-images.githubusercontent.com/54282927/169092361-fff36f96-45a0-4e8b-9463-5e6cb132e47b.png">
+
+<br>
+
+## 3. Batch 메타 테이블
+Spring Batch에 제공하는 메타 테이블들에 대해 알아보자.
+
+<img width="969" alt="스크린샷 2022-05-19 오전 1 25 27" src="https://user-images.githubusercontent.com/54282927/169093663-c4a01171-6cba-427b-a3ed-c39645830146.png"> 
+
+<br>
+
+### 3-1. Batch Job Instance 테이블
+Job Instance 테이블은 Job Parameter에 따라 생성되는 테이블이다. Job Paramter란 Spring Batch가 실행될 때 외부에서 받을 수 있는 파라미터이다.
+- 예를 들어, Job Parameter로 넘기면 Spring Batch에서는 해당 날짜 데이터로 조회/가공/입력 등의 작업을 할 수 있다.
+
+<br>
+
+해당 테이블을 보면 방금 실행했던 "simpleJob"을 확인할 수 있다. 
+- `JOB_INSTANCE_ID`: BATCH_JOB_INSTANCE 테이블의 PK
+- `JOB_NAME`: 수행한 Batch Job Name
+- `JOB_KEY`: 동일한 Job이름의 JobInstance는 Job의 실행시점에 부여되는 고유한 JobParameter의 값을 통해 식별된다. 
+             그리고 이렇게 식별되는 값의 직렬화(serialization)된 결과를 JOB_KEY라는 값으로 기록된다.
+
+<img width="518" alt="스크린샷 2022-05-19 오전 1 28 38" src="https://user-images.githubusercontent.com/54282927/169094276-0b4c02f8-2c24-4eb2-8476-43ccfe1e3bbe.png">
+
+같은 Batch Job 이라도 Job Parameter가 다르면 Batch_JOB_INSTANCE에는 기록되며, Job Parameter가 같다면 기록되지 않는다.
+이를 확인해보기 위해 Job의 설정 값을 다음과 같이 바꿔보자.
+- @JobScope와 @StepScope는 스프링의 기본 Scope인 싱글톤 방식과는 대치되는 역할이다.
+- Bean의 생성 시점이 스프링 애플리케이션이 실행되는 시점이 아닌 @JobScope, @StepScope가 명시된 메서드가 실행될 때까지 지연시키는 것을 의미한다. 
+이러한 행위를 Late Binding이라고도 한다.
+~~~
+@Bean
+public Job simpleJob(){
+    return jobBuilderFactory.get("simpleJob") // "simpleJob"이름을 가진 Batch Job 생성
+        .start(simpleStep1(null))
+        .build();
+}
+
+@Bean
+@JobScope
+public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestDate){
+    return stepBuilderFactory.get("simpleStep1") // "simpleStep1"이름을 가진 Batch Step 생성
+        .tasklet(((contribution, chunkContext) -> { // step에서 수행될 기능 명시
+            log.info(">>>>> step1 process");
+            log.info(">>>>> request Date: {}", requestDate);
+            return RepeatStatus.FINISHED;
+        }))
+        .build();
+}
+~~~
+
+
+<br>
+
+### 실행 결과 
+이를 실행해보면 다음과 같이 정상적으로 동작하여 새로운 Job Instance가 생성되는 것을 확인할 수 있다.
+만약 재실행한다면 중복되는 Job Instance는 생성이 불가능하기 때문에 에러가 발생할 것이다.
+- 즉, 동일한 Job이 Job Parameter가 달라지면 그때마다 BATCH_JOB_INSTANCE에 생성되며, 동일한 Job Parameter는 여러개 존재할 수 없다 .
+
+<img width="458" alt="스크린샷 2022-05-19 오전 1 50 22" src="https://user-images.githubusercontent.com/54282927/169098699-7aa9ee15-d7e2-4e6c-bc1e-8869e81bdb1c.png">
+
+<img width="1631" alt="스크린샷 2022-05-19 오전 1 49 37" src="https://user-images.githubusercontent.com/54282927/169098704-0c4764c5-30da-42a2-b51a-55cb43604d89.png">
+
+<br>
+
+
+
+  
 
