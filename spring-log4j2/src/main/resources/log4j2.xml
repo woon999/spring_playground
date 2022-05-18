@@ -49,13 +49,13 @@
     <Loggers>
         <logger name="com.example.springlog4j2" level="info" additivity="false" includeLocation="false">
             <!--   Sync 7.8t/s-->
-<!--            <AppenderRef ref="File"/>-->
+            <AppenderRef ref="File"/>
 
             <!--   Async Appender 15.9 t/s -->
 <!--            <AppenderRef ref="AsyncAppender"/>-->
 
             <!--    All Async Logger 147.8 t/s-->
-            <AppenderRef ref="RandomAccessFile"/>
+<!--            <AppenderRef ref="RandomAccessFile"/>-->
         </logger>
         <Root level="info" includeLocation="false">
             <AppenderRef ref="console"/>

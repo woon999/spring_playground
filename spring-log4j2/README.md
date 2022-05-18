@@ -51,7 +51,7 @@
 <br>
 
 ### 실행 결과
-<img width="1061" alt="스크린샷 2022-05-18 오후 11 36 16" src="https://user-images.githubusercontent.com/54282927/169070436-349af50d-ed01-4ba5-9402-d1e34cf82e9d.png">
+<img width="1054" alt="스크린샷 2022-05-18 오후 11 52 03" src="https://user-images.githubusercontent.com/54282927/169071436-43784b7f-dd75-424c-91d0-642bfb5b5650.png">
 
 ## Async Appender
 - 처리량: 15.9t/s
@@ -102,7 +102,7 @@
 <br>
 
 ### 실행 결과
-<img width="1056" alt="스크린샷 2022-05-18 오후 11 38 09" src="https://user-images.githubusercontent.com/54282927/169070423-b089f536-828e-4d63-b7f5-108f9004b734.png">
+<img width="1061" alt="스크린샷 2022-05-18 오후 11 36 16" src="https://user-images.githubusercontent.com/54282927/169071664-004cef9c-51e6-4599-bd6e-94380f5c5072.png">
 
 ## Async Logger
 - 처리량: 147.8t/s
