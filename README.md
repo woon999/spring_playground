@@ -27,6 +27,7 @@
 ### spring-test
 - [spring-testcontainers-mysql](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-mysql)
 - [spring-testcontainers-redis](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-redis)
+- [spring-testcontainers-localstack](https://github.com/loosie/spring_practice/tree/master/spring-testcontainers-localstack)
 - [spring-cm4sb](https://github.com/loosie/spring_practice/tree/master/spring-cm4sb)
 - [spring-archunit](https://github.com/loosie/spring_practice/tree/master/spring-archunit)
 ### clone
