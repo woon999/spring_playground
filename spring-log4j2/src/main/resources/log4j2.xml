@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <Configuration status="INFO">
     <Properties>
+        <Property name="LOG_PATH">logs/app</Property>
+        <Property name="FILE_PATTERN">%d{yyyy-MM-dd}-%i</Property>
         <Property name="LOG_PATTERN">[%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level ${PID:-} --- [%15.15thread] %-40.40logger{36} : %msg%n</Property>
     </Properties>
     <Appenders>
@@ -9,50 +11,55 @@
         </Console>
 
         <RollingFile name="File"
-                     fileName="./logs/app.log"
-                    filePattern="./logs/app-%d{yyyy-MM-dd}-%i.log">
+                     fileName="${LOG_PATH}.log"
+                     filePattern="${LOG_PATH}-${FILE_PATTERN}.log"
+                     append="false">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
-                <TimeBasedTriggeringPolicy interval="1"/>
-                <SizeBasedTriggeringPolicy size="100KB" />
+                <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100MB" />
             </Policies>
             <DefaultRolloverStrategy max="20" fileIndex="min" />
         </RollingFile>
 
-<!--        AsyncAppender-->
-        <Async name="AsyncAppender">
-            <AppenderRef ref="File"/>
-        </Async>
 
-<!--        Async Logger-->
-        <RollingRandomAccessFile name="RandomAccessFile" fileName="logs/app.log"
-                          filePattern="logs/app-%d{yyyy-MM-dd}-%i.log"
-                          immediateFlush="false" append="true" ignoreExceptions="false">
+        <RollingFile name="AsyncFile"
+                     fileName="${LOG_PATH}.log"
+                     filePattern="${LOG_PATH}-${FILE_PATTERN}.log"
+                     immediateFlush="false" append="false">
             <PatternLayout pattern="${LOG_PATTERN}"/>
             <Policies>
                 <TimeBasedTriggeringPolicy interval="1" modulate="true"/>
-                <SizeBasedTriggeringPolicy size="100KB" />
+                <SizeBasedTriggeringPolicy size="100MB" />
             </Policies>
             <DefaultRolloverStrategy max="20" fileIndex="min" />
-        </RollingRandomAccessFile>
-    </Appenders>
+        </RollingFile>
 
+        <Async name="AsyncAppender" >
+            <AppenderRef ref="AsyncFile" />
+        </Async>
+
+        <!-- Async Loggers will auto-flush in batches, so switch off immediateFlush. -->
+        <RandomAccessFile name="RandomAccessFile"
+                          fileName="${LOG_PATH}-async.log"
+                          immediateFlush="false" append="false">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </RandomAccessFile>
+    </Appenders>
     <Loggers>
-        <!-- additivity : flase일 경우 root로그와 중복으로 찍히는 것을 방지 -->
-        <logger name="com.example.springlog4j2" level="debug" additivity="false">
-<!--         Sync   8.4t/s-->
+        <logger name="com.example.springlog4j2" level="info" additivity="false" includeLocation="false">
+            <!--   Sync 7.8t/s-->
 <!--            <AppenderRef ref="File"/>-->
 
-<!--            Async Appender 9.9t/s -->
+            <!--   Async Appender 15.9 t/s -->
 <!--            <AppenderRef ref="AsyncAppender"/>-->
 
-<!--            Async Logger 85.7t/s -->
+            <!--    All Async Logger 147.8 t/s-->
             <AppenderRef ref="RandomAccessFile"/>
         </logger>
-        <Root level="info">
+        <Root level="info" includeLocation="false">
             <AppenderRef ref="console"/>
         </Root>
     </Loggers>
-
 </Configuration>
 
