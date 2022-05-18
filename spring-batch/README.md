@@ -285,5 +285,21 @@ Job Parameter requestDate=20220521로 생성된 BATCH_JOB_INSTACNE (id=4) 가 2�
 <br>
 
 
-  
+## 3-3. JOB, JOB_INSTANCE, JOB_EXECUTION
+지금까지 다룬 Spring Batch Job의 관계를 정리하면 아래와 같다.
+<img width="500" alt="스크린샷 2022-05-19 오전 3 33 19" src="https://user-images.githubusercontent.com/54282927/169119065-5bc5a9d0-c5b9-41c3-b399-89bf90cc978a.png">
 
+
+위 2개 테이블 이외에도 물론 Job 관련된 테이블은 더 있다.
+
+### BATCH_JOB_EXECUTION_PARAM 
+`BATCH_JOB_EXECUTION_PARAM` 테이블은 `BATCH_JOB_EXECUTION` 테이블이 생성될 당시에 입력 받은 Job Parameter를 담고 있다.
+                                   
+<img width="500" alt="스크린샷 2022-05-19 오전 3 36 05" src="https://user-images.githubusercontent.com/54282927/169119862-32e1072e-60db-4227-bf34-64a992e36aa8.png">
+
+
+---
+ref
+- https://jojoldu.tistory.com/324
+- https://jojoldu.tistory.com/325
+- https://jojoldu.tistory.com/326
