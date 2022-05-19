@@ -25,9 +25,6 @@ public class StepNextConditionalJobConfiguration {
 	private final JobBuilderFactory jobBuilderFactory;
 	private final StepBuilderFactory stepBuilderFactory;
 
-	// ChunkOrientedTasklet
-	// SimpleChunkProvider
-	SimpleChunkProcessor
 	@Bean
 	public Job stepNextConditionJob(){
 		return jobBuilderFactory.get("stepNextConditionJob") // "stepNextConditionJob"이름을 가진 Batch Job 생성

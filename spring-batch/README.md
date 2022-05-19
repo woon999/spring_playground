@@ -856,13 +856,13 @@ Chunk지향 처리의 전체 로직을 다루는 것은 `ChunkOrientedTasklet` �
 - read() 내부에는  ItemReader.read를 호출한다.
 - **즉, ItemReader.read에서 1건씩 데이터를 조회해 Chunk size만큼 데이터를 쌓는 것이 provide()가 하는 일이다**
 
-<img width="800" alt="스크린샷 2022-05-20 오전 12 55 26" src="https://user-images.githubusercontent.com/54282927/169344506-27a6b41c-badf-4d37-97bf-22d5acf91acc.png">
+<img width="700" alt="스크린샷 2022-05-20 오전 12 55 26" src="https://user-images.githubusercontent.com/54282927/169344506-27a6b41c-badf-4d37-97bf-22d5acf91acc.png">
 
 <br>
 
 ### SimpleChunkProcessor의 process() 메서드  
 Processor와 Writer 로직을 담고 있는 것은 ChunkProcessor가 담당한다. 
-가장 기본적인 구현체 SimpleChunkProcessor의 process() 메서드르 살펴보자  
+가장 기본적인 구현체 SimpleChunkProcessor의 process() 메서드르 살펴보자.  
 - Chunk<I> inputs를 파라미터로 받는다.
     - 이 데이터는 앞서 chunkProvider.provide() 에서 받은 ChunkSize만큼 쌓인 item이다.
 - transform() 에서는 전달 받은 inputs을 doProcess()로 전달하고 변환된 값을 받는다.
@@ -876,7 +876,7 @@ Processor와 Writer 로직을 담고 있는 것은 ChunkProcessor가 담당한�
 <br>
 
 
-이렇게 가공된 데이터들은 SimpleChunkProcessor의 doWrite() 메서드를 호출하여 일괄 처리(배치 프로세싱)한.
+이렇게 가공된 데이터들은 SimpleChunkProcessor의 doWrite() 메서드를 호출하여 일괄 처리(배치 프로세싱)한다.
 - writeItems(items) -> ItemWriter.write(items)
 
 <br>
@@ -890,17 +890,97 @@ PagingItemReader에서 사용하는 Page Size와 Chunk Size는 서로 의미하�
 
 ### 두 값이 다르다면?
 PageSize가 10이고, ChunkSize가 50이라면 ItemReader에서 Page 조회가 5번 일어나면 1번의 트랜잭션이 발생하여 Chunk가 처리된다.
-한번의 트랜잭션 처리를 위해 5번의 쿼리 조회가 발생하기 때문에 성능상 이슈가 발생할 수 있습니다. 그래서 Spring Batch의 PagingItemReader에는 클래스 상단에 다음과 같은 주석을 남겨두었다.
-- 성능상 이슈 외에도 2개 값을 다르게 할 경우 JPA를 사용한다면 영속성 컨텍스트가 깨지는 문제도 발생한다고 한다. [(참고)](https://jojoldu.tistory.com/146)
-- 2개 값이 의미하는 바가 다르지만 여러 이슈로 2개 값을 동일하게 설정하는 것이 좋다.
+한번의 트랜잭션 처리를 위해 5번의 쿼리 조회가 발생하기 때문에 성능상 이슈가 발생할 수 있다. 그래서 Spring Batch의 PagingItemReader에는 클래스 상단에 다음과 같은 주석을 남겨두었다.
 
 ~~~
 Setting a fairly large page size and using a commit interval that matches the page size should provide better performance.
 
 Page size를 크게 설정하고 해당 사이즈와 일치하는 커밋 간격(Chunk size)를 사용하면 더 나은 성능을 제공한다.
 ~~~
+
+<br>
+
+성능상 이슈 외에도 2개 값을 다르게 할 경우 JPA를 사용한다면 영속성 컨텍스트가 깨지는 문제도 발생한다고 한다. [(참고)](https://jojoldu.tistory.com/146)
+
+<br>  
+
+따라서, 2개 값이 의미하는 바가 다르지만 여러 이슈로 2개 값을 동일하게 설정하는 것이 좋다.
   
-  
+<br>
+
+# 8.ItemReader
+Spring Batch의 Chunk Tasklet은 다음과 같이 진행된다.
+
+<img width="619" alt="스크린샷 2022-05-20 오전 1 27 16" src="https://user-images.githubusercontent.com/54282927/169350801-dc40cfc6-6b22-48c8-9785-321009a3a449.png">
+
+ItemReader는 말 그대로 데이터를 읽어들인다. DB 데이터뿐만 아니라 File, XML, JSON, CSV 등 다른 데이터 소스를 배치 처리의 입력으로 사용할 수 있다.
+또한 JMS와 같은 다른 유형의 데이터 소스도 지원한다. 정리하면 다음과 같다. 
+- 입력 데이터에서 읽어오기
+- 파일에서 읽어오기
+- Database에서 읽어오기
+- Java Message Service등 다른 소스에서 읽어오기
+- 본인만의 커스텀한 Reader로 읽어오기
+
+<br>
+
+## ItemStream
+ItemReader와 ItemStream 인터페이스를 직접 구현해서 원하는 형태의 ItemReader를 만들 수 있다.
+다만 Spring Batch에서 대부분의 데이터 형태는 ItemReader로 이미 제공하고 있기 때문에 커스텀한 ItemReader를 구현할 일은 많이 없다.
+- open(), close()는 스트림을 열고 닫는다.
+- update()를 사용하면 Batch 처리의 상태를 업데이트 할 수 있다.
+
+<br>
+
+## ItemReader 주의사항
+JpaRepository를 ListItemReader, QueueItemReader에 사용하면 안된다.
+- 간혹 JPA의 조회 쿼리를 쉽게 구현하기 위해 JpaRepository를 이용해서 new ListItemReader<>(jpaRepository.findByAge(age))로 Reader를 구현하는 코드가 종종 있다.
+- 이렇게 할 경우 Spring Batch의 장점인 페이징 & Cursor 구현이 없어 대규모 데이터 처리가 불가능하다. (물론 Chunk 단위 트랜잭션은 됩니다.)
+- 만약 정말 JpaRepository를 써야 하신다면 RepositoryItemReader를 사용하시는 것을 추천한다.
+    - Paging을 기본적으로 지원한다.
+Hibernate, JPA 등 영속성 컨텍스트가 필요한 Reader 사용시 fetchSize와 ChunkSize는 같은 값을 유지해야 한다.
+   
+   
+<br>
+
+# 9. ItemWriter
+ItemWriter는 Spring Batch에서 사용하는 출력 기능이다.
+Spring Batch가 처음 나왔을 때, ItemWriter는 ItemReader와 마찬가지로 item을 하나씩 다루었다.
+그러나 Spring Batch2와 청크 (Chunk) 기반 처리의 도입으로 인해 ItemWriter에도 큰 변화가 있었다.  
+**이 업데이트 이후 부터 ItemWriter는 item 하나를 작성하지 않고 Chunk 단위로 묶인 item List를 다룬다.** 
+
+<br>
+
+## ItemWriter 주의사항
+ItemWriter를 사용할 때 Processor에서 Writer에 List를 전달할 때 ItemWriter의 제네릭을 List로 선언해서는 문제를 해결할 수 없다.
+- [write()메소드 오버라이딩 하여 Writer에 List 전달하기](https://jojoldu.tistory.com/140)
+
+<br>
+
+# 10. ItemProcessor
+ItemProcessor는 데이터를 가공 (혹은 처리)한다. 해당 기능은 필수가 아니다.
+- ItemProcessor는 데이터를 가공하거나 필터링하는 역할을 한다. 이는 Writer 부분에서도 충분히 구현 가능하다.
+- 그럼에도 ItemProcessor를 쓰는 것은 Reader, Writer와는 별도의 단계로 기능이 분리되기 때문이다.
+
+<br>
+
+ChunkSize 단위로 묶은 데이터를 한번에 처리하는 ItemWriter와는 달리 ItemProcessor는 Reader에서 넘겨준 데이터 개별 건을 가공 및 처리한다.
+일반적은 ItemProcessor를 사용하는 방법은 2가지이다.
+- 변환: Reader에서 읽은 데이터를 원하는 타입으로 변환해서 Writer에 넘긴다.
+- 필터: Reader에서 넘겨준 데이터를 Writer로 넘겨줄 것인지를 결정할 수 있다. null을 반환하면 Writer에 전달되지 않는다.
+
+
+<br>
+
+## 기본 사용법
+- I: ItemReader에서 받을 데이터 타입
+- O: ItemWriter에 보낼 데이터 타입
+~~~
+public interface ItemProcessor<I, O> {
+  O process(I item) throws Exception;
+}
+~~~ 
+
+
 
 
 
