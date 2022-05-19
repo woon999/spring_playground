@@ -157,7 +157,7 @@ Job Instance 테이블은 Job Parameter에 따라 생성되는 테이블이다. 
 - `JOB_KEY`: 동일한 Job이름의 JobInstance는 Job의 실행시점에 부여되는 고유한 JobParameter의 값을 통해 식별된다. 
              그리고 이렇게 식별되는 값의 직렬화(serialization)된 결과를 JOB_KEY라는 값으로 기록된다.
 
-<img width="1000" alt="스크린샷 2022-05-19 오전 1 28 38" src="https://user-images.githubusercontent.com/54282927/169094276-0b4c02f8-2c24-4eb2-8476-43ccfe1e3bbe.png">
+<img width="700" alt="스크린샷 2022-05-19 오전 1 28 38" src="https://user-images.githubusercontent.com/54282927/169094276-0b4c02f8-2c24-4eb2-8476-43ccfe1e3bbe.png">
 
 같은 Batch Job 이라도 Job Parameter가 다르면 Batch_JOB_INSTANCE에는 기록되며, Job Parameter가 같다면 기록되지 않는다.
 이를 확인해보기 위해 Job의 설정 값을 다음과 같이 바꿔보자.
@@ -287,15 +287,120 @@ Job Parameter requestDate=20220521로 생성된 BATCH_JOB_INSTACNE (id=4) 가 2�
 
 ## 3-3. JOB, JOB_INSTANCE, JOB_EXECUTION
 지금까지 다룬 Spring Batch Job의 관계를 정리하면 아래와 같다.
+
 <img width="500" alt="스크린샷 2022-05-19 오전 3 33 19" src="https://user-images.githubusercontent.com/54282927/169119065-5bc5a9d0-c5b9-41c3-b399-89bf90cc978a.png">
 
-
+### BATCH_JOB_EXECUTION_PARAM
 위 2개 테이블 이외에도 물론 Job 관련된 테이블은 더 있다.
-
-### BATCH_JOB_EXECUTION_PARAM 
 `BATCH_JOB_EXECUTION_PARAM` 테이블은 `BATCH_JOB_EXECUTION` 테이블이 생성될 당시에 입력 받은 Job Parameter를 담고 있다.
                                    
 <img width="500" alt="스크린샷 2022-05-19 오전 3 36 05" src="https://user-images.githubusercontent.com/54282927/169119862-32e1072e-60db-4227-bf34-64a992e36aa8.png">
+
+
+<br>
+
+## 4. Next 사용해보기 
+Next는 이름 그대로 순차적으로 Step들을 연결시켜 실행해야할 때 사용한다.
+- step1 -> (next)step2 -> (next)step3
+
+### 4-1. StepNextJobConfiguration 클래스 생성
+이번에는 새롭게 StepNextJobConfiguration을 생성해준다. 그리고 다음과 같이 Next를 사용하는 Job을 생성한다.
+
+~~~
+@Configuration
+@RequiredArgsConstructor
+@Slf4j
+public class StepNextJobConfiguration {
+
+	private final JobBuilderFactory jobBuilderFactory;
+	private final StepBuilderFactory stepBuilderFactory;
+
+	@Bean
+	public Job stepNextJob(){
+		return jobBuilderFactory.get("stepNextJob") // "stepNextJob"이름을 가진 Batch Job 생성
+			.start(step1())
+			.next(step2())
+			.next(step3())
+			.build();
+	}
+
+	@Bean
+	public Step step1(){
+		return stepBuilderFactory.get("step1") // "step1"이름을 가진 Batch Step 생성
+			.tasklet(((contribution, chunkContext) -> { // step에서 수행될 기능 명시
+				log.info(">>>>> step1 process");
+				return RepeatStatus.FINISHED;
+			}))
+			.build();
+	}
+
+	@Bean
+	public Step step2(){
+		return stepBuilderFactory.get("step2") // "step2"이름을 가진 Batch Step 생성
+			.tasklet(((contribution, chunkContext) -> { // step에서 수행될 기능 명시
+				log.info(">>>>> step2 process");
+				return RepeatStatus.FINISHED;
+			}))
+			.build();
+	}
+
+	@Bean
+	public Step step3(){
+		return stepBuilderFactory.get("step3") // "step3"이름을 가진 Batch Step 생성
+			.tasklet(((contribution, chunkContext) -> { // step에서 수행될 기능 명시
+				log.info(">>>>> step3 process");
+				return RepeatStatus.FINISHED;
+			}))
+			.build();
+	}
+}
+~~~
+
+## 4-2. version 설정 후 실행하기
+이번에는 Job Parameter를 version=1로 변경하고나서 실행해보자. 
+
+<img width="700" alt="스크린샷 2022-05-19 오후 1 26 11" src="https://user-images.githubusercontent.com/54282927/169205395-c63b2d64-6fce-4062-8e9c-fa0ea57dd810.png">
+
+<br>
+
+### 실행 결과
+정상적으로 실행되었지만 기존에 실습했던 simpleJob도 같이 실행되었다.
+
+<img width="1000" alt="스크린샷 2022-05-19 오후 1 26 49" src="https://user-images.githubusercontent.com/54282927/169205382-993bbef8-b512-4020-afb8-250d4c9a9fd8.png">
+
+
+<br>
+
+## 4-3. 지정한 Batch Job만 실행시키기
+application.yml 설정을 사용하여 Batch Job을 지정하여 실행시킬 수 있다.
+
+
+Spring Batch가 실행될때, Program arguments로 job.name 값이 넘어오면 해당 값과 일치하는 Job만 실행된다.
+- ${job.name:NONE}는 job.name이 존재하면 해당 값을 넣어주고 job.name이 존재하지 않으면 NONE을 넣어주어 어떠한 Batch Job도 실행하지 않는다. 
+~~~
+spring:
+    job:
+      names: ${job.name:NONE}
+~~~
+
+<br>
+
+그럼 이젠 다음과 같이 arguments값을 넣고 다시 실행해보자.
+~~~
+--job.name=stepNextJob version=2
+~~~
+
+<br>
+
+### 실행 결과
+stepNetxJob만 실행되는 것을 확인할 수 있다.
+
+<img width="1000" alt="스크린샷 2022-05-19 오후 1 34 23" src="https://user-images.githubusercontent.com/54282927/169205841-b62989a7-fe3e-4eb3-aba1-81e32a2252d2.png">
+
+실제 운영환경에서는 `java -jar batch-app.jar --job.name=stepNextJob`과 같이 실행한다.
+
+
+<br>
 
 
 ---

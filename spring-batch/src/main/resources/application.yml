@@ -4,3 +4,5 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+    job:
+      names: ${job.name:NONE}
