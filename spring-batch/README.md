@@ -862,14 +862,13 @@ Chunk지향 처리의 전체 로직을 다루는 것은 `ChunkOrientedTasklet` �
 
 ### SimpleChunkProcessor의 process() 메서드  
 Processor와 Writer 로직을 담고 있는 것은 ChunkProcessor가 담당한다. 
-가장 기본적인 구현체 SimpleChunkProcessor의 process() 메서드르 살펴보자.  
-- Chunk<I> inputs를 파라미터로 받는다.
-    - 이 데이터는 앞서 chunkProvider.provide() 에서 받은 ChunkSize만큼 쌓인 item이다.
-- transform() 에서는 전달 받은 inputs을 doProcess()로 전달하고 변환된 값을 받는다.
-    - doProcess() 내부에는 ItemProcessor의 process()를 사용한다.
-- transform()을 통해 가공된 대량의 데이터는 write()를 통해 일괄 저장된다.
-    - write()는 저장이 될수도 있고, 외부 API로 전송할 수 도 있다.
-    - 이는 개발자가 ItemWriter를 어떻게 구현했는지에 따라 달라진다.
+가장 기본적인 구현체 SimpleChunkProcessor의 process() 메서드르 살펴보자.
+- Chunk inputs를 파라미터로 받는다. 이 데이터는 앞서 chunkProvider.provide() 에서 받은 ChunkSize만큼 쌓인 item이다.
+- transform() 에서는 전달 받은 inputs을 doProcess()로 전달하고 변환된 값을 받는다. 
+	- doProcess() 내부에는 ItemProcessor의 process()를 사용한다. 
+	- transform()을 통해 가공된 대량의 데이터는 write()를 통해 일괄 저장된다. 
+- write()는 저장이 될수도 있고, 외부 API로 전송할 수 도 있다. 
+	- 이는 개발자가 ItemWriter를 어떻게 구현했는지에 따라 달라진다.
 
 <img width="800" alt="스크린샷 2022-05-20 오전 12 59 14" src="https://user-images.githubusercontent.com/54282927/169345338-856bcc5f-6aff-4211-9a4a-60cbd3a11bad.png">
 
@@ -943,8 +942,12 @@ Hibernate, JPA 등 영속성 컨텍스트가 필요한 Reader 사용시 fetchSiz
 <br>
 
 ## 8-3. JpaPagingItemReader 사용해보기
+
+<br>
+
 ### Pay 도메인 생성 
 먼저 DB에서 읽어올 데이터를 만들기 위해 pay 도메인부터 생성해준다.
+
 ~~~
 @ToString
 @Getter
@@ -999,6 +1002,7 @@ insert into pay (amount, tx_name, tx_date_time) VALUES (4000, 'trade4', '2018-09
 ### JpaPagingItemReaderJobConfiguration 클래스 생성 후 Job 설정하기
 `SELECT p FROM Pay p WHERE amount >= 2000`문으로 조건을 주어 결제 금액이 2,000원 이상인 데이터만 조회하는 Job을 생성해준다.
 - Chunk size는 10으로, Page size도 이와 같게 설정해준다.
+
 ~~~
 @Slf4j
 @RequiredArgsConstructor
@@ -1051,6 +1055,7 @@ public class JpaPagingItemReaderJobConfiguration {
 
 ### 실행 결과
 Job을 실행시키면 다음과 같이 2,000원 이상인 결제 내역만 정상적으로 읽어오는 것을 확인할 수 있다.
+
 <img width="800" alt="스크린샷 2022-05-20 오전 3 01 37" src="https://user-images.githubusercontent.com/54282927/169369804-72d97f75-bb86-44d9-92e6-bc52a09b4103.png">
 
 <br> 
