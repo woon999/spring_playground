@@ -1,4 +1,4 @@
-package com.example.springbatch.job;
+package com.example.springbatch.job.jpa;
 
 import javax.persistence.EntityManagerFactory;
 
