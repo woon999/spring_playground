@@ -6,3 +6,9 @@ spring:
       initialize-schema: always
     job:
       names: ${job.name:NONE}
+
+logging:
+  level:
+    org:
+      springframework:
+        batch: debug
