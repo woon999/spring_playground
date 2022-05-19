@@ -1,5 +1,5 @@
 # 스프링 배치 Spring Batch 사용하기
-## 1. 기본 라이브러리 설정
+# 1. 기본 라이브러리 설정
 - Spring Batch, JPA, Mysql, H2, Lombok 사용
 <img width="500" alt="스크린샷 2022-05-18 오후 4 51 00" src="https://user-images.githubusercontent.com/54282927/168987157-5c63f912-c8ac-438b-94cf-7d05ceece770.png">
 
@@ -20,8 +20,8 @@ dependencies {
 
 <br>
 
-## 2. Spring Batch Job 생성 후 실행하기
-### 2-1. @EnableBatchProcessing 배치 기능 활성화하기
+# 2. Spring Batch Job 생성 후 실행하기
+## 2-1. @EnableBatchProcessing 배치 기능 활성화하기
 이 애노테이션은 Spring Batch를 사용하기 위해서는 필수로 명시해줘야 한다. 
 ~~~
 @EnableBatchProcessing // 배치 기능 활성화
@@ -37,7 +37,7 @@ public class SpringBatchApplication {
 
 <br>
 
-### 2-2. Simple Job 생성하기
+## 2-2. Simple Job 생성하기
 Job은 하나의 배치 작업 단위이다. Job 안에는 여러 Step이 존재하고, Step 안에는 Tasklet 혹은 Reader & Processor & Writer 묶음이 존재한다.
 
 <img width="550" alt="스크린샷 2022-05-18 오후 5 18 15" src="https://user-images.githubusercontent.com/54282927/169000196-b9907590-8da1-4439-8c83-5de5eb539e9d.png">
@@ -83,8 +83,8 @@ public class SimpleJobConfiguration {
 
 <br>
 
-## 3. DB 사용하기
-### 3-1. 프로필 별로 application.yml 설정하기
+##  2-3. DB 사용하기
+### 2-3-1. 프로필 별로 application.yml 설정하기
 #### application-local.yml
 Local 환경은 h2 인메모리 DB를 사용한다. 
 ~~~
@@ -113,7 +113,7 @@ spring:
 
 <br> 
 
-### Mysql schem-mysql.sql으로 테이블 생성하기
+### 2-3-2. Mysql schem-mysql.sql으로 테이블 생성하기
 그냥 실행하면 에러가 발생한다. Spring Batch의 기본 도메인 테이블을 미리 생성해줘야 한다.  
 - [shift + shift] -> `mysql-schema.sql` 검색 -> Mysql DB에 접속하여 해당 쿼리 실행
 - 또는 yml에 아래와 같이 설정하면  `mysql-schema.sql`가 자동으로 실행되어 DB 테이블으 생성해준다.
@@ -124,12 +124,11 @@ spring:
       initialize-schema: always
 ~~~  
 
-### Batch 테이블 생성
+### Batch 테이블 생성 완료 
 <img width="414" alt="스크린샷 2022-05-19 오전 1 00 45" src="https://user-images.githubusercontent.com/54282927/169092352-a9e080dd-2aee-4200-b9ed-60793ebfa091.png">
 
 
 <br>
-
 
 ### Mysql 연동 성공 
 그리고 앱을 실행하면 다음과 같이 정상적으로 Job이 실행되는 것을 확인할 수 있다.
@@ -138,14 +137,14 @@ spring:
 
 <br>
 
-## 3. Batch 메타 테이블
+# 3. Batch 메타 테이블
 Spring Batch에 제공하는 메타 테이블들에 대해 알아보자.
 
 <img width="700" alt="스크린샷 2022-05-19 오전 1 25 27" src="https://user-images.githubusercontent.com/54282927/169093663-c4a01171-6cba-427b-a3ed-c39645830146.png"> 
 
 <br>
 
-### 3-1. BATCH_JOB_INSTANCE 테이블
+## 3-1. BATCH_JOB_INSTANCE 테이블
 Job Instance 테이블은 Job Parameter에 따라 생성되는 테이블이다. Job Paramter란 Spring Batch가 실행될 때 외부에서 받을 수 있는 파라미터이다.
 - 예를 들어, Job Parameter로 넘기면 Spring Batch에서는 해당 날짜 데이터로 조회/가공/입력 등의 작업을 할 수 있다.
 
@@ -208,7 +207,7 @@ public Step simpleStep1(@Value("#{jobParameters[requestDate]}") String requestDa
 
 <br>
 
-### 3-2. BATCH_JOB_EXECUTION 테이블
+## 3-2. BATCH_JOB_EXECUTION 테이블
 먼저 테이블을 살펴보면 3개의 row를 발견할 수 있다. 위에서 job 인스턴스 (20200519, 20200520, 20200521) 3개의 실행 데이터이다.
 - JOB_INSTANCE와 별 다를게 없어보이는데, 이는 JOB_EXECUTION와 JOB_INSTANCE는 부모-자식 관계이기 때문이다.
 - JOB_EXECUTION은 자신의 부모 JOB_INSTACNE가 성공/실패했던 모든 내역을 갖고 있다.
@@ -290,7 +289,7 @@ Job Parameter requestDate=20220521로 생성된 BATCH_JOB_INSTACNE (id=4) 가 2�
 
 <img width="500" alt="스크린샷 2022-05-19 오전 3 33 19" src="https://user-images.githubusercontent.com/54282927/169119065-5bc5a9d0-c5b9-41c3-b399-89bf90cc978a.png">
 
-### BATCH_JOB_EXECUTION_PARAM
+## 3-4. BATCH_JOB_EXECUTION_PARAM
 위 2개 테이블 이외에도 물론 Job 관련된 테이블은 더 있다.
 `BATCH_JOB_EXECUTION_PARAM` 테이블은 `BATCH_JOB_EXECUTION` 테이블이 생성될 당시에 입력 받은 Job Parameter를 담고 있다.
                                    
@@ -299,11 +298,11 @@ Job Parameter requestDate=20220521로 생성된 BATCH_JOB_INSTACNE (id=4) 가 2�
 
 <br>
 
-## 4. Next 사용해보기 
+# 4. Next 사용해보기 
 Next는 이름 그대로 순차적으로 Step들을 연결시켜 실행해야할 때 사용한다.
 - step1 -> (next)step2 -> (next)step3
 
-### 4-1. StepNextJobConfiguration 클래스 생성
+## 4-1. StepNextJobConfiguration 클래스 생성
 이번에는 새롭게 StepNextJobConfiguration을 생성해준다. 그리고 다음과 같이 Next를 사용하는 Job을 생성한다.
 
 ~~~
@@ -401,6 +400,204 @@ stepNetxJob만 실행되는 것을 확인할 수 있다.
 
 
 <br>
+
+#5. 조건별 흐름 제어(Flow)
+Next가 순차적으로 Step의 순서를 제어할 수 있다. 그런데 만약 실행 도중 오류가 발생한다면 나머지 뒤에 있는 step들은 실행되지 않는다는 것이다.
+상황에 따라서 정상일 때는 [StepA -> StepB], 오류가 발생한 경우 [StepA -> StepC]로 조건 분기를 해야할 때가 있다.
+
+
+이러한 상황을 위해서 Spring Batch Job에서는 조건별로 Step을 사용할 수 있다.
+
+## 5-1. StepNextConditionalJobConfiguration 클래스 생성하기
+시나리오는 다음과 같다.
+- step1 실패 시나리오: step1 -> step3
+- step1 성공 시나라오: step1 -> step2 -> step3
+
+stepNextConditionJob()가 바로 Flow를 관리하는 코드이다.
+- on(): 캐치할 ExitStatus 지정, "*"은 all과 같다.
+- to(): 다음으로 이동한 Step 지정
+- from(): 일종의 이벤트 리스너 역할. 
+   - on(): 상태 값을 보고 일치하는 상태라면 to()에 포함된 step을 호출한다.
+   - step1의 이벤트 캐치가 FAILED로 되어있는 상태에서 추가로 이벤트 캐치를 하려면 from을 써야만 한다.
+- end(): FlowBuilder를 반환하는 end와 FlowBuilder를 종료하는 end 2개가 있다.
+   - on("*") 다음에 오는 end: FlowBuilder를 반환하는 end
+   - bulild() 앞에 있는 end: FlowBuilder를 종료하는 end
+   - FlowBuilder를 반환하는 end 사용시 계속해서 from을 이어갈 수 있다.
+~~~
+/**
+ * 조건 분기해서 사용해보기
+ */
+@Configuration
+@RequiredArgsConstructor
+@Slf4j
+public class StepNextConditionalJobConfiguration {
+
+	private final JobBuilderFactory jobBuilderFactory;
+	private final StepBuilderFactory stepBuilderFactory;
+
+	@Bean
+	public Job stepNextConditionJob(){
+		return jobBuilderFactory.get("stepNextConditionJob") // "stepNextConditionJob"이름을 가진 Batch Job 생성
+			.start(conditionJobStep1())
+				.on("FAILED") // ExitStatus가 FAILED일 경우
+				.to(conditionJobStep3()) // step3로 이동
+				.on("*") // step3 결과와 상관없이(모든 경우) 
+				.end() // flow 종료
+			.from(conditionJobStep1())
+				.on("*")  // ExitStatus가 FAILED가 아닌 모든 경우 if-else의 else 구문
+				.to(conditionJobStep2()) // step2로 이동
+				.next(conditionJobStep3()) // step2가 정상 종료되면 step3로 이동
+				.on("*") // 모든 경우
+				.end() // flow 종료
+			.end() // job 종료
+			.build();
+	}
+
+	@Bean
+	public Step conditionJobStep1(){
+		return stepBuilderFactory.get("step1")
+			.tasklet(((contribution, chunkContext) -> {
+				log.info(">>>>> [1] --- stepNextConditionJob1 process");
+
+				/**
+				 * ExitStatus를 FAILED로 지정한다.
+				 * 해당 status를 보고 flow가 진행된다.
+				 */
+				contribution.setExitStatus(ExitStatus.FAILED);
+
+				return RepeatStatus.FINISHED;
+			}))
+			.build();
+	}
+
+	@Bean
+	public Step conditionJobStep2(){
+		return stepBuilderFactory.get("step2")
+			.tasklet(((contribution, chunkContext) -> {
+				log.info(">>>>> [2] --- stepNextConditionJob2 process");
+				return RepeatStatus.FINISHED;
+			}))
+			.build();
+	}
+
+	@Bean
+	public Step conditionJobStep3(){
+		return stepBuilderFactory.get("step3")
+			.tasklet(((contribution, chunkContext) -> {
+				log.info(">>>>> [3] --- stepNextConditionJob3 process");
+				return RepeatStatus.FINISHED;
+			}))
+			.build();
+	}
+}
+~~~
+
+<br>
+
+### 실행 결과 (실패 시나리오)
+job.name 값을 변경 후 실행해보자.
+~~~
+--job.name=stepNextConditionJob version=3
+~~~
+
+step1 -> step3의 Flow로 실행되는 것을 확인할 수 있다.
+
+<img width="1000" alt="스크린샷 2022-05-19 오후 2 07 24" src="https://user-images.githubusercontent.com/54282927/169212961-f1f15781-c160-4f2c-9bb1-273b59fdd936.png">
+
+<br>
+
+### 실행 결과 (성공 시나리오)
+ExitStatus를 FAILED로 설정해주는 로직을 주석처리하여 성공 시나리오로 실행해보자.
+~~~
+@Bean
+public Step conditionJobStep1(){
+    return stepBuilderFactory.get("step1")
+        .tasklet(((contribution, chunkContext) -> {
+            log.info(">>>>> [1] --- stepNextConditionJob1 process");
+
+            /**
+             * ExitStatus를 FAILED로 지정한다.
+             * 해당 status를 보고 flow가 진행된다.
+             */
+            // contribution.setExitStatus(ExitStatus.FAILED);
+
+            return RepeatStatus.FINISHED;
+        }))
+        .build();
+}
+~~~
+
+step1 -> step2 -> step3의 Flow로 실행되는 것을 확인할 수 있다.
+
+<img width="1000" alt="스크린샷 2022-05-19 오후 2 09 37" src="https://user-images.githubusercontent.com/54282927/169212986-20ace626-9140-4275-bdd7-67cb6801d429.png">
+
+<br>
+
+## Batch Status vs Exit Status 
+BatchStatus: Job 또는 Step의 실행 상태를 나타낸다. 
+   - BatchStatus로 사용 되는 값은 COMPLETED, STARTING, STARTED, STOPPING, STOPPED, FAILED, ABANDONED, UNKNOWN이 있다.
+   - 실행 중에는 BatchStatus.STARTED, 실패하면 BatchStatus.FAILED, 성공적으로 완료되면 BatchStatus.COMPLETED 이다.
+ExitStatus: Step의 실행 결과 나타낸다. 
+   - ExitStatus는 호출자에게 반환될 종료 코드가 포함되어 있기 때문에 가장 중요하다.
+
+다음 예제는 'on'이 포함되어 있다.
+~~~
+from(stepA()).on("FAILED").to(stepB())
+~~~
+
+언뜻 보기에 on("FAILED")는 BatchStatus를 참조하는 것처럼 보일 수 있다. 
+그러나 실제로는 실행 완료 후 상태를 나타내는 ExitStatus를 참조한다.
+exitCode가 FAILED로 끝나게 되면 stepB()로 가라는 뜻이다.
+
+- ref: https://docs.spring.io/spring-batch/docs/current/reference/html/index-single.html#batchStatusVsExitStatus
+
+<br>
+
+### exitCode 커스텀하기
+다음 예제 시나리오가 있다.
+- step1이 실패하며, Job 또한 실패하게 된다.
+- step1이 성공적으로 수행되어 step2가 수행된다.
+- step1이 성공적으로 완료되며, COMPLETED WITH SKIPS의 exit 코드로 종료 된다.
+~~~
+.start(step1())
+    .on("FAILED")
+    .end()
+.from(step1())
+    .on("COMPLETED WITH SKIPS")
+    .to(errorPrint1())
+    .end()
+.from(step1())
+    .on("*")
+    .to(step2())
+    .end()
+~~~
+
+<br>
+
+위 코드에 나오는 "COMPLETED WITH SKIPS"는 ExitStatus에는 없는 코드이다.
+원하는대로 처리되기 위해서는 COMPLETED WITH SKIPS exitCode를 반환하는 별도의 로직이 필요하다.
+
+StepExecutionListener 에서는 먼저 Step이 성공적으로 수행되었는지 확인하고,
+ StepExecution의 skip 횟수가 0보다 클 경우 COMPLETED WITH SKIPS 의 exitCode를 갖는 ExitStatus를 반환한다.
+~~~
+public class SkipCheckingListener extends StepExecutionListenerSupport {
+
+    public ExitStatus afterStep(StepExecution stepExecution) {
+        String exitCode = stepExecution.getExitStatus().getExitCode();
+        if (!exitCode.equals(ExitStatus.FAILED.getExitCode()) && 
+              stepExecution.getSkipCount() > 0) {
+            return new ExitStatus("COMPLETED WITH SKIPS");
+        }
+        else {
+            return null;
+        }
+    }
+}
+~~~
+
+<br> 
+
+
 
 
 ---
