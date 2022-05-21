@@ -3,10 +3,8 @@ package com.example.springarchunit;
 import static com.tngtech.archunit.lang.syntax.ArchRuleDefinition.*;
 import static com.tngtech.archunit.library.Architectures.*;
 
-import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Test;
 
-import com.tngtech.archunit.core.domain.JavaClass;
 import com.tngtech.archunit.core.domain.JavaClasses;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
 import com.tngtech.archunit.lang.ArchRule;
@@ -36,7 +34,7 @@ class DeclareCheckTest {
 			.layer("Repository").definedBy("..repository..")
 			.whereLayer("Controller").mayNotBeAccessedByAnyLayer() // 다른 계층에 접근 불가
 			.whereLayer("Service").mayOnlyBeAccessedByLayers("Controller")
-			.whereLayer("Repository").mayOnlyBeAccessedByLayers("Controller");
+			.whereLayer("Repository").mayOnlyBeAccessedByLayers("Controller", "Service");
 		rule.check(importedClasses);
 	}
 
