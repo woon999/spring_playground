@@ -1,10 +1,8 @@
 # ArchUnit로 아키텍처 검사하기 
 `아키텍처(architecture)`는 정의에 따르면 컴퓨터 공학에서 컴퓨터 시스템의 기능, 조직, 구현에 대한 법칙과 방법을 의미한다.
 - https://www.archunit.org/
+- 💡 자세한 내용은 [블로그](https://loosie.tistory.com/840) 를 참고해주세요. 
 
-<br>
-
-! 자세한 내용은 [블로그](https://loosie.tistory.com/840) 를 참고해주세요. 
 
 <br>
 
@@ -97,5 +95,6 @@ public class LayeredArchitectureTest {
 
 ---
 ref
+- https://blogs.oracle.com/javamagazine/post/unit-test-your-architecture-with-archunit
 - https://www.inflearn.com/course/the-java-application-test/dashboard
 - https://d2.naver.com/helloworld/9222129
