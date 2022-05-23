@@ -9,7 +9,7 @@ services:
     environment:
       - MYSQL_DATABASE=test
       - MYSQL_USER=loosie
-      - MYSQL_ROOT_PASSWORD=shR9cjs!114
+      - MYSQL_ROOT_PASSWORD=1234
     volumes:
       - app-db-data:/var/lib/mysql
     ports:
